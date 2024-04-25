@@ -1,0 +1,1 @@
+enum HomeListShowMode { list, map }
