@@ -28,6 +28,7 @@ mixin _$Place {
   String get icon => throw _privateConstructorUsedError;
   double get rate => throw _privateConstructorUsedError;
   bool get isSaved => throw _privateConstructorUsedError;
+  String get locationId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -47,7 +48,8 @@ abstract class $PlaceCopyWith<$Res> {
       LatLong latlng,
       String icon,
       double rate,
-      bool isSaved});
+      bool isSaved,
+      String locationId});
 
   $LatLongCopyWith<$Res> get latlng;
 }
@@ -73,6 +75,7 @@ class _$PlaceCopyWithImpl<$Res, $Val extends Place>
     Object? icon = null,
     Object? rate = null,
     Object? isSaved = null,
+    Object? locationId = null,
   }) {
     return _then(_value.copyWith(
       title: null == title
@@ -107,6 +110,10 @@ class _$PlaceCopyWithImpl<$Res, $Val extends Place>
           ? _value.isSaved
           : isSaved // ignore: cast_nullable_to_non_nullable
               as bool,
+      locationId: null == locationId
+          ? _value.locationId
+          : locationId // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 
@@ -134,7 +141,8 @@ abstract class _$$PlaceImplCopyWith<$Res> implements $PlaceCopyWith<$Res> {
       LatLong latlng,
       String icon,
       double rate,
-      bool isSaved});
+      bool isSaved,
+      String locationId});
 
   @override
   $LatLongCopyWith<$Res> get latlng;
@@ -159,6 +167,7 @@ class __$$PlaceImplCopyWithImpl<$Res>
     Object? icon = null,
     Object? rate = null,
     Object? isSaved = null,
+    Object? locationId = null,
   }) {
     return _then(_$PlaceImpl(
       title: null == title
@@ -193,6 +202,10 @@ class __$$PlaceImplCopyWithImpl<$Res>
           ? _value.isSaved
           : isSaved // ignore: cast_nullable_to_non_nullable
               as bool,
+      locationId: null == locationId
+          ? _value.locationId
+          : locationId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -208,7 +221,8 @@ class _$PlaceImpl implements _Place {
       required this.latlng,
       required this.icon,
       required this.rate,
-      required this.isSaved});
+      required this.isSaved,
+      this.locationId = ""});
 
   factory _$PlaceImpl.fromJson(Map<String, dynamic> json) =>
       _$$PlaceImplFromJson(json);
@@ -229,10 +243,13 @@ class _$PlaceImpl implements _Place {
   final double rate;
   @override
   final bool isSaved;
+  @override
+  @JsonKey()
+  final String locationId;
 
   @override
   String toString() {
-    return 'Place(title: $title, address: $address, distance: $distance, date: $date, latlng: $latlng, icon: $icon, rate: $rate, isSaved: $isSaved)';
+    return 'Place(title: $title, address: $address, distance: $distance, date: $date, latlng: $latlng, icon: $icon, rate: $rate, isSaved: $isSaved, locationId: $locationId)';
   }
 
   @override
@@ -248,13 +265,15 @@ class _$PlaceImpl implements _Place {
             (identical(other.latlng, latlng) || other.latlng == latlng) &&
             (identical(other.icon, icon) || other.icon == icon) &&
             (identical(other.rate, rate) || other.rate == rate) &&
-            (identical(other.isSaved, isSaved) || other.isSaved == isSaved));
+            (identical(other.isSaved, isSaved) || other.isSaved == isSaved) &&
+            (identical(other.locationId, locationId) ||
+                other.locationId == locationId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, title, address, distance, date, latlng, icon, rate, isSaved);
+  int get hashCode => Object.hash(runtimeType, title, address, distance, date,
+      latlng, icon, rate, isSaved, locationId);
 
   @JsonKey(ignore: true)
   @override
@@ -279,7 +298,8 @@ abstract class _Place implements Place {
       required final LatLong latlng,
       required final String icon,
       required final double rate,
-      required final bool isSaved}) = _$PlaceImpl;
+      required final bool isSaved,
+      final String locationId}) = _$PlaceImpl;
 
   factory _Place.fromJson(Map<String, dynamic> json) = _$PlaceImpl.fromJson;
 
@@ -299,6 +319,8 @@ abstract class _Place implements Place {
   double get rate;
   @override
   bool get isSaved;
+  @override
+  String get locationId;
   @override
   @JsonKey(ignore: true)
   _$$PlaceImplCopyWith<_$PlaceImpl> get copyWith =>

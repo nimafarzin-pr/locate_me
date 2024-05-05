@@ -55,7 +55,6 @@ final router = GoRouter(
         ),
         // second branch (B)
         StatefulShellBranch(
-          navigatorKey: _shellNavigatorBKey,
           routes: [
             // top route inside branch
             GoRoute(
