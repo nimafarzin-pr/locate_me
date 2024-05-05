@@ -5,16 +5,16 @@ part 'place_item_model.g.dart';
 
 @freezed
 class Place with _$Place {
-  const factory Place({
-    required String title,
-    required String address,
-    required String distance,
-    required String date,
-    required LatLong latlng,
-    required String icon,
-    required double rate,
-    required bool isSaved,
-  }) = _Place;
+  const factory Place(
+      {required String title,
+      required String address,
+      required String distance,
+      required String date,
+      required LatLong latlng,
+      required String icon,
+      required double rate,
+      required bool isSaved,
+      @Default("") String locationId}) = _Place;
 
   factory Place.fromJson(Map<String, dynamic> json) => _$PlaceFromJson(json);
 }
