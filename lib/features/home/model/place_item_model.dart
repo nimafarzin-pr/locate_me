@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'place_item_model.freezed.dart';
 part 'place_item_model.g.dart';
 
-@freezed
+@Freezed(copyWith: true)
 class Place with _$Place {
   const factory Place(
       {required String title,

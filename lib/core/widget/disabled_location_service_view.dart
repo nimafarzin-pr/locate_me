@@ -3,11 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:locate_me/core/widget/dialogs/permission.dart';
 
 class DisabledLocationServiceView extends StatelessWidget {
-  final Function onRecall;
-  const DisabledLocationServiceView({
-    super.key,
-    required this.onRecall,
-  });
+  const DisabledLocationServiceView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +22,9 @@ class DisabledLocationServiceView extends StatelessWidget {
                   final status = await Geolocator.isLocationServiceEnabled();
                   if (!status) {
                     await showLocationServiceDialog(context);
-                  } else {
-                    onRecall();
                   }
                 },
-                child: const Text("Accept / Refresh"))
+                child: const Text("Enable"))
           ],
         )),
       ],

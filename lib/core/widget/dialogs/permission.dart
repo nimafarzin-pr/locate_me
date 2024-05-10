@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -28,7 +30,8 @@ Future<void> showLocationServiceDialog(BuildContext context) async {
   );
 }
 
-Future<void> showPermissionSettingsDialog(BuildContext context) async {
+Future<void> showPermissionSettingsDialog(BuildContext context,
+    {required void Function()? onAcceptPressed}) async {
   await showDialog(
     context: context,
     builder: (context) => AlertDialog(
@@ -43,12 +46,10 @@ Future<void> showPermissionSettingsDialog(BuildContext context) async {
           child: const Text('Cancel'),
         ),
         TextButton(
-          onPressed: () async {
-            final status = await Geolocator.requestPermission();
-            if (status == LocationPermission.deniedForever) {
-              await AppSettings.openAppSettings(type: AppSettingsType.location);
-              Navigator.pop(context);
-            }
+          onPressed: () {
+            Navigator.pop(context);
+            if (onAcceptPressed == null) return;
+            onAcceptPressed();
           },
           child: const Text('Settings'),
         ),

@@ -5,152 +5,109 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:locate_me/core/resources/icons.dart';
 import 'package:locate_me/core/widget/disabled_location_service_view.dart';
 import 'package:locate_me/core/widget/loading.dart';
 import 'package:locate_me/core/widget/permission_denied_screen.dart';
+import 'package:locate_me/features/add/view/widgets/location_button.dart';
 
 import 'package:locate_me/features/home/model/place_item_model.dart';
-import 'package:locate_me/features/add/viewmodel/location_provider.dart';
-import 'package:locate_me/features/add/viewmodel/location_state.dart';
+import 'package:locate_me/features/map/model/manipulate_marker_model.dart';
 import 'package:locate_me/features/map/provider/single_marker_provider.dart';
+import 'package:riverpod/riverpod.dart';
 
-class AddTab extends StatefulWidget {
+import '../../map/provider/permission_provider.dart';
+
+class AddTab extends ConsumerStatefulWidget {
   const AddTab({super.key});
 
   @override
-  State<AddTab> createState() => _AddTabState();
+  ConsumerState<AddTab> createState() => _AddTabState();
 }
 
-class _AddTabState extends State<AddTab> with WidgetsBindingObserver {
-  final Completer<GoogleMapController> _mapController =
-      Completer<GoogleMapController>();
+class _AddTabState extends ConsumerState<AddTab> {
+  Completer<GoogleMapController> _mapController = Completer();
 
-  Future<void> _goToMyLocation(Position location) async {
+  Future<void> _goToMyLocation(LatLng location) async {
     final GoogleMapController controller = await _mapController.future;
     await controller.animateCamera(
-        CameraUpdate.newLatLng(LatLng(location.latitude, location.longitude)));
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      setState(() {});
-    }
-    super.didChangeAppLifecycleState(state);
+      CameraUpdate.newLatLng(location),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, ref, child) {
-        final currentPosition = ref.watch(positionProvider);
-        log('1111${currentPosition.value}');
-
-        return currentPosition.when(
-          data: (latlng) {
-            final value = [
-              Place(
-                  title: latlng!.latitude.toString(),
-                  address: latlng.latitude.toString(),
-                  distance: latlng.latitude.toString(),
-                  date: latlng.timestamp.toString(),
-                  latlng: LatLong(
-                      latitude: latlng.latitude, longitude: latlng.longitude),
-                  icon: MyIcons.location,
-                  rate: 0,
-                  isSaved: false)
-            ];
-            final marker = ref.watch(getSingleMarkerProvider(value));
-            log('2222${marker.isLoading}');
-            return marker.when(
-              data: (data) {
-                return Stack(children: [
-                  GoogleMap(
-                    markers: {
-                      Marker(
-                        icon: marker.hasValue
-                            ? marker.value!.customIcons.first
-                            : BitmapDescriptor.defaultMarker,
-                        markerId: MarkerId(latlng.toString()),
-                        onTap: () {},
-                        infoWindow: InfoWindow(
-                            title: latlng.timestamp.toString(),
-                            snippet: latlng.toString()),
-                        position: LatLng(latlng.latitude, latlng.longitude),
-                      )
-                    },
-                    zoomControlsEnabled: false,
-                    onMapCreated: (controller) {
-                      _mapController.complete(controller);
-                      _goToMyLocation(latlng);
-                    },
-                    // onTap: (latlng) async {
-                    //   log('****** $latlng');
-                    //   final data = [
-                    //     Place(
-                    //         title: 'title',
-                    //         address: '',
-                    //         distance: '',
-                    //         date: '',
-                    //         latlng: LatLong(
-                    //             latitude: latlng.latitude, longitude: latlng.longitude),
-                    //         icon: MyIcons.location,
-                    //         rate: 0.0,
-                    //         isSaved: false)
-                    //   ];
-
-                    //   _goToMyLocation(data);
-                    // },
-
-                    initialCameraPosition: CameraPosition(
-                      target: LatLng(latlng.latitude, latlng.longitude),
-                      zoom: 14.4746,
-                    ),
-                    // onLocationChange: (location) {
-                    //   _listenToChangeLocation(location);
-                    // },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: FloatingActionButton(
-                        onPressed: () async {
-                          _goToMyLocation(latlng);
-                        },
-                        child: FaIcon(
-                          size: 34,
-                          FontAwesomeIcons.crosshairs,
-                          color: Theme.of(context).colorScheme.surface,
-                        ),
-                      ),
-                    ),
-                  )
-                ]);
-              },
-              error: (error, stackTrace) => const Center(
-                child: Text('an Error occured!'),
-              ),
-              loading: () => const MyLoading(),
-            );
-          },
-          error: (error, stackTrace) {
-            if (LocationServiceState.disabled == error) {
-              return DisabledLocationServiceView(onRecall: () async {
-                final result = ref.refresh(positionProvider);
-              });
+    final permission = ref.watch(permissionProvider);
+    return switch (permission) {
+      AsyncValue(:final SystemAndPermissionStatus error?) => Builder(
+          builder: (_) {
+            if (error == SystemAndPermissionStatus.systemLocationDisable) {
+              return const DisabledLocationServiceView();
+            } else if (error == SystemAndPermissionStatus.permissionDenied ||
+                error == SystemAndPermissionStatus.permissionDeniedForEver) {
+              return const PermissionDeniedScreen();
             } else {
-              return PermissionDeniedScreen(onRecall: () async {
-                final result = ref.refresh(positionProvider);
-              });
+              return const MyLoading();
             }
           },
-          loading: () => const MyLoading(),
-        );
+        ),
+      AsyncValue(:final valueOrNull?) => Builder(
+          builder: (_) {
+            final marker = ref.watch(currentPositionProvider);
+            return marker.when(
+              error: (error, stackTrace) {
+                return const Center(
+                  child: Text('Some error occurred!'),
+                );
+              },
+              loading: () => const MyLoading(),
+              data: (data) {
+                final result = data;
+                final latLong = result.locations.first;
+                final position = LatLng(
+                    ref.watch(listenablePositionProvider).value != null
+                        ? ref.watch(listenablePositionProvider).value!.latitude
+                        : latLong.latlng.latitude,
+                    ref.watch(listenablePositionProvider).value != null
+                        ? ref.watch(listenablePositionProvider).value!.longitude
+                        : latLong.latlng.longitude);
+
+                return Stack(children: [
+                  buildGoogleMap(result, latLong, position),
+                  LocationButton(onPressed: () async {
+                    await _goToMyLocation(position);
+                  })
+                ]);
+              },
+            );
+          },
+        ),
+      _ => const MyLoading(),
+    };
+  }
+
+  GoogleMap buildGoogleMap(MarkersModeData result, Place latLong, position) {
+    return GoogleMap(
+      markers: {
+        Marker(
+            icon: result.customIcons.first,
+            markerId: MarkerId(latLong.latlng.toString()),
+            onTap: () {},
+            infoWindow: InfoWindow(
+                title: latLong.date.toString(),
+                snippet: latLong.address.toString()),
+            position: position)
       },
+      zoomControlsEnabled: false,
+      onMapCreated: (controller) {
+        _mapController = Completer();
+        _mapController.complete(controller);
+        _goToMyLocation(position);
+      },
+      initialCameraPosition: CameraPosition(
+        target: position,
+        zoom: 14.4746,
+      ),
     );
   }
 }
