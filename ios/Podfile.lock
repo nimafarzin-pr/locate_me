@@ -10,11 +10,11 @@ PODS:
     - Flutter
   - google_maps_flutter_ios (0.0.1):
     - Flutter
-    - GoogleMaps (< 9.0)
-  - GoogleMaps (6.2.1):
-    - GoogleMaps/Maps (= 6.2.1)
-  - GoogleMaps/Base (6.2.1)
-  - GoogleMaps/Maps (6.2.1):
+    - GoogleMaps (< 9.0, >= 8.4)
+  - GoogleMaps (8.4.0):
+    - GoogleMaps/Maps (= 8.4.0)
+  - GoogleMaps/Base (8.4.0)
+  - GoogleMaps/Maps (8.4.0):
     - GoogleMaps/Base
 
 DEPENDENCIES:
@@ -49,9 +49,9 @@ SPEC CHECKSUMS:
   flutter_config: 2226c1df19c78fe34a05eb7f1363445f18e76fc1
   geocoding_ios: d7460f56e80e118d57678efe5c2cdc888739ff18
   geolocator_apple: 6cbaf322953988e009e5ecb481f07efece75c450
-  google_maps_flutter_ios: f135b968a67c05679e0a53538e900b5c174b0d99
-  GoogleMaps: 20d7b12be49a14287f797e88e0e31bc4156aaeb4
+  google_maps_flutter_ios: c454f18e0e22df6ac0e9f2a4df340858f5a3680c
+  GoogleMaps: 8939898920281c649150e0af74aa291c60f2e77d
 
-PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
+PODFILE CHECKSUM: 1959d098c91d8a792531a723c4a9d7e9f6a01e38
 
 COCOAPODS: 1.12.0

@@ -6,7 +6,7 @@ part of 'multiple_marker_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getMultipleMarkerHash() => r'06d5a7f885fdc1b93055afb3658de97d268927b7';
+String _$getMultipleMarkerHash() => r'311d8701e0d1e45b1fd3315a357bea66f8a307fa';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const getMultipleMarkerProvider = GetMultipleMarkerFamily();
 
 /// See also [getMultipleMarker].
-class GetMultipleMarkerFamily extends Family<AsyncValue<MarkersModeData>> {
+class GetMultipleMarkerFamily extends Family<AsyncValue<MarkersData>> {
   /// See also [getMultipleMarker].
   const GetMultipleMarkerFamily();
 
@@ -72,8 +72,7 @@ class GetMultipleMarkerFamily extends Family<AsyncValue<MarkersModeData>> {
 }
 
 /// See also [getMultipleMarker].
-class GetMultipleMarkerProvider
-    extends AutoDisposeFutureProvider<MarkersModeData> {
+class GetMultipleMarkerProvider extends AutoDisposeFutureProvider<MarkersData> {
   /// See also [getMultipleMarker].
   GetMultipleMarkerProvider(
     List<Place> data,
@@ -108,7 +107,7 @@ class GetMultipleMarkerProvider
 
   @override
   Override overrideWith(
-    FutureOr<MarkersModeData> Function(GetMultipleMarkerRef provider) create,
+    FutureOr<MarkersData> Function(GetMultipleMarkerRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -125,7 +124,7 @@ class GetMultipleMarkerProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<MarkersModeData> createElement() {
+  AutoDisposeFutureProviderElement<MarkersData> createElement() {
     return _GetMultipleMarkerProviderElement(this);
   }
 
@@ -143,13 +142,13 @@ class GetMultipleMarkerProvider
   }
 }
 
-mixin GetMultipleMarkerRef on AutoDisposeFutureProviderRef<MarkersModeData> {
+mixin GetMultipleMarkerRef on AutoDisposeFutureProviderRef<MarkersData> {
   /// The parameter `data` of this provider.
   List<Place> get data;
 }
 
 class _GetMultipleMarkerProviderElement
-    extends AutoDisposeFutureProviderElement<MarkersModeData>
+    extends AutoDisposeFutureProviderElement<MarkersData>
     with GetMultipleMarkerRef {
   _GetMultipleMarkerProviderElement(super.provider);
 

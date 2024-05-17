@@ -88,24 +88,24 @@ class LocationItem extends StatelessWidget {
                                     },
                                     icon: const FaIcon(
                                       FontAwesomeIcons.penToSquare,
-                                      color: Colors.lightGreen,
+                                      color: Colors.grey,
                                     )),
                                 IconButton(
                                     onPressed: () {},
                                     icon: const FaIcon(
-                                      color: Colors.amberAccent,
+                                      color: Colors.grey,
                                       FontAwesomeIcons.mapLocationDot,
                                     )),
                                 IconButton(
                                     onPressed: () {},
                                     icon: const FaIcon(
-                                      color: Colors.lightBlue,
+                                      color: Colors.grey,
                                       FontAwesomeIcons.route,
                                     )),
                                 IconButton(
                                     onPressed: () {},
                                     icon: const FaIcon(
-                                      color: Colors.pinkAccent,
+                                      color: Colors.grey,
                                       FontAwesomeIcons.trashCan,
                                     )),
                               ],
