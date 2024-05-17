@@ -1,16 +1,21 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:locate_me/core/resources/icons.dart';
+import 'package:locate_me/core/utils/marker_utility.dart';
 import 'package:locate_me/core/widget/loading.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 
+import '../../../map/model/marker_data_model.dart';
 import '../../../map/provider/multiple_marker_provider.dart';
 
-class MapList extends StatefulWidget {
+class MapList extends ConsumerStatefulWidget {
   final List<Place> places;
   final bool polyLineFromPoint;
   const MapList({
@@ -20,12 +25,56 @@ class MapList extends StatefulWidget {
   });
 
   @override
-  State<MapList> createState() => _MapListState();
+  ConsumerState<MapList> createState() => _MapListState();
 }
 
-class _MapListState extends State<MapList> with AutomaticKeepAliveClientMixin {
+class _MapListState extends ConsumerState<MapList>
+    with AutomaticKeepAliveClientMixin {
   final Completer<GoogleMapController> _mapController =
       Completer<GoogleMapController>();
+
+  final Set<Marker> _markers = {};
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _addCustomMarker();
+    });
+  }
+
+  Future<void> _addCustomMarker() async {
+    final customMarker =
+        ref.read(getMultipleMarkerProvider(widget.places).future);
+    customMarker.then(
+      (markerIcon) {
+        for (Marker element in markerIcon.markers.toList()) {
+          final dex = markerIcon.markers.toList().indexOf(element);
+          final cus = markerIcon.customIcons[dex];
+          setState(() {
+            _markers.add(
+              Marker(
+                markerId: MarkerId('${element.position.latitude}'),
+                position: element.position,
+                icon: element.icon,
+              ),
+            );
+            // _markers.add(
+            //   Marker(
+            //     markerId: MarkerId('${cus.hashCode}'),
+            //     position: element.position,
+            //     icon: cus,
+            //   ),
+            // );
+          });
+        }
+      },
+    ).catchError((error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error loading custom marker: $error')),
+      );
+    });
+  }
 
   @override
   bool get wantKeepAlive => false;
@@ -52,48 +101,50 @@ class _MapListState extends State<MapList> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Consumer(
-      builder: (context, ref, child) {
-        final markers = ref.watch(getMultipleMarkerProvider(widget.places));
-        return markers.when(
-            data: (data) {
-              return Stack(children: [
-                GoogleMap(
-                  zoomControlsEnabled: false,
-                  myLocationButtonEnabled: false,
-                  myLocationEnabled: false,
-                  onTap: _onTab,
-                  polylines: widget.polyLineFromPoint ? data.polyline! : {},
-                  markers: data.markers.map((e) {
-                    return Marker(
-                      icon: e.icon,
-                      markerId: MarkerId(e.markerId.toString()),
-                      onTap: () {},
-                      infoWindow: InfoWindow(
-                          title: e.infoWindow.title,
-                          snippet: e.infoWindow.snippet),
-                      position:
-                          LatLng(e.position.latitude, e.position.longitude),
-                    );
-                  }).toSet(),
-                  mapType: MapType.normal,
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(data.locations.first.latlng.latitude,
-                        data.locations.first.latlng.longitude),
-                    zoom: 14.4746,
-                  ),
-                  onMapCreated: (controller) {
-                    if (_mapController.isCompleted) return;
-                    _mapController.complete(controller);
-                  },
-                ),
-              ]);
+    return Stack(children: [
+      GoogleMap(
+        zoomControlsEnabled: false,
+        myLocationButtonEnabled: false,
+        myLocationEnabled: false,
+        onTap: _onTab,
+        markers: _markers,
+        mapType: MapType.normal,
+        initialCameraPosition: CameraPosition(
+          target: LatLng(widget.places.first.latlng.latitude,
+              widget.places.first.latlng.longitude),
+          zoom: 14.4746,
+        ),
+        onMapCreated: (controller) {
+          if (_mapController.isCompleted) return;
+          _mapController.complete(controller);
+        },
+      ),
+      Consumer(
+        builder: (context, watch, child) {
+          final customMarker =
+              ref.watch(getMultipleMarkerProvider(widget.places));
+
+          return customMarker.when(
+            data: (markerIcon) {
+              // Marker is successfully created
+              return Container(); // Return empty container
             },
-            error: (error, stackTrace) {
-              return Center(child: Text('$error'));
+            loading: () {
+              // Show loading indicator if needed
+              return const Center(child: CircularProgressIndicator());
             },
-            loading: () => const MyLoading());
-      },
-    );
+            error: (err, stack) {
+              // Show error message
+              return Container(
+                height: MediaQuery.sizeOf(context).height,
+                width: MediaQuery.sizeOf(context).width,
+                color: Colors.white,
+                child: Center(child: Text('Error loading custom marker: $err')),
+              );
+            },
+          );
+        },
+      ),
+    ]);
   }
 }

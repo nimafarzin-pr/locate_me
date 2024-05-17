@@ -1,8 +1,6 @@
-import 'dart:developer';
 
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 
 Future<void> showLocationServiceDialog(BuildContext context) async {
   await showDialog(
