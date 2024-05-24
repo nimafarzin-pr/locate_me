@@ -3,12 +3,11 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 import 'package:flutter/material.dart';
+import 'package:locate_me/features/add/model/dto/google_map_dto.dart';
 import 'dart:ui' as ui;
 
-import '../../model/place_item_model.dart';
-
 class MyCustomMarker extends CustomPainter {
-  final Place place;
+  final GoogleMapDto place;
   final int duration;
 
   MyCustomMarker(this.place, this.duration);
@@ -20,7 +19,7 @@ class MyCustomMarker extends CustomPainter {
   }
 
   Future<ui.Image> loadImageFromAsset() async {
-    final ByteData data = await rootBundle.load(place.icon);
+    final ByteData data = await rootBundle.load(place.customIcon);
     final Uint8List bytes = data.buffer.asUint8List();
     final Completer<ui.Image> completer = Completer();
     ui.decodeImageFromList(bytes, (ui.Image img) {
@@ -183,7 +182,8 @@ class MyCustomMarker extends CustomPainter {
   }
 }
 
-Future<Uint8List> placeToMarker(Place place, {required int duration}) async {
+Future<Uint8List> placeToMarker(GoogleMapDto place,
+    {required int duration}) async {
   ui.PictureRecorder recorder = ui.PictureRecorder();
   ui.Canvas canvas = ui.Canvas(recorder);
   const ui.Size size = ui.Size(300, 300);

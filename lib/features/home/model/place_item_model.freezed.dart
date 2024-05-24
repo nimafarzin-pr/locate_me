@@ -14,50 +14,56 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-Place _$PlaceFromJson(Map<String, dynamic> json) {
+PlaceItemModel _$PlaceItemModelFromJson(Map<String, dynamic> json) {
   return _Place.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Place {
+mixin _$PlaceItemModel {
   String get title => throw _privateConstructorUsedError;
   String get address => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
   String get distance => throw _privateConstructorUsedError;
   String get date => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
+  String get category => throw _privateConstructorUsedError;
   LatLong get latlng => throw _privateConstructorUsedError;
   String get icon => throw _privateConstructorUsedError;
   double get rate => throw _privateConstructorUsedError;
   bool get isSaved => throw _privateConstructorUsedError;
-  String get locationId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $PlaceCopyWith<Place> get copyWith => throw _privateConstructorUsedError;
+  $PlaceItemModelCopyWith<PlaceItemModel> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $PlaceCopyWith<$Res> {
-  factory $PlaceCopyWith(Place value, $Res Function(Place) then) =
-      _$PlaceCopyWithImpl<$Res, Place>;
+abstract class $PlaceItemModelCopyWith<$Res> {
+  factory $PlaceItemModelCopyWith(
+          PlaceItemModel value, $Res Function(PlaceItemModel) then) =
+      _$PlaceItemModelCopyWithImpl<$Res, PlaceItemModel>;
   @useResult
   $Res call(
       {String title,
       String address,
+      String description,
       String distance,
       String date,
+      int? id,
+      String category,
       LatLong latlng,
       String icon,
       double rate,
-      bool isSaved,
-      String locationId});
+      bool isSaved});
 
   $LatLongCopyWith<$Res> get latlng;
 }
 
 /// @nodoc
-class _$PlaceCopyWithImpl<$Res, $Val extends Place>
-    implements $PlaceCopyWith<$Res> {
-  _$PlaceCopyWithImpl(this._value, this._then);
+class _$PlaceItemModelCopyWithImpl<$Res, $Val extends PlaceItemModel>
+    implements $PlaceItemModelCopyWith<$Res> {
+  _$PlaceItemModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -69,13 +75,15 @@ class _$PlaceCopyWithImpl<$Res, $Val extends Place>
   $Res call({
     Object? title = null,
     Object? address = null,
+    Object? description = null,
     Object? distance = null,
     Object? date = null,
+    Object? id = freezed,
+    Object? category = null,
     Object? latlng = null,
     Object? icon = null,
     Object? rate = null,
     Object? isSaved = null,
-    Object? locationId = null,
   }) {
     return _then(_value.copyWith(
       title: null == title
@@ -86,6 +94,10 @@ class _$PlaceCopyWithImpl<$Res, $Val extends Place>
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
       distance: null == distance
           ? _value.distance
           : distance // ignore: cast_nullable_to_non_nullable
@@ -93,6 +105,14 @@ class _$PlaceCopyWithImpl<$Res, $Val extends Place>
       date: null == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      category: null == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
               as String,
       latlng: null == latlng
           ? _value.latlng
@@ -110,10 +130,6 @@ class _$PlaceCopyWithImpl<$Res, $Val extends Place>
           ? _value.isSaved
           : isSaved // ignore: cast_nullable_to_non_nullable
               as bool,
-      locationId: null == locationId
-          ? _value.locationId
-          : locationId // ignore: cast_nullable_to_non_nullable
-              as String,
     ) as $Val);
   }
 
@@ -127,7 +143,8 @@ class _$PlaceCopyWithImpl<$Res, $Val extends Place>
 }
 
 /// @nodoc
-abstract class _$$PlaceImplCopyWith<$Res> implements $PlaceCopyWith<$Res> {
+abstract class _$$PlaceImplCopyWith<$Res>
+    implements $PlaceItemModelCopyWith<$Res> {
   factory _$$PlaceImplCopyWith(
           _$PlaceImpl value, $Res Function(_$PlaceImpl) then) =
       __$$PlaceImplCopyWithImpl<$Res>;
@@ -136,13 +153,15 @@ abstract class _$$PlaceImplCopyWith<$Res> implements $PlaceCopyWith<$Res> {
   $Res call(
       {String title,
       String address,
+      String description,
       String distance,
       String date,
+      int? id,
+      String category,
       LatLong latlng,
       String icon,
       double rate,
-      bool isSaved,
-      String locationId});
+      bool isSaved});
 
   @override
   $LatLongCopyWith<$Res> get latlng;
@@ -150,7 +169,7 @@ abstract class _$$PlaceImplCopyWith<$Res> implements $PlaceCopyWith<$Res> {
 
 /// @nodoc
 class __$$PlaceImplCopyWithImpl<$Res>
-    extends _$PlaceCopyWithImpl<$Res, _$PlaceImpl>
+    extends _$PlaceItemModelCopyWithImpl<$Res, _$PlaceImpl>
     implements _$$PlaceImplCopyWith<$Res> {
   __$$PlaceImplCopyWithImpl(
       _$PlaceImpl _value, $Res Function(_$PlaceImpl) _then)
@@ -161,13 +180,15 @@ class __$$PlaceImplCopyWithImpl<$Res>
   $Res call({
     Object? title = null,
     Object? address = null,
+    Object? description = null,
     Object? distance = null,
     Object? date = null,
+    Object? id = freezed,
+    Object? category = null,
     Object? latlng = null,
     Object? icon = null,
     Object? rate = null,
     Object? isSaved = null,
-    Object? locationId = null,
   }) {
     return _then(_$PlaceImpl(
       title: null == title
@@ -178,6 +199,10 @@ class __$$PlaceImplCopyWithImpl<$Res>
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
       distance: null == distance
           ? _value.distance
           : distance // ignore: cast_nullable_to_non_nullable
@@ -185,6 +210,14 @@ class __$$PlaceImplCopyWithImpl<$Res>
       date: null == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      category: null == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
               as String,
       latlng: null == latlng
           ? _value.latlng
@@ -202,10 +235,6 @@ class __$$PlaceImplCopyWithImpl<$Res>
           ? _value.isSaved
           : isSaved // ignore: cast_nullable_to_non_nullable
               as bool,
-      locationId: null == locationId
-          ? _value.locationId
-          : locationId // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -216,13 +245,15 @@ class _$PlaceImpl implements _Place {
   const _$PlaceImpl(
       {required this.title,
       required this.address,
-      required this.distance,
-      required this.date,
+      this.description = "",
+      this.distance = "",
+      this.date = "",
+      this.id,
+      required this.category,
       required this.latlng,
       required this.icon,
-      required this.rate,
-      required this.isSaved,
-      this.locationId = ""});
+      this.rate = 0,
+      this.isSaved = false});
 
   factory _$PlaceImpl.fromJson(Map<String, dynamic> json) =>
       _$$PlaceImplFromJson(json);
@@ -232,24 +263,32 @@ class _$PlaceImpl implements _Place {
   @override
   final String address;
   @override
+  @JsonKey()
+  final String description;
+  @override
+  @JsonKey()
   final String distance;
   @override
+  @JsonKey()
   final String date;
+  @override
+  final int? id;
+  @override
+  final String category;
   @override
   final LatLong latlng;
   @override
   final String icon;
   @override
+  @JsonKey()
   final double rate;
   @override
-  final bool isSaved;
-  @override
   @JsonKey()
-  final String locationId;
+  final bool isSaved;
 
   @override
   String toString() {
-    return 'Place(title: $title, address: $address, distance: $distance, date: $date, latlng: $latlng, icon: $icon, rate: $rate, isSaved: $isSaved, locationId: $locationId)';
+    return 'PlaceItemModel(title: $title, address: $address, description: $description, distance: $distance, date: $date, id: $id, category: $category, latlng: $latlng, icon: $icon, rate: $rate, isSaved: $isSaved)';
   }
 
   @override
@@ -259,21 +298,24 @@ class _$PlaceImpl implements _Place {
             other is _$PlaceImpl &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.address, address) || other.address == address) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
             (identical(other.distance, distance) ||
                 other.distance == distance) &&
             (identical(other.date, date) || other.date == date) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.category, category) ||
+                other.category == category) &&
             (identical(other.latlng, latlng) || other.latlng == latlng) &&
             (identical(other.icon, icon) || other.icon == icon) &&
             (identical(other.rate, rate) || other.rate == rate) &&
-            (identical(other.isSaved, isSaved) || other.isSaved == isSaved) &&
-            (identical(other.locationId, locationId) ||
-                other.locationId == locationId));
+            (identical(other.isSaved, isSaved) || other.isSaved == isSaved));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, title, address, distance, date,
-      latlng, icon, rate, isSaved, locationId);
+  int get hashCode => Object.hash(runtimeType, title, address, description,
+      distance, date, id, category, latlng, icon, rate, isSaved);
 
   @JsonKey(ignore: true)
   @override
@@ -289,17 +331,19 @@ class _$PlaceImpl implements _Place {
   }
 }
 
-abstract class _Place implements Place {
+abstract class _Place implements PlaceItemModel {
   const factory _Place(
       {required final String title,
       required final String address,
-      required final String distance,
-      required final String date,
+      final String description,
+      final String distance,
+      final String date,
+      final int? id,
+      required final String category,
       required final LatLong latlng,
       required final String icon,
-      required final double rate,
-      required final bool isSaved,
-      final String locationId}) = _$PlaceImpl;
+      final double rate,
+      final bool isSaved}) = _$PlaceImpl;
 
   factory _Place.fromJson(Map<String, dynamic> json) = _$PlaceImpl.fromJson;
 
@@ -308,9 +352,15 @@ abstract class _Place implements Place {
   @override
   String get address;
   @override
+  String get description;
+  @override
   String get distance;
   @override
   String get date;
+  @override
+  int? get id;
+  @override
+  String get category;
   @override
   LatLong get latlng;
   @override
@@ -319,8 +369,6 @@ abstract class _Place implements Place {
   double get rate;
   @override
   bool get isSaved;
-  @override
-  String get locationId;
   @override
   @JsonKey(ignore: true)
   _$$PlaceImplCopyWith<_$PlaceImpl> get copyWith =>

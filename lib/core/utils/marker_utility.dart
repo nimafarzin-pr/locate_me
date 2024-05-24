@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -97,7 +95,7 @@ class MarkerUtils {
 
     final Radius radius = Radius.circular(size.width / 2);
 
-    final Paint shadowCirclePaint = Paint()..color = Colors.yellow;
+    final Paint shadowCirclePaint = Paint()..color = Colors.greenAccent;
 
     // Add shadow circle
     canvas.drawRRect(
@@ -112,7 +110,7 @@ class MarkerUtils {
         shadowCirclePaint);
 
     // TEXT BOX BACKGROUND
-    Paint textBgBoxPaint = Paint()..color = Colors.yellow;
+    Paint textBgBoxPaint = Paint()..color = Colors.greenAccent;
 
     Rect rect = Rect.fromLTWH(
       0,

@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:locate_me/core/widget/dialogs/permission.dart';
 
-import '../../features/map/provider/permission_provider.dart';
+import '../helper/google_map/provider/permission_provider.dart';
 
 class PermissionDeniedScreen extends StatelessWidget {
   const PermissionDeniedScreen({super.key});
