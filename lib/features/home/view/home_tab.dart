@@ -3,12 +3,13 @@ import 'package:locate_me/core/constant/category.dart';
 import 'package:locate_me/core/enums/enums.dart';
 import 'package:locate_me/core/widget/category_item.dart';
 import 'package:locate_me/core/widget/custom_segmented_button.dart';
+import 'package:locate_me/core/widget/empty_box.dart';
 import 'package:locate_me/core/widget/loading.dart';
-import 'package:locate_me/features/home/provider/locations_provider.dart';
-import 'package:locate_me/features/home/view/widgets/row_list.dart';
+import 'package:locate_me/features/home/view/widgets/normal_list/normal_list.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'widgets/map_list.dart';
+import '../provider/location_provider.dart';
+import 'widgets/list_on_map/google_view/google_view.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -18,14 +19,7 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
-  late final TabController _tabController;
   int categoryIndex = 0;
-
-  @override
-  void initState() {
-    _tabController = TabController(vsync: this, length: 2);
-    super.initState();
-  }
 
   HomeListShowMode homeListShowMode = HomeListShowMode.list;
 
@@ -33,8 +27,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, child) {
-        final locations = ref.watch(locationsProviderProvider);
-
+        final locations = ref.watch(locationProvider);
         return locations.when(
           data: (data) {
             return Scaffold(
@@ -88,20 +81,6 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                         ),
                       ),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(8.0),
-                    //   child: TabBar(
-                    //     onTap: (value) {
-                    //       setState(() {
-                    //         _tabController.index = value;
-                    //       });
-                    //     },
-                    //     automaticIndicatorColorAdjustment: true,
-                    //     indicatorSize: TabBarIndicatorSize.tab,
-                    //     tabs: const [Tab(text: "List"), Tab(text: "On Map")],
-                    //   ),
-                    // ),
-
                     Padding(
                       padding: const EdgeInsets.only(bottom: 14.0, top: 8),
                       child: SegmentedButtonExample(
@@ -113,7 +92,6 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                         homeListShowMode: homeListShowMode,
                       ),
                     ),
-
                     Expanded(
                       flex: 9,
                       child: Container(
@@ -123,12 +101,14 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                               Radius.circular(16),
                             ),
                           ),
-                          child: homeListShowMode == HomeListShowMode.list
-                              ? RowList(places: data)
-                              : MapList(
-                                  places: data,
-                                  polyLineFromPoint: false,
-                                )),
+                          child: data.isEmpty
+                              ? const EmptyBox()
+                              : homeListShowMode == HomeListShowMode.list
+                                  ? NormalListView(places: data)
+                                  : GoogleView(
+                                      places: data,
+                                      polyLineFromPoint: false,
+                                    )),
                     ),
                   ],
                 ),

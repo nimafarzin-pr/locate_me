@@ -9,26 +9,30 @@ part of 'place_item_model.dart';
 _$PlaceImpl _$$PlaceImplFromJson(Map<String, dynamic> json) => _$PlaceImpl(
       title: json['title'] as String,
       address: json['address'] as String,
-      distance: json['distance'] as String,
-      date: json['date'] as String,
+      description: json['description'] as String? ?? "",
+      distance: json['distance'] as String? ?? "",
+      date: json['date'] as String? ?? "",
+      id: (json['id'] as num?)?.toInt(),
+      category: json['category'] as String,
       latlng: LatLong.fromJson(json['latlng'] as Map<String, dynamic>),
       icon: json['icon'] as String,
-      rate: (json['rate'] as num).toDouble(),
-      isSaved: json['isSaved'] as bool,
-      locationId: json['locationId'] as String? ?? "",
+      rate: (json['rate'] as num?)?.toDouble() ?? 0,
+      isSaved: json['isSaved'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$PlaceImplToJson(_$PlaceImpl instance) =>
     <String, dynamic>{
       'title': instance.title,
       'address': instance.address,
+      'description': instance.description,
       'distance': instance.distance,
       'date': instance.date,
+      'id': instance.id,
+      'category': instance.category,
       'latlng': instance.latlng,
       'icon': instance.icon,
       'rate': instance.rate,
       'isSaved': instance.isSaved,
-      'locationId': instance.locationId,
     };
 
 _$LatLongImpl _$$LatLongImplFromJson(Map<String, dynamic> json) =>

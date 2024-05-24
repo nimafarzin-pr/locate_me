@@ -1,3 +1,3 @@
 enum HomeListShowMode { list, map }
 
-enum DeviceLocationStatus { granted, denied, disabled }
+// enum DeviceLocationStatus { granted, denied, disabled }

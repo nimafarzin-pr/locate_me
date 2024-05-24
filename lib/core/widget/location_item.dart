@@ -8,7 +8,7 @@ import 'package:locate_me/features/home/model/place_item_model.dart';
 
 class LocationItem extends StatelessWidget {
   final int index;
-  final Place item;
+  final PlaceItemModel item;
 
   const LocationItem({
     super.key,

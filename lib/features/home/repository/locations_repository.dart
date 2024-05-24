@@ -1,31 +1,16 @@
-import 'dart:convert';
-
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import 'package:locate_me/core/dummydata/dummy_data.dart';
+import 'package:locate_me/core/database/repository/location_repository_impl.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 
-part 'locations_repository.g.dart';
+class HomeScreenRepository {
+  final LocationRepositoryImpl _locationRepositoryImpl;
 
-@riverpod
-LocationsRepository locationsRepository(LocationsRepositoryRef ref) =>
-    LocationsRepository();
+  HomeScreenRepository(this._locationRepositoryImpl);
 
-class LocationsRepository {
-  Future<List<Place>> getLocations() async {
-    return Future.delayed(const Duration(milliseconds: 300), () {
-      final fakeData =
-          (json.decode(jsonStr) as List).map((e) => Place.fromJson(e)).toList();
-      return fakeData;
-    });
+  Future<List<PlaceItemModel>> getLocations() async {
+    return await _locationRepositoryImpl.getLocations();
   }
 
-  Future<Place> getLocation(String locationId) async {
-    final fakeData =
-        (json.decode(jsonStr) as List).map((e) => Place.fromJson(e)).toList();
-
-    final Place place =
-        fakeData.where((element) => element.locationId == locationId).first;
-    return place;
+  Future<PlaceItemModel?> getLocation(int id) async {
+    return await _locationRepositoryImpl.getLocation(id);
   }
 }
