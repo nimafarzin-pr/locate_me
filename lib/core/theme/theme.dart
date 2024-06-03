@@ -1,6 +1,9 @@
 // lib/themes.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../sizing/my_text_size.dart';
 
 class GlobalThemeData {
   static final Color _lightFocusColor = Colors.black.withOpacity(0.12);
@@ -45,11 +48,21 @@ class GlobalThemeData {
     return ThemeData(
       fontFamily: 'IRANSansMobile',
       textTheme: const TextTheme(
-        displayLarge: TextStyle(
-          color: Colors.black,
-          fontSize: 96,
-          fontWeight: FontWeight.bold,
-        ),
+        displayLarge: AppTextStyles.displayLarge,
+        displayMedium: AppTextStyles.displayMedium,
+        displaySmall: AppTextStyles.displaySmall,
+        headlineLarge: AppTextStyles.headlineLarge,
+        headlineMedium: AppTextStyles.headlineMedium,
+        headlineSmall: AppTextStyles.headlineSmall,
+        titleLarge: AppTextStyles.titleLarge,
+        titleMedium: AppTextStyles.titleMedium,
+        titleSmall: AppTextStyles.titleSmall,
+        bodyLarge: AppTextStyles.bodyLarge,
+        bodyMedium: AppTextStyles.bodyMedium,
+        bodySmall: AppTextStyles.bodySmall,
+        labelLarge: AppTextStyles.labelLarge,
+        labelMedium: AppTextStyles.labelMedium,
+        labelSmall: AppTextStyles.labelSmall,
       ),
       colorScheme: colorScheme,
       canvasColor: colorScheme.surface,

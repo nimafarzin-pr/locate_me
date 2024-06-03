@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:locate_me/core/enums/enums.dart';
+
+import '../helper/map/enums/map_enum.dart';
 
 class SegmentedButtonExample extends StatefulWidget {
   final HomeListShowMode homeListShowMode;

@@ -1,12 +1,20 @@
-import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:locate_me/core/extension/screen_size.dart';
 import 'package:locate_me/core/resources/icons.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 
+import '../../../../../core/constant/category.dart';
+import '../../../../../core/dto/category_dto.dart';
+
 import '../../../../../core/widget/custom_accept_button.dart';
+import '../../../../../core/widget/custom_dropdwon_button.dart';
+import '../../../../../core/widget/custom_textfeild.dart';
 
 class AddLocationView<T> extends StatefulWidget {
   final LatLng latLng;
@@ -29,6 +37,9 @@ class _AddLocationViewState<T> extends State<AddLocationView<T>> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  CategoryItem? selectedCategory;
+  double rate = 5;
 
   @override
   void initState() {
@@ -50,6 +61,8 @@ class _AddLocationViewState<T> extends State<AddLocationView<T>> {
 
   @override
   Widget build(BuildContext context) {
+    double width = context.screenWidth;
+    double height = context.screenHeight;
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: Stack(
@@ -61,8 +74,8 @@ class _AddLocationViewState<T> extends State<AddLocationView<T>> {
             ),
             Center(
               child: Container(
-                width: 400,
-                height: 500,
+                width: width / 1.1,
+                height: height / 1.2,
                 padding: const EdgeInsets.all(24),
                 margin: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
@@ -77,140 +90,132 @@ class _AddLocationViewState<T> extends State<AddLocationView<T>> {
                   ],
                 ),
                 child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        'Save you location',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          'Save you location',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomTextField(
-                                hintText: 'latitude',
-                                controller: _latitudeController),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: CustomTextField(
-                                hintText: 'longitude',
-                                controller: _longitudeController),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          CustomTextField(
-                              hintText: 'title', controller: _titleController),
-                          CustomTextField(
-                              hintText: 'address',
-                              controller: _addressController),
-                          CustomTextField(
+                        const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CustomTextField(
+                                  hintText: 'latitude',
+                                  controller: _latitudeController),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: CustomTextField(
+                                  hintText: 'longitude',
+                                  controller: _longitudeController),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            CustomTextField(
+                              hintText: 'title',
+                              controller: _titleController,
+                            ),
+                            CustomTextField(
+                                hintText: 'address',
+                                controller: _addressController),
+                            CustomTextField(
                               hintText: 'description',
-                              controller: _descriptionController),
-                          CustomTextField(
-                              hintText: 'category',
-                              controller: _categoryController),
-                        ],
-                      ),
-                      Center(
-                        child: AcceptButton(
-                          buttonText: 'Accept',
-                          onPressed: () async {
-                            final lat = double.parse(_latitudeController.text);
-                            final lng = double.parse(_longitudeController.text);
-                            final data = PlaceItemModel(
-                                icon: MyIcons.location,
-                                title: _titleController.text,
-                                address: _addressController.text,
-                                distance: "",
-                                date: DateTime.now().toIso8601String(),
-                                category: "",
-                                latlng: LatLong(latitude: lat, longitude: lng),
-                                rate: 2,
-                                isSaved: false);
-                            await widget.onAccept(data as T);
-                          },
+                              controller: _descriptionController,
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                            CustomDropdownField<CategoryItem>(
+                              hintText: 'Select a category',
+                              items: category,
+                              value: selectedCategory,
+                              onChanged: (CategoryItem? newValue) {
+                                setState(() {
+                                  selectedCategory = newValue;
+                                });
+                              },
+                              itemAsString: (CategoryItem item) => item.name,
+                              itemAsWidget: (CategoryItem item) => Row(
+                                children: [
+                                  Image(
+                                    width: 40,
+                                    height: 40,
+                                    image: AssetImage(item.icon),
+                                    color: item.color,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(item.name),
+                                ],
+                              ),
+                            ),
+                            RatingBar.builder(
+                              initialRating: 5,
+                              minRating: 1,
+                              direction: Axis.horizontal,
+                              allowHalfRating: true,
+                              itemCount: 5,
+                              itemPadding:
+                                  const EdgeInsets.symmetric(horizontal: 4.0),
+                              itemBuilder: (context, _) => const FaIcon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              onRatingUpdate: (rating) {
+                                log('$rating');
+                                setState(() {
+                                  rate = rating;
+                                });
+                                log('$rate');
+                              },
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            )
+                          ],
                         ),
-                      )
-                    ],
+                        Center(
+                          child: AcceptButton(
+                            buttonText: 'Accept',
+                            onPressed: () async {
+                              if (!_formKey.currentState!.validate()) return;
+                              final lat =
+                                  double.parse(_latitudeController.text);
+                              final lng =
+                                  double.parse(_longitudeController.text);
+                              final data = PlaceItemModel(
+                                  icon: MyIcons.location,
+                                  title: _titleController.text,
+                                  address: _addressController.text,
+                                  distance: "",
+                                  date: DateTime.now().toIso8601String(),
+                                  category: selectedCategory != null
+                                      ? selectedCategory!.name
+                                      : "",
+                                  latlng:
+                                      LatLong(latitude: lat, longitude: lng),
+                                  rate: rate,
+                                  isSaved: false);
+                              await widget.onAccept(data as T);
+                              context.pop();
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
           ],
         ));
-  }
-}
-
-class CustomTextField extends StatelessWidget {
-  final String hintText;
-  final TextEditingController controller;
-
-  const CustomTextField({
-    super.key,
-    required this.hintText,
-    required this.controller,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: TextStyle(
-            color: Colors.grey[400],
-          ),
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(
-              color: Colors.greenAccent,
-              width: 2.0,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(
-              color: Colors.greenAccent,
-              width: 2.0,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(
-              color: Colors.lightGreen,
-              width: 2.0,
-            ),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(
-              color: Colors.red,
-              width: 2.0,
-            ),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(
-              color: Colors.redAccent,
-              width: 2.0,
-            ),
-          ),
-        ),
-        cursorColor: Colors.blueAccent,
-      ),
-    );
   }
 }

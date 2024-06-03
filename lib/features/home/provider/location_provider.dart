@@ -4,8 +4,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../repository/locations_repository.dart';
 import 'location_repository_provider.dart';
 
-final locationProvider = FutureProvider<List<PlaceItemModel>>((ref) async {
+final locationProvider = StreamProvider<List<PlaceItemModel>>((ref) async* {
   final HomeScreenRepository locationRepository =
       ref.watch(homeScreenRepositoryProvider);
-  return await locationRepository.getLocations();
+  yield* await locationRepository.watchLocationList();
 });

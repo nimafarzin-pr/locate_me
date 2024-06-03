@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:locate_me/core/constant/category.dart';
-import 'package:locate_me/core/enums/enums.dart';
 import 'package:locate_me/core/widget/category_item.dart';
 import 'package:locate_me/core/widget/custom_segmented_button.dart';
 import 'package:locate_me/core/widget/empty_box.dart';
@@ -8,6 +7,7 @@ import 'package:locate_me/core/widget/loading.dart';
 import 'package:locate_me/features/home/view/widgets/normal_list/normal_list.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../core/helper/map/enums/map_enum.dart';
 import '../provider/location_provider.dart';
 import 'widgets/list_on_map/google_view/google_view.dart';
 
