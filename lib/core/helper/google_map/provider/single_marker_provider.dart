@@ -25,19 +25,20 @@ Future<SingleMarkerDto> _setSingleMarker(GoogleMapDto data) async {
   //     data.customIcon, '${data.lat} \n ${data.lng}');
 
   // final x = await placeToMarker(data, duration: 1);
-  final markerIcon = await CustomMarkerAddInfoBox(
-    position: latLang2.LatLng(data.lat, data.lng),
-  ).toBitmapDescriptor(
-      logicalSize: const Size(250, 250), imageSize: const Size(500, 500));
+  // final markerIcon = await CustomMarkerAddInfoBox(
+  //   showCard: true,
+  //   position: latLang2.LatLng(data.lat, data.lng),
+  // ).toBitmapDescriptor(
+  //     logicalSize: const Size(250, 250), imageSize: const Size(500, 400));
 
   return SingleMarkerDto(
     marker: {
       Marker(
-          icon: markerIcon,
+          icon: BitmapDescriptor.defaultMarker,
           markerId: MarkerId(data.lat.toString()),
           position: LatLng(data.lat, data.lng))
     },
-    customIcon: markerIcon,
+    customIcon: BitmapDescriptor.defaultMarker,
     location: data,
     placeMark: data.placeMark,
   );

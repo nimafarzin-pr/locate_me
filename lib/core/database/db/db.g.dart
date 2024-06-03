@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'location_database_impl.dart';
+part of 'db.dart';
 
 // ignore_for_file: type=lint
-class $LocationDBTable extends LocationDB
-    with TableInfo<$LocationDBTable, Location> {
+class $LocationTBTable extends LocationTB
+    with TableInfo<$LocationTBTable, Location> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $LocationDBTable(this.attachedDatabase, [this._alias]);
+  $LocationTBTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -39,6 +39,11 @@ class $LocationDBTable extends LocationDB
   @override
   late final GeneratedColumn<double> latitude = GeneratedColumn<double>(
       'latitude', aliasedName, false,
+      type: DriftSqlType.double, requiredDuringInsert: true);
+  static const VerificationMeta _rateMeta = const VerificationMeta('rate');
+  @override
+  late final GeneratedColumn<double> rate = GeneratedColumn<double>(
+      'rate', aliasedName, false,
       type: DriftSqlType.double, requiredDuringInsert: true);
   static const VerificationMeta _longitudeMeta =
       const VerificationMeta('longitude');
@@ -71,6 +76,7 @@ class $LocationDBTable extends LocationDB
         vicinity,
         icon,
         latitude,
+        rate,
         longitude,
         address,
         category,
@@ -80,7 +86,7 @@ class $LocationDBTable extends LocationDB
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'location_d_b';
+  static const String $name = 'location_t_b';
   @override
   VerificationContext validateIntegrity(Insertable<Location> instance,
       {bool isInserting = false}) {
@@ -110,6 +116,12 @@ class $LocationDBTable extends LocationDB
           latitude.isAcceptableOrUnknown(data['latitude']!, _latitudeMeta));
     } else if (isInserting) {
       context.missing(_latitudeMeta);
+    }
+    if (data.containsKey('rate')) {
+      context.handle(
+          _rateMeta, rate.isAcceptableOrUnknown(data['rate']!, _rateMeta));
+    } else if (isInserting) {
+      context.missing(_rateMeta);
     }
     if (data.containsKey('longitude')) {
       context.handle(_longitudeMeta,
@@ -152,6 +164,8 @@ class $LocationDBTable extends LocationDB
           .read(DriftSqlType.string, data['${effectivePrefix}icon'])!,
       latitude: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}latitude'])!,
+      rate: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}rate'])!,
       longitude: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}longitude'])!,
       address: attachedDatabase.typeMapping
@@ -164,8 +178,8 @@ class $LocationDBTable extends LocationDB
   }
 
   @override
-  $LocationDBTable createAlias(String alias) {
-    return $LocationDBTable(attachedDatabase, alias);
+  $LocationTBTable createAlias(String alias) {
+    return $LocationTBTable(attachedDatabase, alias);
   }
 }
 
@@ -175,6 +189,7 @@ class Location extends DataClass implements Insertable<Location> {
   final String? vicinity;
   final String icon;
   final double latitude;
+  final double rate;
   final double longitude;
   final String? address;
   final String category;
@@ -185,6 +200,7 @@ class Location extends DataClass implements Insertable<Location> {
       this.vicinity,
       required this.icon,
       required this.latitude,
+      required this.rate,
       required this.longitude,
       this.address,
       required this.category,
@@ -201,6 +217,7 @@ class Location extends DataClass implements Insertable<Location> {
     }
     map['icon'] = Variable<String>(icon);
     map['latitude'] = Variable<double>(latitude);
+    map['rate'] = Variable<double>(rate);
     map['longitude'] = Variable<double>(longitude);
     if (!nullToAbsent || address != null) {
       map['address'] = Variable<String>(address);
@@ -212,8 +229,8 @@ class Location extends DataClass implements Insertable<Location> {
     return map;
   }
 
-  LocationDBCompanion toCompanion(bool nullToAbsent) {
-    return LocationDBCompanion(
+  LocationTBCompanion toCompanion(bool nullToAbsent) {
+    return LocationTBCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       title: Value(title),
       vicinity: vicinity == null && nullToAbsent
@@ -221,6 +238,7 @@ class Location extends DataClass implements Insertable<Location> {
           : Value(vicinity),
       icon: Value(icon),
       latitude: Value(latitude),
+      rate: Value(rate),
       longitude: Value(longitude),
       address: address == null && nullToAbsent
           ? const Value.absent()
@@ -241,6 +259,7 @@ class Location extends DataClass implements Insertable<Location> {
       vicinity: serializer.fromJson<String?>(json['vicinity']),
       icon: serializer.fromJson<String>(json['icon']),
       latitude: serializer.fromJson<double>(json['latitude']),
+      rate: serializer.fromJson<double>(json['rate']),
       longitude: serializer.fromJson<double>(json['longitude']),
       address: serializer.fromJson<String?>(json['address']),
       category: serializer.fromJson<String>(json['category']),
@@ -256,6 +275,7 @@ class Location extends DataClass implements Insertable<Location> {
       'vicinity': serializer.toJson<String?>(vicinity),
       'icon': serializer.toJson<String>(icon),
       'latitude': serializer.toJson<double>(latitude),
+      'rate': serializer.toJson<double>(rate),
       'longitude': serializer.toJson<double>(longitude),
       'address': serializer.toJson<String?>(address),
       'category': serializer.toJson<String>(category),
@@ -269,6 +289,7 @@ class Location extends DataClass implements Insertable<Location> {
           Value<String?> vicinity = const Value.absent(),
           String? icon,
           double? latitude,
+          double? rate,
           double? longitude,
           Value<String?> address = const Value.absent(),
           String? category,
@@ -279,6 +300,7 @@ class Location extends DataClass implements Insertable<Location> {
         vicinity: vicinity.present ? vicinity.value : this.vicinity,
         icon: icon ?? this.icon,
         latitude: latitude ?? this.latitude,
+        rate: rate ?? this.rate,
         longitude: longitude ?? this.longitude,
         address: address.present ? address.value : this.address,
         category: category ?? this.category,
@@ -292,6 +314,7 @@ class Location extends DataClass implements Insertable<Location> {
           ..write('vicinity: $vicinity, ')
           ..write('icon: $icon, ')
           ..write('latitude: $latitude, ')
+          ..write('rate: $rate, ')
           ..write('longitude: $longitude, ')
           ..write('address: $address, ')
           ..write('category: $category, ')
@@ -301,7 +324,7 @@ class Location extends DataClass implements Insertable<Location> {
   }
 
   @override
-  int get hashCode => Object.hash(id, title, vicinity, icon, latitude,
+  int get hashCode => Object.hash(id, title, vicinity, icon, latitude, rate,
       longitude, address, category, description);
   @override
   bool operator ==(Object other) =>
@@ -312,39 +335,43 @@ class Location extends DataClass implements Insertable<Location> {
           other.vicinity == this.vicinity &&
           other.icon == this.icon &&
           other.latitude == this.latitude &&
+          other.rate == this.rate &&
           other.longitude == this.longitude &&
           other.address == this.address &&
           other.category == this.category &&
           other.description == this.description);
 }
 
-class LocationDBCompanion extends UpdateCompanion<Location> {
+class LocationTBCompanion extends UpdateCompanion<Location> {
   final Value<int?> id;
   final Value<String> title;
   final Value<String?> vicinity;
   final Value<String> icon;
   final Value<double> latitude;
+  final Value<double> rate;
   final Value<double> longitude;
   final Value<String?> address;
   final Value<String> category;
   final Value<String?> description;
-  const LocationDBCompanion({
+  const LocationTBCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.vicinity = const Value.absent(),
     this.icon = const Value.absent(),
     this.latitude = const Value.absent(),
+    this.rate = const Value.absent(),
     this.longitude = const Value.absent(),
     this.address = const Value.absent(),
     this.category = const Value.absent(),
     this.description = const Value.absent(),
   });
-  LocationDBCompanion.insert({
+  LocationTBCompanion.insert({
     this.id = const Value.absent(),
     required String title,
     this.vicinity = const Value.absent(),
     required String icon,
     required double latitude,
+    required double rate,
     required double longitude,
     this.address = const Value.absent(),
     required String category,
@@ -352,6 +379,7 @@ class LocationDBCompanion extends UpdateCompanion<Location> {
   })  : title = Value(title),
         icon = Value(icon),
         latitude = Value(latitude),
+        rate = Value(rate),
         longitude = Value(longitude),
         category = Value(category);
   static Insertable<Location> custom({
@@ -360,6 +388,7 @@ class LocationDBCompanion extends UpdateCompanion<Location> {
     Expression<String>? vicinity,
     Expression<String>? icon,
     Expression<double>? latitude,
+    Expression<double>? rate,
     Expression<double>? longitude,
     Expression<String>? address,
     Expression<String>? category,
@@ -371,6 +400,7 @@ class LocationDBCompanion extends UpdateCompanion<Location> {
       if (vicinity != null) 'vicinity': vicinity,
       if (icon != null) 'icon': icon,
       if (latitude != null) 'latitude': latitude,
+      if (rate != null) 'rate': rate,
       if (longitude != null) 'longitude': longitude,
       if (address != null) 'address': address,
       if (category != null) 'category': category,
@@ -378,22 +408,24 @@ class LocationDBCompanion extends UpdateCompanion<Location> {
     });
   }
 
-  LocationDBCompanion copyWith(
+  LocationTBCompanion copyWith(
       {Value<int?>? id,
       Value<String>? title,
       Value<String?>? vicinity,
       Value<String>? icon,
       Value<double>? latitude,
+      Value<double>? rate,
       Value<double>? longitude,
       Value<String?>? address,
       Value<String>? category,
       Value<String?>? description}) {
-    return LocationDBCompanion(
+    return LocationTBCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
       vicinity: vicinity ?? this.vicinity,
       icon: icon ?? this.icon,
       latitude: latitude ?? this.latitude,
+      rate: rate ?? this.rate,
       longitude: longitude ?? this.longitude,
       address: address ?? this.address,
       category: category ?? this.category,
@@ -419,6 +451,9 @@ class LocationDBCompanion extends UpdateCompanion<Location> {
     if (latitude.present) {
       map['latitude'] = Variable<double>(latitude.value);
     }
+    if (rate.present) {
+      map['rate'] = Variable<double>(rate.value);
+    }
     if (longitude.present) {
       map['longitude'] = Variable<double>(longitude.value);
     }
@@ -436,12 +471,13 @@ class LocationDBCompanion extends UpdateCompanion<Location> {
 
   @override
   String toString() {
-    return (StringBuffer('LocationDBCompanion(')
+    return (StringBuffer('LocationTBCompanion(')
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('vicinity: $vicinity, ')
           ..write('icon: $icon, ')
           ..write('latitude: $latitude, ')
+          ..write('rate: $rate, ')
           ..write('longitude: $longitude, ')
           ..write('address: $address, ')
           ..write('category: $category, ')
@@ -451,78 +487,310 @@ class LocationDBCompanion extends UpdateCompanion<Location> {
   }
 }
 
-abstract class _$LocationDatabaseImpl extends GeneratedDatabase {
-  _$LocationDatabaseImpl(QueryExecutor e) : super(e);
-  _$LocationDatabaseImplManager get managers =>
-      _$LocationDatabaseImplManager(this);
-  late final $LocationDBTable locationDB = $LocationDBTable(this);
+class $MapSettingsTBTable extends MapSettingsTB
+    with TableInfo<$MapSettingsTBTable, MapSettings> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MapSettingsTBTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'),
+      defaultValue: const Constant(0));
+  static const VerificationMeta _mapLayerMeta =
+      const VerificationMeta('mapLayer');
+  @override
+  late final GeneratedColumnWithTypeConverter<MapLayer?, int> mapLayer =
+      GeneratedColumn<int>('map_layer', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<MapLayer?>($MapSettingsTBTable.$convertermapLayern);
+  static const VerificationMeta _mapStyleMeta =
+      const VerificationMeta('mapStyle');
+  @override
+  late final GeneratedColumnWithTypeConverter<MapStyle?, int> mapStyle =
+      GeneratedColumn<int>('map_style', aliasedName, true,
+              type: DriftSqlType.int, requiredDuringInsert: false)
+          .withConverter<MapStyle?>($MapSettingsTBTable.$convertermapStylen);
+  @override
+  List<GeneratedColumn> get $columns => [id, mapLayer, mapStyle];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'map_settings_t_b';
+  @override
+  VerificationContext validateIntegrity(Insertable<MapSettings> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    context.handle(_mapLayerMeta, const VerificationResult.success());
+    context.handle(_mapStyleMeta, const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  MapSettings map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MapSettings(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      mapLayer: $MapSettingsTBTable.$convertermapLayern.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}map_layer'])),
+      mapStyle: $MapSettingsTBTable.$convertermapStylen.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}map_style'])),
+    );
+  }
+
+  @override
+  $MapSettingsTBTable createAlias(String alias) {
+    return $MapSettingsTBTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<MapLayer, int> $convertermapLayer =
+      const MapLayerConverter();
+  static TypeConverter<MapLayer?, int?> $convertermapLayern =
+      NullAwareTypeConverter.wrap($convertermapLayer);
+  static TypeConverter<MapStyle, int> $convertermapStyle =
+      const MapStyleConverter();
+  static TypeConverter<MapStyle?, int?> $convertermapStylen =
+      NullAwareTypeConverter.wrap($convertermapStyle);
+}
+
+class MapSettings extends DataClass implements Insertable<MapSettings> {
+  final int id;
+  final MapLayer? mapLayer;
+  final MapStyle? mapStyle;
+  const MapSettings({required this.id, this.mapLayer, this.mapStyle});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || mapLayer != null) {
+      map['map_layer'] = Variable<int>(
+          $MapSettingsTBTable.$convertermapLayern.toSql(mapLayer));
+    }
+    if (!nullToAbsent || mapStyle != null) {
+      map['map_style'] = Variable<int>(
+          $MapSettingsTBTable.$convertermapStylen.toSql(mapStyle));
+    }
+    return map;
+  }
+
+  MapSettingsTBCompanion toCompanion(bool nullToAbsent) {
+    return MapSettingsTBCompanion(
+      id: Value(id),
+      mapLayer: mapLayer == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mapLayer),
+      mapStyle: mapStyle == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mapStyle),
+    );
+  }
+
+  factory MapSettings.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MapSettings(
+      id: serializer.fromJson<int>(json['id']),
+      mapLayer: serializer.fromJson<MapLayer?>(json['mapLayer']),
+      mapStyle: serializer.fromJson<MapStyle?>(json['mapStyle']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'mapLayer': serializer.toJson<MapLayer?>(mapLayer),
+      'mapStyle': serializer.toJson<MapStyle?>(mapStyle),
+    };
+  }
+
+  MapSettings copyWith(
+          {int? id,
+          Value<MapLayer?> mapLayer = const Value.absent(),
+          Value<MapStyle?> mapStyle = const Value.absent()}) =>
+      MapSettings(
+        id: id ?? this.id,
+        mapLayer: mapLayer.present ? mapLayer.value : this.mapLayer,
+        mapStyle: mapStyle.present ? mapStyle.value : this.mapStyle,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('MapSettings(')
+          ..write('id: $id, ')
+          ..write('mapLayer: $mapLayer, ')
+          ..write('mapStyle: $mapStyle')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, mapLayer, mapStyle);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MapSettings &&
+          other.id == this.id &&
+          other.mapLayer == this.mapLayer &&
+          other.mapStyle == this.mapStyle);
+}
+
+class MapSettingsTBCompanion extends UpdateCompanion<MapSettings> {
+  final Value<int> id;
+  final Value<MapLayer?> mapLayer;
+  final Value<MapStyle?> mapStyle;
+  const MapSettingsTBCompanion({
+    this.id = const Value.absent(),
+    this.mapLayer = const Value.absent(),
+    this.mapStyle = const Value.absent(),
+  });
+  MapSettingsTBCompanion.insert({
+    this.id = const Value.absent(),
+    this.mapLayer = const Value.absent(),
+    this.mapStyle = const Value.absent(),
+  });
+  static Insertable<MapSettings> custom({
+    Expression<int>? id,
+    Expression<int>? mapLayer,
+    Expression<int>? mapStyle,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (mapLayer != null) 'map_layer': mapLayer,
+      if (mapStyle != null) 'map_style': mapStyle,
+    });
+  }
+
+  MapSettingsTBCompanion copyWith(
+      {Value<int>? id,
+      Value<MapLayer?>? mapLayer,
+      Value<MapStyle?>? mapStyle}) {
+    return MapSettingsTBCompanion(
+      id: id ?? this.id,
+      mapLayer: mapLayer ?? this.mapLayer,
+      mapStyle: mapStyle ?? this.mapStyle,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (mapLayer.present) {
+      map['map_layer'] = Variable<int>(
+          $MapSettingsTBTable.$convertermapLayern.toSql(mapLayer.value));
+    }
+    if (mapStyle.present) {
+      map['map_style'] = Variable<int>(
+          $MapSettingsTBTable.$convertermapStylen.toSql(mapStyle.value));
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MapSettingsTBCompanion(')
+          ..write('id: $id, ')
+          ..write('mapLayer: $mapLayer, ')
+          ..write('mapStyle: $mapStyle')
+          ..write(')'))
+        .toString();
+  }
+}
+
+abstract class _$DB extends GeneratedDatabase {
+  _$DB(QueryExecutor e) : super(e);
+  _$DBManager get managers => _$DBManager(this);
+  late final $LocationTBTable locationTB = $LocationTBTable(this);
+  late final $MapSettingsTBTable mapSettingsTB = $MapSettingsTBTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [locationDB];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [locationTB, mapSettingsTB];
 }
 
-typedef $$LocationDBTableInsertCompanionBuilder = LocationDBCompanion Function({
+typedef $$LocationTBTableInsertCompanionBuilder = LocationTBCompanion Function({
   Value<int?> id,
   required String title,
   Value<String?> vicinity,
   required String icon,
   required double latitude,
+  required double rate,
   required double longitude,
   Value<String?> address,
   required String category,
   Value<String?> description,
 });
-typedef $$LocationDBTableUpdateCompanionBuilder = LocationDBCompanion Function({
+typedef $$LocationTBTableUpdateCompanionBuilder = LocationTBCompanion Function({
   Value<int?> id,
   Value<String> title,
   Value<String?> vicinity,
   Value<String> icon,
   Value<double> latitude,
+  Value<double> rate,
   Value<double> longitude,
   Value<String?> address,
   Value<String> category,
   Value<String?> description,
 });
 
-class $$LocationDBTableTableManager extends RootTableManager<
-    _$LocationDatabaseImpl,
-    $LocationDBTable,
+class $$LocationTBTableTableManager extends RootTableManager<
+    _$DB,
+    $LocationTBTable,
     Location,
-    $$LocationDBTableFilterComposer,
-    $$LocationDBTableOrderingComposer,
-    $$LocationDBTableProcessedTableManager,
-    $$LocationDBTableInsertCompanionBuilder,
-    $$LocationDBTableUpdateCompanionBuilder> {
-  $$LocationDBTableTableManager(
-      _$LocationDatabaseImpl db, $LocationDBTable table)
+    $$LocationTBTableFilterComposer,
+    $$LocationTBTableOrderingComposer,
+    $$LocationTBTableProcessedTableManager,
+    $$LocationTBTableInsertCompanionBuilder,
+    $$LocationTBTableUpdateCompanionBuilder> {
+  $$LocationTBTableTableManager(_$DB db, $LocationTBTable table)
       : super(TableManagerState(
           db: db,
           table: table,
           filteringComposer:
-              $$LocationDBTableFilterComposer(ComposerState(db, table)),
+              $$LocationTBTableFilterComposer(ComposerState(db, table)),
           orderingComposer:
-              $$LocationDBTableOrderingComposer(ComposerState(db, table)),
+              $$LocationTBTableOrderingComposer(ComposerState(db, table)),
           getChildManagerBuilder: (p) =>
-              $$LocationDBTableProcessedTableManager(p),
+              $$LocationTBTableProcessedTableManager(p),
           getUpdateCompanionBuilder: ({
             Value<int?> id = const Value.absent(),
             Value<String> title = const Value.absent(),
             Value<String?> vicinity = const Value.absent(),
             Value<String> icon = const Value.absent(),
             Value<double> latitude = const Value.absent(),
+            Value<double> rate = const Value.absent(),
             Value<double> longitude = const Value.absent(),
             Value<String?> address = const Value.absent(),
             Value<String> category = const Value.absent(),
             Value<String?> description = const Value.absent(),
           }) =>
-              LocationDBCompanion(
+              LocationTBCompanion(
             id: id,
             title: title,
             vicinity: vicinity,
             icon: icon,
             latitude: latitude,
+            rate: rate,
             longitude: longitude,
             address: address,
             category: category,
@@ -534,17 +802,19 @@ class $$LocationDBTableTableManager extends RootTableManager<
             Value<String?> vicinity = const Value.absent(),
             required String icon,
             required double latitude,
+            required double rate,
             required double longitude,
             Value<String?> address = const Value.absent(),
             required String category,
             Value<String?> description = const Value.absent(),
           }) =>
-              LocationDBCompanion.insert(
+              LocationTBCompanion.insert(
             id: id,
             title: title,
             vicinity: vicinity,
             icon: icon,
             latitude: latitude,
+            rate: rate,
             longitude: longitude,
             address: address,
             category: category,
@@ -553,21 +823,21 @@ class $$LocationDBTableTableManager extends RootTableManager<
         ));
 }
 
-class $$LocationDBTableProcessedTableManager extends ProcessedTableManager<
-    _$LocationDatabaseImpl,
-    $LocationDBTable,
+class $$LocationTBTableProcessedTableManager extends ProcessedTableManager<
+    _$DB,
+    $LocationTBTable,
     Location,
-    $$LocationDBTableFilterComposer,
-    $$LocationDBTableOrderingComposer,
-    $$LocationDBTableProcessedTableManager,
-    $$LocationDBTableInsertCompanionBuilder,
-    $$LocationDBTableUpdateCompanionBuilder> {
-  $$LocationDBTableProcessedTableManager(super.$state);
+    $$LocationTBTableFilterComposer,
+    $$LocationTBTableOrderingComposer,
+    $$LocationTBTableProcessedTableManager,
+    $$LocationTBTableInsertCompanionBuilder,
+    $$LocationTBTableUpdateCompanionBuilder> {
+  $$LocationTBTableProcessedTableManager(super.$state);
 }
 
-class $$LocationDBTableFilterComposer
-    extends FilterComposer<_$LocationDatabaseImpl, $LocationDBTable> {
-  $$LocationDBTableFilterComposer(super.$state);
+class $$LocationTBTableFilterComposer
+    extends FilterComposer<_$DB, $LocationTBTable> {
+  $$LocationTBTableFilterComposer(super.$state);
   ColumnFilters<int> get id => $state.composableBuilder(
       column: $state.table.id,
       builder: (column, joinBuilders) =>
@@ -593,6 +863,11 @@ class $$LocationDBTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
+  ColumnFilters<double> get rate => $state.composableBuilder(
+      column: $state.table.rate,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
   ColumnFilters<double> get longitude => $state.composableBuilder(
       column: $state.table.longitude,
       builder: (column, joinBuilders) =>
@@ -614,9 +889,9 @@ class $$LocationDBTableFilterComposer
           ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
-class $$LocationDBTableOrderingComposer
-    extends OrderingComposer<_$LocationDatabaseImpl, $LocationDBTable> {
-  $$LocationDBTableOrderingComposer(super.$state);
+class $$LocationTBTableOrderingComposer
+    extends OrderingComposer<_$DB, $LocationTBTable> {
+  $$LocationTBTableOrderingComposer(super.$state);
   ColumnOrderings<int> get id => $state.composableBuilder(
       column: $state.table.id,
       builder: (column, joinBuilders) =>
@@ -642,6 +917,11 @@ class $$LocationDBTableOrderingComposer
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
+  ColumnOrderings<double> get rate => $state.composableBuilder(
+      column: $state.table.rate,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
   ColumnOrderings<double> get longitude => $state.composableBuilder(
       column: $state.table.longitude,
       builder: (column, joinBuilders) =>
@@ -663,9 +943,120 @@ class $$LocationDBTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-class _$LocationDatabaseImplManager {
-  final _$LocationDatabaseImpl _db;
-  _$LocationDatabaseImplManager(this._db);
-  $$LocationDBTableTableManager get locationDB =>
-      $$LocationDBTableTableManager(_db, _db.locationDB);
+typedef $$MapSettingsTBTableInsertCompanionBuilder = MapSettingsTBCompanion
+    Function({
+  Value<int> id,
+  Value<MapLayer?> mapLayer,
+  Value<MapStyle?> mapStyle,
+});
+typedef $$MapSettingsTBTableUpdateCompanionBuilder = MapSettingsTBCompanion
+    Function({
+  Value<int> id,
+  Value<MapLayer?> mapLayer,
+  Value<MapStyle?> mapStyle,
+});
+
+class $$MapSettingsTBTableTableManager extends RootTableManager<
+    _$DB,
+    $MapSettingsTBTable,
+    MapSettings,
+    $$MapSettingsTBTableFilterComposer,
+    $$MapSettingsTBTableOrderingComposer,
+    $$MapSettingsTBTableProcessedTableManager,
+    $$MapSettingsTBTableInsertCompanionBuilder,
+    $$MapSettingsTBTableUpdateCompanionBuilder> {
+  $$MapSettingsTBTableTableManager(_$DB db, $MapSettingsTBTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$MapSettingsTBTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$MapSettingsTBTableOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$MapSettingsTBTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<MapLayer?> mapLayer = const Value.absent(),
+            Value<MapStyle?> mapStyle = const Value.absent(),
+          }) =>
+              MapSettingsTBCompanion(
+            id: id,
+            mapLayer: mapLayer,
+            mapStyle: mapStyle,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<MapLayer?> mapLayer = const Value.absent(),
+            Value<MapStyle?> mapStyle = const Value.absent(),
+          }) =>
+              MapSettingsTBCompanion.insert(
+            id: id,
+            mapLayer: mapLayer,
+            mapStyle: mapStyle,
+          ),
+        ));
+}
+
+class $$MapSettingsTBTableProcessedTableManager extends ProcessedTableManager<
+    _$DB,
+    $MapSettingsTBTable,
+    MapSettings,
+    $$MapSettingsTBTableFilterComposer,
+    $$MapSettingsTBTableOrderingComposer,
+    $$MapSettingsTBTableProcessedTableManager,
+    $$MapSettingsTBTableInsertCompanionBuilder,
+    $$MapSettingsTBTableUpdateCompanionBuilder> {
+  $$MapSettingsTBTableProcessedTableManager(super.$state);
+}
+
+class $$MapSettingsTBTableFilterComposer
+    extends FilterComposer<_$DB, $MapSettingsTBTable> {
+  $$MapSettingsTBTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnWithTypeConverterFilters<MapLayer?, MapLayer, int> get mapLayer =>
+      $state.composableBuilder(
+          column: $state.table.mapLayer,
+          builder: (column, joinBuilders) => ColumnWithTypeConverterFilters(
+              column,
+              joinBuilders: joinBuilders));
+
+  ColumnWithTypeConverterFilters<MapStyle?, MapStyle, int> get mapStyle =>
+      $state.composableBuilder(
+          column: $state.table.mapStyle,
+          builder: (column, joinBuilders) => ColumnWithTypeConverterFilters(
+              column,
+              joinBuilders: joinBuilders));
+}
+
+class $$MapSettingsTBTableOrderingComposer
+    extends OrderingComposer<_$DB, $MapSettingsTBTable> {
+  $$MapSettingsTBTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get mapLayer => $state.composableBuilder(
+      column: $state.table.mapLayer,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get mapStyle => $state.composableBuilder(
+      column: $state.table.mapStyle,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+class _$DBManager {
+  final _$DB _db;
+  _$DBManager(this._db);
+  $$LocationTBTableTableManager get locationTB =>
+      $$LocationTBTableTableManager(_db, _db.locationTB);
+  $$MapSettingsTBTableTableManager get mapSettingsTB =>
+      $$MapSettingsTBTableTableManager(_db, _db.mapSettingsTB);
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:locate_me/core/constant/category.dart';
 import 'package:locate_me/core/navigation/routes.dart';
 import 'package:locate_me/core/widget/custom_rich_text.dart';
 import 'package:locate_me/core/widget/rate.dart';
@@ -52,7 +53,10 @@ class LocationItem extends StatelessWidget {
                                         width: 1,
                                       ),
                                     ),
-                                    child: Image.asset(item.icon)),
+                                    child: Image.asset(
+                                        categoryMap[item.category] != null
+                                            ? categoryMap[item.category]!.icon
+                                            : item.icon)),
                                 const SizedBox(width: 4),
                                 Expanded(
                                   child: Text(

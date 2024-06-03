@@ -2,7 +2,7 @@
 import 'package:drift/drift.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 
-import '../location/location_database_impl.dart';
+import '../db/db.dart';
 
 class DbPlaceModelConverter extends TypeConverter<PlaceItemModel, Location> {
   const DbPlaceModelConverter();
@@ -14,12 +14,12 @@ class DbPlaceModelConverter extends TypeConverter<PlaceItemModel, Location> {
       title: fromDb.title,
       address: fromDb.address ?? '',
       description: fromDb.description ?? '',
-      category: fromDb.category ?? '',
+      category: fromDb.category,
       latlng: LatLong(latitude: fromDb.latitude, longitude: fromDb.longitude),
       distance: '', // Provide default value
       date: DateTime.now().toIso8601String(), // Provide default value
-      rate: 0.0, // Provide default value
-      isSaved: false, icon: fromDb.icon ?? '', // Provide default value
+      rate: fromDb.rate, // Provide default value
+      isSaved: false, icon: fromDb.icon, // Provide default value
     );
   }
 
@@ -31,6 +31,7 @@ class DbPlaceModelConverter extends TypeConverter<PlaceItemModel, Location> {
       address: value.address,
       description: value.description,
       category: value.category,
+      rate: value.rate,
       latitude: value.latlng.latitude,
       longitude: value.latlng.longitude,
     );

@@ -1,4 +1,4 @@
-abstract class ICrudService<T, C> {
+abstract class IDBCrud<T, C> {
   Future<List<T>> getAll();
   Future<T?> getById(int id);
   Future<int> insert(C item);

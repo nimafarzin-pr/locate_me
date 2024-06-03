@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:locate_me/core/widget/location_item.dart';
+import 'package:locate_me/features/home/view/widgets/location_item.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 
 class NormalListView extends StatefulWidget {

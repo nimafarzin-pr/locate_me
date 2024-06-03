@@ -100,7 +100,6 @@ class _MapListState extends ConsumerState<GoogleView>
                 myLocationEnabled: false,
                 onTap: _onTab,
                 markers: _markers,
-                mapType: MapType.normal,
                 initialCameraPosition: CameraPosition(
                   target: LatLng(widget.places.first.latlng.latitude,
                       widget.places.first.latlng.longitude),
