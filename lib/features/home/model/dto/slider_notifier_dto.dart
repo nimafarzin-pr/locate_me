@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 
 import '../place_item_model.dart';
 
-class SliderNotifierDTO {
-  final MapController mapController;
+class SliderNotifierDTO<T> {
+  final T mapController;
   final TickerProvider vsync;
   final PlaceItemModel position;
 

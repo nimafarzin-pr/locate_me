@@ -1,12 +1,22 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:locate_me/core/extension/screen_size.dart';
+import 'package:locate_me/core/widget/general_map_wrapper.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
+import 'package:locate_me/features/home/view/widgets/location_item.dart';
+import 'package:path/path.dart';
 
 import '../../../../../../core/helper/google_map/provider/multiple_marker_provider.dart';
+import '../../../../../../core/helper/map/provider/map_setting_notifier_provider.dart';
+import '../../../../../../core/theme/google_map_style.dart';
+import '../../../../../../core/widget/dialogs/custom_map_options.dart';
+import '../../../../model/dto/slider_notifier_dto.dart';
+import '../../../../provider/slider_location_provider.dart';
 
 class GoogleView extends ConsumerStatefulWidget {
   final List<PlaceItemModel> places;
@@ -22,111 +32,116 @@ class GoogleView extends ConsumerStatefulWidget {
 }
 
 class _MapListState extends ConsumerState<GoogleView>
-    with AutomaticKeepAliveClientMixin {
+    with TickerProviderStateMixin {
   final Completer<GoogleMapController> _mapController =
       Completer<GoogleMapController>();
 
-  final Set<Marker> _markers = {};
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _addCustomMarker();
-    });
-  }
-
-  Future<void> _addCustomMarker() async {
-    final customMarker =
-        ref.read(getMultipleMarkerProvider(widget.places).future);
-    customMarker.then(
-      (markerIcon) {
-        for (Marker element in markerIcon.markers.toList()) {
-          final dex = markerIcon.markers.toList().indexOf(element);
-          final cus = markerIcon.customIcons[dex];
-          setState(() {
-            _markers.add(
-              Marker(
-                markerId: MarkerId('${element.position.latitude}'),
-                position: element.position,
-                icon: element.icon,
-              ),
-            );
-          });
-        }
-      },
-    ).catchError((error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error loading custom marker: $error')),
-      );
-    });
-  }
-
-  @override
-  bool get wantKeepAlive => false;
-
-  _onTab(LatLng argument) async {
-    log('INSIDE>> $argument');
-    final data = LatLng(argument.latitude, argument.longitude);
-    setState(() {});
-    // final markerData = PlaceItemModel(
-    //     title: 'Current Location',
-    //     address: "",
-    //     distance: "",
-    //     date: "",
-    //     latlng:
-    //         LatLong(latitude: argument.latitude, longitude: argument.longitude),
-    //     icon: MyIcons.location,
-    //     rate: 0.0,
-    //     isSaved: false);
-    // await _setSingleMarker(markerData);
-    setState(() {});
-    // _goToMyLocation(widget.locations);
-  }
-
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    return Stack(children: [
-      Consumer(
-        builder: (context, watch, child) {
-          final customMarker =
-              ref.watch(getMultipleMarkerProvider(widget.places));
-          return customMarker.when(
-            data: (markerIcon) {
-              return GoogleMap(
-                zoomControlsEnabled: false,
-                myLocationButtonEnabled: false,
-                myLocationEnabled: false,
-                onTap: _onTab,
-                markers: _markers,
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(widget.places.first.latlng.latitude,
-                      widget.places.first.latlng.longitude),
-                  zoom: 14.4746,
-                ),
-                onMapCreated: (controller) {
-                  if (_mapController.isCompleted) return;
-                  _mapController.complete(controller);
+    return Consumer(
+      builder: (context, watch, child) {
+        final customMarker =
+            ref.watch(getMultipleMarkerProvider(widget.places));
+        return customMarker.when(
+          data: (locationData) {
+            return GeneralMapWrapper(
+                settingOnTab: () async {
+                  await showDialog(
+                    barrierDismissible: true,
+                    context: context,
+                    builder: (context) {
+                      return CustomMapOptionsDialog(
+                        onOptionSelected: (p0) {},
+                      );
+                    },
+                  );
                 },
-              );
-            },
-            loading: () {
-              // Show loading indicator if needed
-              return const Center(child: CircularProgressIndicator());
-            },
-            error: (err, stack) {
-              // Show error message
-              return Container(
-                height: MediaQuery.sizeOf(context).height,
-                width: MediaQuery.sizeOf(context).width,
-                color: Colors.white,
-                child: Center(child: Text('Error : $err')),
-              );
-            },
-          );
-        },
-      ),
-    ]);
+                map: Stack(
+                  children: [
+                    GoogleMap(
+                      style: GoogleMapStyle.mapStyles[ref
+                          .watch(mapSettingStyleNotifierProvider)
+                          .value
+                          ?.name],
+                      zoomControlsEnabled: false,
+                      myLocationButtonEnabled: false,
+                      myLocationEnabled: false,
+                      markers: locationData.markers.map(
+                        (e) {
+                          return Marker(
+                              markerId: e.mapsId,
+                              icon: e.icon,
+                              onTap: () {},
+                              position: LatLng(
+                                  e.position.latitude, e.position.longitude));
+                        },
+                      ).toSet(),
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(widget.places.first.latlng.latitude,
+                            widget.places.first.latlng.longitude),
+                        zoom: 14.4746,
+                      ),
+                      onMapCreated: (controller) {
+                        if (_mapController.isCompleted) return;
+                        _mapController.complete(controller);
+                      },
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CarouselSlider(
+                          options: CarouselOptions(
+                            // initialPage: ,
+                            height: context.screenHeight / 5,
+                            onPageChanged: (index, reason) async {
+                              final newData =
+                                  SliderNotifierDTO<GoogleMapController>(
+                                      mapController:
+                                          await _mapController.future,
+                                      vsync: this,
+                                      position: locationData.locations[index]);
+                              ref
+                                  .read(sliderProvider(newData).notifier)
+                                  .animateToMyLocationOnGoogleMap(
+                                      mapController: _mapController,
+                                      position:
+                                          locationData.locations[index].latlng);
+                            },
+                          ),
+                          items: locationData.locations.map((place) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return LocationItem(
+                                  item: place,
+                                  isCarouselItem: true,
+                                );
+                              },
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    )
+                  ],
+                ));
+          },
+          loading: () {
+            // Show loading indicator if needed
+            return const Center(child: CircularProgressIndicator());
+          },
+          error: (err, stack) {
+            // Show error message
+            return Container(
+              height: MediaQuery.sizeOf(context).height,
+              width: MediaQuery.sizeOf(context).width,
+              color: Colors.white,
+              child: Center(child: Text('Error : $err')),
+            );
+          },
+        );
+      },
+    );
   }
 }
