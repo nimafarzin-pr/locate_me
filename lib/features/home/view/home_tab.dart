@@ -4,10 +4,12 @@ import 'package:locate_me/core/widget/category_item.dart';
 import 'package:locate_me/core/widget/custom_segmented_button.dart';
 import 'package:locate_me/core/widget/empty_box.dart';
 import 'package:locate_me/core/widget/loading.dart';
+import 'package:locate_me/features/home/view/widgets/list_on_map/osm_view/osm_view.dart';
 import 'package:locate_me/features/home/view/widgets/normal_list/normal_list.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/helper/map/enums/map_enum.dart';
+import '../../../core/helper/map/provider/map_setting_notifier_provider.dart';
 import '../provider/location_provider.dart';
 import 'widgets/list_on_map/google_view/google_view.dart';
 
@@ -35,25 +37,27 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    TextFormField(
-                      decoration: InputDecoration(
-                        filled: true,
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            width: 0,
-                            style: BorderStyle.none,
+                    Card(
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          filled: true,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              width: 0,
+                              style: BorderStyle.none,
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: const BorderSide(
-                            width: 0,
-                            style: BorderStyle.none,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: const BorderSide(
+                              width: 0,
+                              style: BorderStyle.none,
+                            ),
                           ),
+                          suffixIcon: const Icon(Icons.search),
+                          labelText: 'Search...',
                         ),
-                        suffixIcon: const Icon(Icons.search),
-                        labelText: 'Search...',
                       ),
                     ),
                     Container(
@@ -105,9 +109,24 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                               ? const EmptyBox()
                               : homeListShowMode == HomeListShowMode.list
                                   ? NormalListView(places: data)
-                                  : GoogleView(
-                                      places: data,
-                                      polyLineFromPoint: false,
+                                  : ref
+                                      .watch(mapSettingLayerNotifierProvider)
+                                      .when(
+                                      data: (value) {
+                                        return switch (value) {
+                                          MapLayer.google => GoogleView(
+                                              places: data,
+                                              polyLineFromPoint: false,
+                                            ),
+                                          MapLayer.osm => const OsmView(),
+                                        };
+                                      },
+                                      error: (error, stackTrace) {
+                                        return ErrorWidget(error);
+                                      },
+                                      loading: () {
+                                        return const MyLoading();
+                                      },
                                     )),
                     ),
                   ],

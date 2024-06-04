@@ -7,6 +7,7 @@ import 'package:locate_me/features/add/model/dto/google_map_dto.dart';
 import 'package:locate_me/core/helper/google_map/model/dto/multiple_marker_dto.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../constant/category.dart';
 import '../../../utils/marker_utility.dart';
 import '../../../../features/home/model/place_item_model.dart';
 
@@ -30,15 +31,16 @@ Future<MultipleMarkerDto> _setMultipleMarkers(List<PlaceItemModel> data) async {
   for (var e in data) {
     final markerIcon =
         await MarkerUtils.getMarkerIcon(e.icon, e.latlng.latitude.toString());
-    final Uint8List markerIcon1 =
-        await AssetsUtils.getBytesFromAsset(e.icon, 60);
+    final Uint8List markerIcon1 = await AssetsUtils.getBytesFromAsset(
+        categoryMap[e.category] != null
+            ? categoryMap[e.category]!.icon
+            : e.icon,
+        70);
     positions.add(LatLng(e.latlng.latitude, e.latlng.longitude));
     customIcons.add(BitmapDescriptor.fromBytes(markerIcon1));
     markers.add(
       Marker(
-        visible: true,
-        flat: true,
-        icon: markerIcon,
+        icon: BitmapDescriptor.fromBytes(markerIcon1),
         markerId: MarkerId(e.latlng.latitude.toString()),
         position: LatLng(e.latlng.latitude, e.latlng.longitude),
       ),

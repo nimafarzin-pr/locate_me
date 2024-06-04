@@ -6,13 +6,13 @@ import 'custom_location_button.dart';
 class GeneralMapWrapper extends StatelessWidget {
   final Widget map;
   final Function() settingOnTab;
-  final Function() myLocationOnTab;
-  final Function() addLocationOnTab;
+  final Function()? myLocationOnTab;
+  final Function()? addLocationOnTab;
   const GeneralMapWrapper({
     super.key,
     required this.settingOnTab,
-    required this.myLocationOnTab,
-    required this.addLocationOnTab,
+    this.myLocationOnTab,
+    this.addLocationOnTab,
     required this.map,
   });
 
@@ -21,11 +21,14 @@ class GeneralMapWrapper extends StatelessWidget {
     return Stack(
       children: [
         map,
-        Positioned(
-          bottom: 20,
-          right: 20,
-          child: CustomLocationButton(onPressed: myLocationOnTab),
-        ),
+        myLocationOnTab != null
+            ? Positioned(
+                bottom: 20,
+                right: 20,
+                child:
+                    CustomLocationButton(onPressed: myLocationOnTab ?? () {}),
+              )
+            : Container(),
         Positioned(
           top: 20,
           right: 20,
@@ -38,18 +41,20 @@ class GeneralMapWrapper extends StatelessWidget {
             ),
           ),
         ),
-        Positioned(
-          bottom: 90,
-          right: 20,
-          child: FloatingActionButton(
-            backgroundColor: Theme.of(context).primaryColor,
-            onPressed: addLocationOnTab,
-            child: FaIcon(
-              FontAwesomeIcons.floppyDisk,
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
-          ),
-        ),
+        addLocationOnTab != null
+            ? Positioned(
+                bottom: 90,
+                right: 20,
+                child: FloatingActionButton(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  onPressed: addLocationOnTab ?? () {},
+                  child: FaIcon(
+                    FontAwesomeIcons.floppyDisk,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                ),
+              )
+            : Container(),
       ],
     );
   }

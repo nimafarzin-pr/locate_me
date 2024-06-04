@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as googleMap;
 import 'package:latlong2/latlong.dart';
 import 'package:locate_me/features/home/model/dto/slider_notifier_dto.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
@@ -8,10 +11,10 @@ class SliderNotifier
     extends AutoDisposeFamilyNotifier<PlaceItemModel, SliderNotifierDTO> {
   @override
   PlaceItemModel build(SliderNotifierDTO arg) {
-    return animateToMyLocation(destZoom: 15, args: arg);
+    return animateToLocationOnOsm(destZoom: 15, args: arg);
   }
 
-  PlaceItemModel animateToMyLocation({
+  PlaceItemModel animateToLocationOnOsm({
     required double destZoom,
     required SliderNotifierDTO args,
   }) {
@@ -25,7 +28,7 @@ class SliderNotifier
     );
     final zoomTween = Tween<double>(
       begin: args.mapController.camera.zoom,
-      end: destZoom,
+      end: args.mapController.camera.zoom,
     );
 
     var controller = AnimationController(
@@ -57,5 +60,16 @@ class SliderNotifier
     controller.forward();
     state = args.position;
     return args.position;
+  }
+
+  void animateToMyLocationOnGoogleMap({
+    required Completer mapController,
+    required LatLong position,
+  }) async {
+    final googleMap.GoogleMapController controller = await mapController.future;
+    final toGoogleCoordinate =
+        googleMap.LatLng(position.latitude, position.longitude);
+    await controller
+        .animateCamera(googleMap.CameraUpdate.newLatLng(toGoogleCoordinate));
   }
 }

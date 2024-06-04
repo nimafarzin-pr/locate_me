@@ -17,7 +17,7 @@ class GlobalThemeData {
     onSecondary: Colors.white, // White text on secondary color
     error: Colors.redAccent, // Red for error messages or alerts
     onError: Colors.white, // Black text on background color
-    surface: Color(0xFFFFFFFF), // White surface color for elevated UI elements
+    surface: Color(0xF5F5F5F5), // White surface color for elevated UI elements
     onSurface: Color(0xFF333333), // Dark gray text on surface color
     brightness: Brightness.light,
   );
