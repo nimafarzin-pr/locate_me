@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:drift/drift.dart';
 import 'package:locate_me/core/database/db/db.dart';
+import 'package:locate_me/core/enums/enums.dart';
 
 import 'location_service.dart';
 
@@ -61,5 +62,28 @@ class LocationServiceImpl
     return await (_database.select(_database.locationTB)
           ..where((tbl) => tbl.title.like('%$query%')))
         .get();
+  }
+
+  @override
+  Future<void> updateFavoriteStatus(int id, bool isFavorite) async {
+    await (_database.update(_database.locationTB)
+          ..where((tbl) => tbl.id.equals(id)))
+        .write(LocationTBCompanion(isFavorite: Value(isFavorite)));
+  }
+
+  @override
+  Stream<List<Location>> watchFavoriteLocations() {
+    return (_database.select(_database.locationTB)
+          ..where((tbl) => tbl.isFavorite.equals(true)))
+        .watch();
+  }
+
+  @override
+  Stream<List<Location>> watchLocationsByCategory(CategoryEnums category) {
+    return _database.select(_database.locationTB).watch().map((locations) {
+      return locations
+          .where((location) => location.category == category.name)
+          .toList();
+    });
   }
 }

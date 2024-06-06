@@ -1,6 +1,8 @@
 // location_repository.dart
 import 'package:locate_me/features/home/model/place_item_model.dart';
 
+import '../../../enums/enums.dart';
+
 abstract class ILocationRepository {
   Future<List<PlaceItemModel>> searchLocations(String query);
   Future<List<PlaceItemModel>> getLocations();
@@ -10,4 +12,7 @@ abstract class ILocationRepository {
   Future<int> deleteLocation(int id);
   Future<PlaceItemModel?> getLocation(int id);
   Future<void> deleteAllLocations();
+  Future<void> updateFavoriteStatus(int id, bool isFavorite);
+  Stream<List<PlaceItemModel>> watchFavoriteLocations();
+  Stream<List<PlaceItemModel>> watchLocationsByCategory(CategoryEnums category);
 }

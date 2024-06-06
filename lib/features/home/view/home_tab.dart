@@ -1,15 +1,23 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:locate_me/core/constant/category.dart';
+import 'package:locate_me/core/dto/category_dto.dart';
+import 'package:locate_me/core/enums/enums.dart';
 import 'package:locate_me/core/widget/category_item.dart';
 import 'package:locate_me/core/widget/custom_segmented_button.dart';
 import 'package:locate_me/core/widget/empty_box.dart';
 import 'package:locate_me/core/widget/loading.dart';
+import 'package:locate_me/features/home/provider/category_filter_provider.dart';
+import 'package:locate_me/features/home/provider/filter_provider.dart';
+import 'package:locate_me/features/home/provider/home_view_mode_provider.dart';
 import 'package:locate_me/features/home/view/widgets/list_on_map/osm_view/osm_view.dart';
 import 'package:locate_me/features/home/view/widgets/normal_list/normal_list.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/helper/map/enums/map_enum.dart';
 import '../../../core/helper/map/provider/map_setting_notifier_provider.dart';
+import '../../../core/widget/custom_switch.dart';
 import '../provider/location_provider.dart';
 import 'widgets/list_on_map/google_view/google_view.dart';
 
@@ -23,7 +31,7 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
   int categoryIndex = 0;
 
-  HomeListShowMode homeListShowMode = HomeListShowMode.list;
+  HomeViewMode homeListShowMode = HomeViewMode.list;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +39,8 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
       builder: (context, ref, child) {
         final locations = ref.watch(locationProvider);
         return locations.when(
-          data: (data) {
+          data: (places) {
+            final data = ref.watch(filteredItemsProvider);
             return Scaffold(
               body: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -68,15 +77,29 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                         child: ListView.builder(
                           itemBuilder: (context, index) {
                             final item = category[index];
+                            final selectedCategory =
+                                ref.watch(categoryFilterProvider).name;
+
+                            log(selectedCategory);
+                            log(item.name);
                             return Padding(
                                 padding: const EdgeInsets.all(6.0),
                                 child: CategoryBox(
-                                  isSelected: categoryIndex == index,
+                                  isSelected: selectedCategory ==
+                                      item.name.toLowerCase(),
                                   item: item,
                                   onTap: () {
-                                    setState(() {
-                                      categoryIndex = index;
-                                    });
+                                    final CategoryEnums newCategory =
+                                        CategoryEnums.values.firstWhere(
+                                      (e) =>
+                                          e.name.toLowerCase() ==
+                                          item.name.toLowerCase(),
+                                      orElse: () => CategoryEnums.other,
+                                    );
+
+                                    ref
+                                        .read(categoryFilterProvider.notifier)
+                                        .updateCategory(newCategory);
                                   },
                                 ));
                           },
@@ -87,13 +110,19 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 14.0, top: 8),
-                      child: SegmentedButtonExample(
-                        onSelectionChanged: (state) {
-                          setState(() {
-                            homeListShowMode = state.first;
-                          });
-                        },
-                        homeListShowMode: homeListShowMode,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomSegmentedButton(
+                            onSelectionChanged: (state) {
+                              ref
+                                  .read(homeViewModeProvider.notifier)
+                                  .updateViewMode(state.first);
+                            },
+                            homeViewMode: ref.watch(homeViewModeProvider),
+                          ),
+                          const CustomSwitch()
+                        ],
                       ),
                     ),
                     Expanded(
@@ -107,7 +136,8 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                           ),
                           child: data.isEmpty
                               ? const EmptyBox()
-                              : homeListShowMode == HomeListShowMode.list
+                              : ref.watch(homeViewModeProvider) ==
+                                      HomeViewMode.list
                                   ? NormalListView(places: data)
                                   : ref
                                       .watch(mapSettingLayerNotifierProvider)

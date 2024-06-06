@@ -16,7 +16,7 @@ class PlaceItemModel with _$PlaceItemModel {
     required LatLong latlng,
     required String icon,
     @Default(0) double rate,
-    @Default(false) bool isSaved,
+    @Default(false) bool isFavorite,
   }) = _Place;
 
   factory PlaceItemModel.fromJson(Map<String, dynamic> json) =>

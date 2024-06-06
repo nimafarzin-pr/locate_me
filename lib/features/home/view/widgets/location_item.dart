@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/constant/category.dart';
@@ -8,7 +9,9 @@ import 'package:locate_me/core/widget/custom_rich_text.dart';
 import 'package:locate_me/core/widget/rate.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 
-class LocationItem extends StatelessWidget {
+import '../../provider/favorite_filter_provider.dart';
+
+class LocationItem extends ConsumerWidget {
   final int index;
   final bool isCarouselItem;
   final PlaceItemModel item;
@@ -21,7 +24,7 @@ class LocationItem extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       margin: EdgeInsets.only(
           top: index == 0 ? 0 : 12.0,

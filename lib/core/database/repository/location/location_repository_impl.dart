@@ -1,4 +1,5 @@
 import 'package:locate_me/core/database/type_converter/place_model_converter.dart';
+import 'package:locate_me/core/enums/enums.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 
 import '../../service/location/location_service_impl.dart';
@@ -116,6 +117,61 @@ class LocationRepositoryImpl implements ILocationRepository {
   @override
   Stream<List<PlaceItemModel>> watchLocations() {
     final dataStream = _databaseService.watchAll();
+    return dataStream.map<List<PlaceItemModel>>((dataList) {
+      try {
+        return dataList
+            .map((data) => const DbPlaceModelConverter().fromSql(data))
+            .toList();
+      } catch (e, stackTrace) {
+        // Handle or log the error
+        print('Error watching locations: $e');
+        print(stackTrace);
+        return [];
+      }
+    }).handleError((e, stackTrace) {
+      // Handle or log the error in the stream
+      print('Error in watchLocations stream: $e');
+      print(stackTrace);
+    });
+  }
+
+  @override
+  Future<void> updateFavoriteStatus(int id, bool isFavorite) async {
+    try {
+      await _databaseService.updateFavoriteStatus(id, isFavorite);
+    } catch (e, stackTrace) {
+      // Handle or log the error
+      print('Error updating location with id $id: $e');
+      print(stackTrace);
+      rethrow;
+    }
+  }
+
+  @override
+  Stream<List<PlaceItemModel>> watchFavoriteLocations() {
+    final dataStream = _databaseService.watchFavoriteLocations();
+    return dataStream.map<List<PlaceItemModel>>((dataList) {
+      try {
+        return dataList
+            .map((data) => const DbPlaceModelConverter().fromSql(data))
+            .toList();
+      } catch (e, stackTrace) {
+        // Handle or log the error
+        print('Error watching locations: $e');
+        print(stackTrace);
+        return [];
+      }
+    }).handleError((e, stackTrace) {
+      // Handle or log the error in the stream
+      print('Error in watchLocations stream: $e');
+      print(stackTrace);
+    });
+  }
+
+  @override
+  Stream<List<PlaceItemModel>> watchLocationsByCategory(
+      CategoryEnums category) {
+    final dataStream = _databaseService.watchLocationsByCategory(category);
     return dataStream.map<List<PlaceItemModel>>((dataList) {
       try {
         return dataList
