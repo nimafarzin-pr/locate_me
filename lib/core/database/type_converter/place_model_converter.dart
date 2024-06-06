@@ -19,13 +19,15 @@ class DbPlaceModelConverter extends TypeConverter<PlaceItemModel, Location> {
       distance: '', // Provide default value
       date: DateTime.now().toIso8601String(), // Provide default value
       rate: fromDb.rate, // Provide default value
-      isSaved: false, icon: fromDb.icon, // Provide default value
+      isFavorite: fromDb.isFavorite,
+      icon: fromDb.icon, // Provide default value
     );
   }
 
   @override
   Location toSql(PlaceItemModel value) {
     return Location(
+      isFavorite: value.isFavorite,
       icon: value.icon,
       title: value.title,
       address: value.address,

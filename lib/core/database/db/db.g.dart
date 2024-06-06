@@ -69,6 +69,16 @@ class $LocationTBTable extends LocationTB
   late final GeneratedColumn<String> description = GeneratedColumn<String>(
       'description', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _isFavoriteMeta =
+      const VerificationMeta('isFavorite');
+  @override
+  late final GeneratedColumn<bool> isFavorite = GeneratedColumn<bool>(
+      'is_favorite', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("is_favorite" IN (0, 1))'),
+      defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -80,7 +90,8 @@ class $LocationTBTable extends LocationTB
         longitude,
         address,
         category,
-        description
+        description,
+        isFavorite
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -145,6 +156,12 @@ class $LocationTBTable extends LocationTB
           description.isAcceptableOrUnknown(
               data['description']!, _descriptionMeta));
     }
+    if (data.containsKey('is_favorite')) {
+      context.handle(
+          _isFavoriteMeta,
+          isFavorite.isAcceptableOrUnknown(
+              data['is_favorite']!, _isFavoriteMeta));
+    }
     return context;
   }
 
@@ -174,6 +191,8 @@ class $LocationTBTable extends LocationTB
           .read(DriftSqlType.string, data['${effectivePrefix}category'])!,
       description: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}description']),
+      isFavorite: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_favorite'])!,
     );
   }
 
@@ -194,6 +213,7 @@ class Location extends DataClass implements Insertable<Location> {
   final String? address;
   final String category;
   final String? description;
+  final bool isFavorite;
   const Location(
       {this.id,
       required this.title,
@@ -204,7 +224,8 @@ class Location extends DataClass implements Insertable<Location> {
       required this.longitude,
       this.address,
       required this.category,
-      this.description});
+      this.description,
+      required this.isFavorite});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -226,6 +247,7 @@ class Location extends DataClass implements Insertable<Location> {
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
     }
+    map['is_favorite'] = Variable<bool>(isFavorite);
     return map;
   }
 
@@ -247,6 +269,7 @@ class Location extends DataClass implements Insertable<Location> {
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
+      isFavorite: Value(isFavorite),
     );
   }
 
@@ -264,6 +287,7 @@ class Location extends DataClass implements Insertable<Location> {
       address: serializer.fromJson<String?>(json['address']),
       category: serializer.fromJson<String>(json['category']),
       description: serializer.fromJson<String?>(json['description']),
+      isFavorite: serializer.fromJson<bool>(json['isFavorite']),
     );
   }
   @override
@@ -280,6 +304,7 @@ class Location extends DataClass implements Insertable<Location> {
       'address': serializer.toJson<String?>(address),
       'category': serializer.toJson<String>(category),
       'description': serializer.toJson<String?>(description),
+      'isFavorite': serializer.toJson<bool>(isFavorite),
     };
   }
 
@@ -293,7 +318,8 @@ class Location extends DataClass implements Insertable<Location> {
           double? longitude,
           Value<String?> address = const Value.absent(),
           String? category,
-          Value<String?> description = const Value.absent()}) =>
+          Value<String?> description = const Value.absent(),
+          bool? isFavorite}) =>
       Location(
         id: id.present ? id.value : this.id,
         title: title ?? this.title,
@@ -305,6 +331,7 @@ class Location extends DataClass implements Insertable<Location> {
         address: address.present ? address.value : this.address,
         category: category ?? this.category,
         description: description.present ? description.value : this.description,
+        isFavorite: isFavorite ?? this.isFavorite,
       );
   @override
   String toString() {
@@ -318,14 +345,15 @@ class Location extends DataClass implements Insertable<Location> {
           ..write('longitude: $longitude, ')
           ..write('address: $address, ')
           ..write('category: $category, ')
-          ..write('description: $description')
+          ..write('description: $description, ')
+          ..write('isFavorite: $isFavorite')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(id, title, vicinity, icon, latitude, rate,
-      longitude, address, category, description);
+      longitude, address, category, description, isFavorite);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -339,7 +367,8 @@ class Location extends DataClass implements Insertable<Location> {
           other.longitude == this.longitude &&
           other.address == this.address &&
           other.category == this.category &&
-          other.description == this.description);
+          other.description == this.description &&
+          other.isFavorite == this.isFavorite);
 }
 
 class LocationTBCompanion extends UpdateCompanion<Location> {
@@ -353,6 +382,7 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
   final Value<String?> address;
   final Value<String> category;
   final Value<String?> description;
+  final Value<bool> isFavorite;
   const LocationTBCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
@@ -364,6 +394,7 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
     this.address = const Value.absent(),
     this.category = const Value.absent(),
     this.description = const Value.absent(),
+    this.isFavorite = const Value.absent(),
   });
   LocationTBCompanion.insert({
     this.id = const Value.absent(),
@@ -376,6 +407,7 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
     this.address = const Value.absent(),
     required String category,
     this.description = const Value.absent(),
+    this.isFavorite = const Value.absent(),
   })  : title = Value(title),
         icon = Value(icon),
         latitude = Value(latitude),
@@ -393,6 +425,7 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
     Expression<String>? address,
     Expression<String>? category,
     Expression<String>? description,
+    Expression<bool>? isFavorite,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -405,6 +438,7 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
       if (address != null) 'address': address,
       if (category != null) 'category': category,
       if (description != null) 'description': description,
+      if (isFavorite != null) 'is_favorite': isFavorite,
     });
   }
 
@@ -418,7 +452,8 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
       Value<double>? longitude,
       Value<String?>? address,
       Value<String>? category,
-      Value<String?>? description}) {
+      Value<String?>? description,
+      Value<bool>? isFavorite}) {
     return LocationTBCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
@@ -430,6 +465,7 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
       address: address ?? this.address,
       category: category ?? this.category,
       description: description ?? this.description,
+      isFavorite: isFavorite ?? this.isFavorite,
     );
   }
 
@@ -466,6 +502,9 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
     if (description.present) {
       map['description'] = Variable<String>(description.value);
     }
+    if (isFavorite.present) {
+      map['is_favorite'] = Variable<bool>(isFavorite.value);
+    }
     return map;
   }
 
@@ -481,7 +520,8 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
           ..write('longitude: $longitude, ')
           ..write('address: $address, ')
           ..write('category: $category, ')
-          ..write('description: $description')
+          ..write('description: $description, ')
+          ..write('isFavorite: $isFavorite')
           ..write(')'))
         .toString();
   }
@@ -739,6 +779,7 @@ typedef $$LocationTBTableInsertCompanionBuilder = LocationTBCompanion Function({
   Value<String?> address,
   required String category,
   Value<String?> description,
+  Value<bool> isFavorite,
 });
 typedef $$LocationTBTableUpdateCompanionBuilder = LocationTBCompanion Function({
   Value<int?> id,
@@ -751,6 +792,7 @@ typedef $$LocationTBTableUpdateCompanionBuilder = LocationTBCompanion Function({
   Value<String?> address,
   Value<String> category,
   Value<String?> description,
+  Value<bool> isFavorite,
 });
 
 class $$LocationTBTableTableManager extends RootTableManager<
@@ -783,6 +825,7 @@ class $$LocationTBTableTableManager extends RootTableManager<
             Value<String?> address = const Value.absent(),
             Value<String> category = const Value.absent(),
             Value<String?> description = const Value.absent(),
+            Value<bool> isFavorite = const Value.absent(),
           }) =>
               LocationTBCompanion(
             id: id,
@@ -795,6 +838,7 @@ class $$LocationTBTableTableManager extends RootTableManager<
             address: address,
             category: category,
             description: description,
+            isFavorite: isFavorite,
           ),
           getInsertCompanionBuilder: ({
             Value<int?> id = const Value.absent(),
@@ -807,6 +851,7 @@ class $$LocationTBTableTableManager extends RootTableManager<
             Value<String?> address = const Value.absent(),
             required String category,
             Value<String?> description = const Value.absent(),
+            Value<bool> isFavorite = const Value.absent(),
           }) =>
               LocationTBCompanion.insert(
             id: id,
@@ -819,6 +864,7 @@ class $$LocationTBTableTableManager extends RootTableManager<
             address: address,
             category: category,
             description: description,
+            isFavorite: isFavorite,
           ),
         ));
 }
@@ -887,6 +933,11 @@ class $$LocationTBTableFilterComposer
       column: $state.table.description,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<bool> get isFavorite => $state.composableBuilder(
+      column: $state.table.isFavorite,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
 class $$LocationTBTableOrderingComposer
@@ -939,6 +990,11 @@ class $$LocationTBTableOrderingComposer
 
   ColumnOrderings<String> get description => $state.composableBuilder(
       column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<bool> get isFavorite => $state.composableBuilder(
+      column: $state.table.isFavorite,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }

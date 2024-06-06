@@ -12,4 +12,5 @@ class LocationTB extends Table {
   TextColumn get address => text().nullable()();
   TextColumn get category => text()();
   TextColumn get description => text().nullable()();
+  BoolColumn get isFavorite => boolean().withDefault(const Constant(false))();
 }

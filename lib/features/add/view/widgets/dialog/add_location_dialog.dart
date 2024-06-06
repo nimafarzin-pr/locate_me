@@ -203,7 +203,7 @@ class _AddLocationViewState<T> extends State<AddLocationView<T>> {
                                   latlng:
                                       LatLong(latitude: lat, longitude: lng),
                                   rate: rate,
-                                  isSaved: false);
+                                  isFavorite: false);
                               await widget.onAccept(data as T);
                               context.pop();
                             },

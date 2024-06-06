@@ -3,47 +3,47 @@ import 'package:flutter/material.dart';
 
 import '../helper/map/enums/map_enum.dart';
 
-class SegmentedButtonExample extends StatefulWidget {
-  final HomeListShowMode homeListShowMode;
-  final void Function(Set<HomeListShowMode>)? onSelectionChanged;
+class CustomSegmentedButton extends StatefulWidget {
+  final HomeViewMode homeViewMode;
+  final void Function(Set<HomeViewMode>)? onSelectionChanged;
 
-  const SegmentedButtonExample({
+  const CustomSegmentedButton({
     super.key,
-    required this.homeListShowMode,
+    required this.homeViewMode,
     this.onSelectionChanged,
   });
 
   @override
-  State<SegmentedButtonExample> createState() => _SegmentedButtonExampleState();
+  State<CustomSegmentedButton> createState() => _CustomSegmentedButtonState();
 }
 
-class _SegmentedButtonExampleState extends State<SegmentedButtonExample> {
+class _CustomSegmentedButtonState extends State<CustomSegmentedButton> {
   @override
   Widget build(BuildContext context) {
-    return SegmentedButton<HomeListShowMode>(
+    return SegmentedButton<HomeViewMode>(
       style: SegmentedButton.styleFrom(
         alignment: Alignment.center,
         // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        visualDensity: const VisualDensity(horizontal: -3, vertical: -3),
+        visualDensity: const VisualDensity(horizontal: 2, vertical: 2),
         elevation: 2,
         backgroundColor: Theme.of(context).colorScheme.surface,
         foregroundColor: Theme.of(context).colorScheme.onSurface,
         selectedForegroundColor: Theme.of(context).colorScheme.onSecondary,
         selectedBackgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      segments: const <ButtonSegment<HomeListShowMode>>[
-        ButtonSegment<HomeListShowMode>(
-          value: HomeListShowMode.list,
-          label: Text('List View'),
+      segments: const <ButtonSegment<HomeViewMode>>[
+        ButtonSegment<HomeViewMode>(
+          value: HomeViewMode.list,
+          label: Text('List'),
           icon: Icon(Icons.list),
         ),
-        ButtonSegment<HomeListShowMode>(
-            value: HomeListShowMode.map,
-            label: Text('Map View'),
+        ButtonSegment<HomeViewMode>(
+            value: HomeViewMode.map,
+            label: Text('Map'),
             icon: Icon(Icons.map_outlined)),
       ],
       onSelectionChanged: widget.onSelectionChanged,
-      selected: <HomeListShowMode>{widget.homeListShowMode},
+      selected: <HomeViewMode>{widget.homeViewMode},
     );
   }
 }

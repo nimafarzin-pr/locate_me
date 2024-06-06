@@ -17,7 +17,7 @@ _$PlaceImpl _$$PlaceImplFromJson(Map<String, dynamic> json) => _$PlaceImpl(
       latlng: LatLong.fromJson(json['latlng'] as Map<String, dynamic>),
       icon: json['icon'] as String,
       rate: (json['rate'] as num?)?.toDouble() ?? 0,
-      isSaved: json['isSaved'] as bool? ?? false,
+      isFavorite: json['isFavorite'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$PlaceImplToJson(_$PlaceImpl instance) =>
@@ -32,7 +32,7 @@ Map<String, dynamic> _$$PlaceImplToJson(_$PlaceImpl instance) =>
       'latlng': instance.latlng,
       'icon': instance.icon,
       'rate': instance.rate,
-      'isSaved': instance.isSaved,
+      'isFavorite': instance.isFavorite,
     };
 
 _$LatLongImpl _$$LatLongImplFromJson(Map<String, dynamic> json) =>
