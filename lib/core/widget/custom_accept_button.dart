@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:locate_me/core/widget/custom_text.dart';
 
 final loadingProvider = StateProvider<bool>((ref) => false);
 
@@ -60,7 +61,7 @@ class AcceptButton extends StatelessWidget {
                   ? const CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                     )
-                  : Text(buttonText),
+                  : CustomText.bodyLarge(buttonText),
             ),
           ),
         );

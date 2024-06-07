@@ -518,7 +518,6 @@ class GoogleMapStyle {
   static final Map<String, String> mapStyles = {
     'dark': darkStyle,
     'silver': silverStyle,
-    'night': nightStyle,
     'standard': standardStyle,
   };
 }

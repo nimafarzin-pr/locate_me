@@ -136,9 +136,9 @@ class LocationRepositoryImpl implements ILocationRepository {
   }
 
   @override
-  Future<void> updateFavoriteStatus(int id, bool isFavorite) async {
+  Future<void> updateFavoriteStatus(int id) async {
     try {
-      await _databaseService.updateFavoriteStatus(id, isFavorite);
+      await _databaseService.updateFavoriteStatus(id);
     } catch (e, stackTrace) {
       // Handle or log the error
       print('Error updating location with id $id: $e');

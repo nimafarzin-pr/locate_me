@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
@@ -35,9 +36,8 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.surface,
           unselectedItemColor: Theme.of(context).colorScheme.onSurface,
           selectedItemColor: Theme.of(context).colorScheme.primary,
-          selectedFontSize: 16,
-          unselectedIconTheme: const IconThemeData(size: 20),
-          selectedIconTheme: const IconThemeData(size: 24),
+          unselectedIconTheme: IconThemeData(size: 20.w),
+          selectedIconTheme: IconThemeData(size: 22.w),
           // selectedItemColor: Colors.blueGrey,
           currentIndex: navigationShell.currentIndex,
           items: const [

@@ -13,4 +13,5 @@ class LocationTB extends Table {
   TextColumn get category => text()();
   TextColumn get description => text().nullable()();
   BoolColumn get isFavorite => boolean().withDefault(const Constant(false))();
+  DateTimeColumn get timestamp => dateTime().withDefault(currentDateAndTime)();
 }

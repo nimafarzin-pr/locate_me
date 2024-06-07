@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:locate_me/core/extension/screen_size.dart';
+import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/core/widget/general_map_wrapper.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 import 'package:locate_me/features/home/view/widgets/location_item.dart';
-import 'package:path/path.dart';
 
 import '../../../../../../core/helper/google_map/provider/multiple_marker_provider.dart';
 import '../../../../../../core/helper/map/provider/map_setting_notifier_provider.dart';
@@ -17,6 +17,7 @@ import '../../../../../../core/theme/google_map_style.dart';
 import '../../../../../../core/widget/dialogs/custom_map_options.dart';
 import '../../../../model/dto/slider_notifier_dto.dart';
 import '../../../../provider/slider_location_provider.dart';
+import '../../custom_slider.dart';
 
 class GoogleView extends ConsumerStatefulWidget {
   final List<PlaceItemModel> places;
@@ -24,7 +25,7 @@ class GoogleView extends ConsumerStatefulWidget {
   const GoogleView({
     super.key,
     required this.places,
-    required this.polyLineFromPoint,
+    this.polyLineFromPoint = false,
   });
 
   @override
@@ -33,7 +34,7 @@ class GoogleView extends ConsumerStatefulWidget {
 
 class _MapListState extends ConsumerState<GoogleView>
     with TickerProviderStateMixin {
-  final Completer<GoogleMapController> _mapController =
+  Completer<GoogleMapController> _mapController =
       Completer<GoogleMapController>();
 
   @override
@@ -71,6 +72,7 @@ class _MapListState extends ConsumerState<GoogleView>
                           return Marker(
                               markerId: e.mapsId,
                               icon: e.icon,
+                              infoWindow: e.infoWindow,
                               onTap: () {},
                               position: LatLng(
                                   e.position.latitude, e.position.longitude));
@@ -82,7 +84,7 @@ class _MapListState extends ConsumerState<GoogleView>
                         zoom: 14.4746,
                       ),
                       onMapCreated: (controller) {
-                        if (_mapController.isCompleted) return;
+                        _mapController = Completer();
                         _mapController.complete(controller);
                       },
                     ),
@@ -92,35 +94,21 @@ class _MapListState extends ConsumerState<GoogleView>
                       right: 0,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: CarouselSlider(
-                          options: CarouselOptions(
-                            // initialPage: ,
-                            height: context.screenHeight / 5,
-                            onPageChanged: (index, reason) async {
-                              final newData =
-                                  SliderNotifierDTO<GoogleMapController>(
-                                      mapController:
-                                          await _mapController.future,
-                                      vsync: this,
-                                      position: locationData.locations[index]);
-                              ref
-                                  .read(sliderProvider(newData).notifier)
-                                  .animateToMyLocationOnGoogleMap(
-                                      mapController: _mapController,
-                                      position:
-                                          locationData.locations[index].latlng);
-                            },
-                          ),
-                          items: locationData.locations.map((place) {
-                            return Builder(
-                              builder: (BuildContext context) {
-                                return LocationItem(
-                                  item: place,
-                                  isCarouselItem: true,
-                                );
-                              },
-                            );
-                          }).toList(),
+                        child: CustomCarouselSlider(
+                          data: locationData.locations,
+                          onPageChanged: (index, reason) async {
+                            final newData =
+                                SliderNotifierDTO<GoogleMapController>(
+                                    mapController: await _mapController.future,
+                                    vsync: this,
+                                    position: locationData.locations[index]);
+                            ref
+                                .read(sliderProvider(newData).notifier)
+                                .animateToMyLocationOnGoogleMap(
+                                    mapController: _mapController,
+                                    position:
+                                        locationData.locations[index].latlng);
+                          },
                         ),
                       ),
                     )
@@ -137,7 +125,7 @@ class _MapListState extends ConsumerState<GoogleView>
               height: MediaQuery.sizeOf(context).height,
               width: MediaQuery.sizeOf(context).width,
               color: Colors.white,
-              child: Center(child: Text('Error : $err')),
+              child: Center(child: CustomText.bodyLarge('Error : $err')),
             );
           },
         );

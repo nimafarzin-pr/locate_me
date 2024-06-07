@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:drift/drift.dart';
 import 'package:locate_me/core/database/db/db.dart';
 import 'package:locate_me/core/enums/enums.dart';
 
+import '../../type_converter/place_model_converter.dart';
 import 'location_service.dart';
 
 class LocationServiceImpl
@@ -65,10 +67,15 @@ class LocationServiceImpl
   }
 
   @override
-  Future<void> updateFavoriteStatus(int id, bool isFavorite) async {
-    await (_database.update(_database.locationTB)
-          ..where((tbl) => tbl.id.equals(id)))
-        .write(LocationTBCompanion(isFavorite: Value(isFavorite)));
+  Future<void> updateFavoriteStatus(int id) async {
+    final location = await getById(id);
+    log('***** >>> ${location?.toJson()}');
+    if (location != null) {
+      final updatedLocation = location
+          .copyWith(isFavorite: !(location.isFavorite))
+          .toCompanion(true);
+      await update(id, updatedLocation);
+    }
   }
 
   @override

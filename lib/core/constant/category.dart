@@ -4,14 +4,12 @@ import 'package:locate_me/core/resources/icons.dart';
 import '../dto/category_dto.dart';
 
 List<CategoryItem> category = [
-  CategoryItem(
-      icon: MyIcons.allCategory, name: 'Other', color: Colors.pinkAccent),
+  CategoryItem(icon: MyIcons.location, name: 'All', color: Colors.teal),
   CategoryItem(icon: MyIcons.home, name: 'Home', color: Colors.blue),
   CategoryItem(icon: MyIcons.cafe, name: 'Cafe', color: Colors.brown),
   CategoryItem(icon: MyIcons.street, name: 'Street', color: Colors.grey),
   CategoryItem(icon: MyIcons.store, name: 'Store', color: Colors.redAccent),
   CategoryItem(icon: MyIcons.hospital, name: 'Hospital', color: Colors.red),
-  CategoryItem(icon: MyIcons.location, name: 'Other', color: Colors.teal),
   CategoryItem(icon: MyIcons.office, name: 'Office', color: Colors.indigo),
   CategoryItem(icon: MyIcons.gym, name: 'Gym', color: Colors.green),
   CategoryItem(
