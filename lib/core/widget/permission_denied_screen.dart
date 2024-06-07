@@ -4,6 +4,7 @@ import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/core/widget/dialogs/permission.dart';
 
 import '../helper/google_map/provider/permission_provider.dart';
@@ -24,7 +25,7 @@ class PermissionDeniedScreen extends StatelessWidget {
             Center(
                 child: Column(
               children: [
-                const Text(
+                CustomText.bodyLarge(
                     'Please enable location and grant location permission to continue!'),
                 TextButton(
                     onPressed: () async {
@@ -43,7 +44,7 @@ class PermissionDeniedScreen extends StatelessWidget {
                         ref.refresh(permissionProvider);
                       }
                     },
-                    child: const Text("Accept / Refresh"))
+                    child: CustomText.bodyLarge("Accept / Refresh"))
               ],
             )),
           ],

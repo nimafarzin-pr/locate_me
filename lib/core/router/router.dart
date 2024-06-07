@@ -77,7 +77,7 @@ final router = GoRouter(
               name: Routes.settings,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
-                child: const SettingTab(),
+                child: const SettingsTab(),
               ),
             ),
           ],

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:locate_me/features/home/provider/favorite_filter_provider.dart';
 
 import '../helper/map/enums/map_enum.dart';
+import 'custom_text.dart';
 
 class CustomSwitch extends ConsumerWidget {
   const CustomSwitch({super.key});
@@ -51,16 +52,16 @@ class CustomSwitch extends ConsumerWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
           color: isActive
               ? Theme.of(context).colorScheme.primary
               : Colors.transparent,
         ),
-        child: Text(
+        child: CustomText.bodyLarge(
           label,
-          style: TextStyle(
+          customStyle: TextStyle(
             color: isActive ? Colors.white : Colors.black,
             fontWeight: FontWeight.bold,
           ),

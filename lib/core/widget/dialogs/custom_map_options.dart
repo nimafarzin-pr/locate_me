@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/extension/screen_size.dart';
 import 'package:locate_me/core/helper/map/model/map_settings_model.dart';
 import 'package:locate_me/core/helper/map/provider/map_setting_notifier_provider.dart';
+import 'package:locate_me/core/theme/general_map_style_colors.dart';
 
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/core/widget/loading.dart';
@@ -43,8 +44,9 @@ class _CustomMapOptionsDialogState extends State<CustomMapOptionsDialog> {
               ),
               Center(
                 child: Container(
+                  alignment: Alignment.center,
                   width: width / 1.1,
-                  height: height / 2.5,
+                  height: width,
                   padding: const EdgeInsets.all(24),
                   margin: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
@@ -59,148 +61,158 @@ class _CustomMapOptionsDialogState extends State<CustomMapOptionsDialog> {
                     ],
                   ),
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
                     children: [
-                      const Text(
+                      CustomText.bodyLarge(
                         'Choose an option',
-                        style: TextStyle(
+                        customStyle: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 20),
-                      Expanded(
-                        child: ref.watch(mapSettingNotifierProvider).when(
-                          data: (data) {
-                            return Column(
-                              children: [
-                                ListTile(
-                                  title: CustomText.bodyLarge('Change Map'),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: ListTile(
-                                        onTap: () {
-                                          ref
-                                              .read(mapSettingNotifierProvider
-                                                  .notifier)
-                                              .updateSettings(
-                                                  const MapSettingsModel()
-                                                      .copyWith(
-                                                          mapLayer:
-                                                              MapLayer.google));
-                                        },
-                                        title: CustomText.labelSmall(
-                                          'Google map',
-                                        ),
-                                        leading: SizedBox(
-                                          width: 20,
-                                          height: 20,
-                                          child: Radio<MapLayer>(
-                                            value: MapLayer.google,
-                                            groupValue:
-                                                data.mapLayer ?? MapLayer.osm,
-                                            onChanged: (MapLayer? value) {
-                                              ref
-                                                  .read(
-                                                      mapSettingNotifierProvider
-                                                          .notifier)
-                                                  .updateSettings(
-                                                      const MapSettingsModel()
-                                                          .copyWith(
-                                                              mapLayer: MapLayer
-                                                                  .google));
-                                            },
-                                          ),
+                      ref.watch(mapSettingNotifierProvider).when(
+                        data: (data) {
+                          return Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              ListTile(
+                                title: CustomText.bodyLarge('Change Map'),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: ListTile(
+                                      onTap: () {
+                                        ref
+                                            .read(mapSettingNotifierProvider
+                                                .notifier)
+                                            .updateSettings(
+                                                const MapSettingsModel()
+                                                    .copyWith(
+                                                        mapLayer:
+                                                            MapLayer.google));
+                                      },
+                                      title: CustomText.labelSmall(
+                                        'Google map',
+                                      ),
+                                      leading: SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: Radio<MapLayer>(
+                                          value: MapLayer.google,
+                                          groupValue:
+                                              data.mapLayer ?? MapLayer.osm,
+                                          onChanged: (MapLayer? value) {
+                                            ref
+                                                .read(mapSettingNotifierProvider
+                                                    .notifier)
+                                                .updateSettings(
+                                                    const MapSettingsModel()
+                                                        .copyWith(
+                                                            mapLayer: MapLayer
+                                                                .google));
+                                          },
                                         ),
                                       ),
                                     ),
-                                    Expanded(
-                                      child: ListTile(
-                                        onTap: () {
-                                          ref
-                                              .read(mapSettingNotifierProvider
-                                                  .notifier)
-                                              .updateSettings(
-                                                  const MapSettingsModel()
-                                                      .copyWith(
-                                                          mapLayer:
-                                                              MapLayer.osm));
-                                        },
-                                        title: CustomText.labelSmall(
-                                          'Open street map',
-                                          maxLines: 1,
-                                        ),
-                                        leading: SizedBox(
-                                          width: 20,
-                                          height: 20,
-                                          child: Radio<MapLayer>(
-                                            visualDensity:
-                                                VisualDensity.comfortable,
-                                            value: MapLayer.osm,
-                                            groupValue:
-                                                data.mapLayer ?? MapLayer.osm,
-                                            onChanged: (MapLayer? value) {
-                                              ref
-                                                  .read(
-                                                      mapSettingNotifierProvider
-                                                          .notifier)
-                                                  .updateSettings(
-                                                      const MapSettingsModel()
-                                                          .copyWith(
-                                                              mapLayer: MapLayer
-                                                                  .osm));
-                                            },
-                                          ),
+                                  ),
+                                  Expanded(
+                                    child: ListTile(
+                                      onTap: () {
+                                        ref
+                                            .read(mapSettingNotifierProvider
+                                                .notifier)
+                                            .updateSettings(
+                                                const MapSettingsModel()
+                                                    .copyWith(
+                                                        mapLayer:
+                                                            MapLayer.osm));
+                                      },
+                                      title: CustomText.labelSmall(
+                                        'Open street map',
+                                        maxLines: 1,
+                                      ),
+                                      leading: SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: Radio<MapLayer>(
+                                          visualDensity:
+                                              VisualDensity.comfortable,
+                                          value: MapLayer.osm,
+                                          groupValue:
+                                              data.mapLayer ?? MapLayer.osm,
+                                          onChanged: (MapLayer? value) {
+                                            ref
+                                                .read(mapSettingNotifierProvider
+                                                    .notifier)
+                                                .updateSettings(
+                                                    const MapSettingsModel()
+                                                        .copyWith(
+                                                            mapLayer:
+                                                                MapLayer.osm));
+                                          },
                                         ),
                                       ),
                                     ),
+                                  ),
+                                ],
+                              ),
+                              ListTile(title: CustomText.bodyLarge('Map type')),
+                              CustomDropdownField<MapStyle>(
+                                validator: (value) {
+                                  return null;
+                                },
+                                hintText: 'Select your map style',
+                                items: MapStyle.values.toList(),
+                                value: ref
+                                    .watch(mapSettingStyleNotifierProvider)
+                                    .value,
+                                onChanged: (MapStyle? newValue) {
+                                  final newData = newValue != null
+                                      ? const MapSettingsModel()
+                                          .copyWith(mapStyle: newValue)
+                                      : const MapSettingsModel().copyWith(
+                                          mapStyle: MapStyle.standard);
+                                  ref
+                                      .read(mapSettingNotifierProvider.notifier)
+                                      .updateSettings(newData);
+                                },
+                                itemAsString: (MapStyle item) => item.name,
+                                itemAsWidget: (MapStyle item) => Row(
+                                  children: [
+                                    const SizedBox(width: 8),
+                                    Card(
+                                      clipBehavior: Clip.hardEdge,
+                                      elevation: 2,
+                                      child: Container(
+                                        width: 40,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                            color:
+                                                generalStyleColors[item.name],
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    CustomText.bodyLarge(item.name),
                                   ],
                                 ),
-                                ListTile(
-                                    title: CustomText.bodyLarge('Map type')),
-                                CustomDropdownField<MapStyle>(
-                                  validator: (value) {
-                                    return null;
-                                  },
-                                  hintText: 'Select your map style',
-                                  items: MapStyle.values.toList(),
-                                  value: ref
-                                      .watch(mapSettingStyleNotifierProvider)
-                                      .value,
-                                  onChanged: (MapStyle? newValue) {
-                                    final newData = newValue != null
-                                        ? const MapSettingsModel()
-                                            .copyWith(mapStyle: newValue)
-                                        : const MapSettingsModel().copyWith(
-                                            mapStyle: MapStyle.standard);
-                                    ref
-                                        .read(
-                                            mapSettingNotifierProvider.notifier)
-                                        .updateSettings(newData);
-                                  },
-                                  itemAsString: (MapStyle item) => item.name,
-                                  itemAsWidget: (MapStyle item) => Row(
-                                    children: [
-                                      const SizedBox(width: 8),
-                                      Text(item.name),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                          error: (error, stackTrace) {
-                            return ErrorWidget(error);
-                          },
-                          loading: () {
-                            return const MyLoading();
-                          },
-                        ),
+                              ),
+                            ],
+                          );
+                        },
+                        error: (error, stackTrace) {
+                          return ErrorWidget(error);
+                        },
+                        loading: () {
+                          return const MyLoading();
+                        },
                       ),
                     ],
                   ),

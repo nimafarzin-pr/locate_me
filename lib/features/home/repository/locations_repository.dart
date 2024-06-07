@@ -17,4 +17,12 @@ class HomeScreenRepository {
   Future<PlaceItemModel?> getLocation(int id) async {
     return await _locationRepositoryImpl.getLocation(id);
   }
+
+  Future<void> deleteLocation(int id) async {
+    await _locationRepositoryImpl.deleteLocation(id);
+  }
+
+  Future<void> updateFavoriteStatus(int id) async {
+    return await _locationRepositoryImpl.updateFavoriteStatus(id);
+  }
 }

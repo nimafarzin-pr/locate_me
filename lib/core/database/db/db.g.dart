@@ -79,6 +79,14 @@ class $LocationTBTable extends LocationTB
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('CHECK ("is_favorite" IN (0, 1))'),
       defaultValue: const Constant(false));
+  static const VerificationMeta _timestampMeta =
+      const VerificationMeta('timestamp');
+  @override
+  late final GeneratedColumn<DateTime> timestamp = GeneratedColumn<DateTime>(
+      'timestamp', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -91,7 +99,8 @@ class $LocationTBTable extends LocationTB
         address,
         category,
         description,
-        isFavorite
+        isFavorite,
+        timestamp
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -162,6 +171,10 @@ class $LocationTBTable extends LocationTB
           isFavorite.isAcceptableOrUnknown(
               data['is_favorite']!, _isFavoriteMeta));
     }
+    if (data.containsKey('timestamp')) {
+      context.handle(_timestampMeta,
+          timestamp.isAcceptableOrUnknown(data['timestamp']!, _timestampMeta));
+    }
     return context;
   }
 
@@ -193,6 +206,8 @@ class $LocationTBTable extends LocationTB
           .read(DriftSqlType.string, data['${effectivePrefix}description']),
       isFavorite: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_favorite'])!,
+      timestamp: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}timestamp'])!,
     );
   }
 
@@ -214,6 +229,7 @@ class Location extends DataClass implements Insertable<Location> {
   final String category;
   final String? description;
   final bool isFavorite;
+  final DateTime timestamp;
   const Location(
       {this.id,
       required this.title,
@@ -225,7 +241,8 @@ class Location extends DataClass implements Insertable<Location> {
       this.address,
       required this.category,
       this.description,
-      required this.isFavorite});
+      required this.isFavorite,
+      required this.timestamp});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -248,6 +265,7 @@ class Location extends DataClass implements Insertable<Location> {
       map['description'] = Variable<String>(description);
     }
     map['is_favorite'] = Variable<bool>(isFavorite);
+    map['timestamp'] = Variable<DateTime>(timestamp);
     return map;
   }
 
@@ -270,6 +288,7 @@ class Location extends DataClass implements Insertable<Location> {
           ? const Value.absent()
           : Value(description),
       isFavorite: Value(isFavorite),
+      timestamp: Value(timestamp),
     );
   }
 
@@ -288,6 +307,7 @@ class Location extends DataClass implements Insertable<Location> {
       category: serializer.fromJson<String>(json['category']),
       description: serializer.fromJson<String?>(json['description']),
       isFavorite: serializer.fromJson<bool>(json['isFavorite']),
+      timestamp: serializer.fromJson<DateTime>(json['timestamp']),
     );
   }
   @override
@@ -305,6 +325,7 @@ class Location extends DataClass implements Insertable<Location> {
       'category': serializer.toJson<String>(category),
       'description': serializer.toJson<String?>(description),
       'isFavorite': serializer.toJson<bool>(isFavorite),
+      'timestamp': serializer.toJson<DateTime>(timestamp),
     };
   }
 
@@ -319,7 +340,8 @@ class Location extends DataClass implements Insertable<Location> {
           Value<String?> address = const Value.absent(),
           String? category,
           Value<String?> description = const Value.absent(),
-          bool? isFavorite}) =>
+          bool? isFavorite,
+          DateTime? timestamp}) =>
       Location(
         id: id.present ? id.value : this.id,
         title: title ?? this.title,
@@ -332,6 +354,7 @@ class Location extends DataClass implements Insertable<Location> {
         category: category ?? this.category,
         description: description.present ? description.value : this.description,
         isFavorite: isFavorite ?? this.isFavorite,
+        timestamp: timestamp ?? this.timestamp,
       );
   @override
   String toString() {
@@ -346,14 +369,15 @@ class Location extends DataClass implements Insertable<Location> {
           ..write('address: $address, ')
           ..write('category: $category, ')
           ..write('description: $description, ')
-          ..write('isFavorite: $isFavorite')
+          ..write('isFavorite: $isFavorite, ')
+          ..write('timestamp: $timestamp')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(id, title, vicinity, icon, latitude, rate,
-      longitude, address, category, description, isFavorite);
+      longitude, address, category, description, isFavorite, timestamp);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -368,7 +392,8 @@ class Location extends DataClass implements Insertable<Location> {
           other.address == this.address &&
           other.category == this.category &&
           other.description == this.description &&
-          other.isFavorite == this.isFavorite);
+          other.isFavorite == this.isFavorite &&
+          other.timestamp == this.timestamp);
 }
 
 class LocationTBCompanion extends UpdateCompanion<Location> {
@@ -383,6 +408,7 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
   final Value<String> category;
   final Value<String?> description;
   final Value<bool> isFavorite;
+  final Value<DateTime> timestamp;
   const LocationTBCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
@@ -395,6 +421,7 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
     this.category = const Value.absent(),
     this.description = const Value.absent(),
     this.isFavorite = const Value.absent(),
+    this.timestamp = const Value.absent(),
   });
   LocationTBCompanion.insert({
     this.id = const Value.absent(),
@@ -408,6 +435,7 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
     required String category,
     this.description = const Value.absent(),
     this.isFavorite = const Value.absent(),
+    this.timestamp = const Value.absent(),
   })  : title = Value(title),
         icon = Value(icon),
         latitude = Value(latitude),
@@ -426,6 +454,7 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
     Expression<String>? category,
     Expression<String>? description,
     Expression<bool>? isFavorite,
+    Expression<DateTime>? timestamp,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -439,6 +468,7 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
       if (category != null) 'category': category,
       if (description != null) 'description': description,
       if (isFavorite != null) 'is_favorite': isFavorite,
+      if (timestamp != null) 'timestamp': timestamp,
     });
   }
 
@@ -453,7 +483,8 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
       Value<String?>? address,
       Value<String>? category,
       Value<String?>? description,
-      Value<bool>? isFavorite}) {
+      Value<bool>? isFavorite,
+      Value<DateTime>? timestamp}) {
     return LocationTBCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
@@ -466,6 +497,7 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
       category: category ?? this.category,
       description: description ?? this.description,
       isFavorite: isFavorite ?? this.isFavorite,
+      timestamp: timestamp ?? this.timestamp,
     );
   }
 
@@ -505,6 +537,9 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
     if (isFavorite.present) {
       map['is_favorite'] = Variable<bool>(isFavorite.value);
     }
+    if (timestamp.present) {
+      map['timestamp'] = Variable<DateTime>(timestamp.value);
+    }
     return map;
   }
 
@@ -521,7 +556,8 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
           ..write('address: $address, ')
           ..write('category: $category, ')
           ..write('description: $description, ')
-          ..write('isFavorite: $isFavorite')
+          ..write('isFavorite: $isFavorite, ')
+          ..write('timestamp: $timestamp')
           ..write(')'))
         .toString();
   }
@@ -780,6 +816,7 @@ typedef $$LocationTBTableInsertCompanionBuilder = LocationTBCompanion Function({
   required String category,
   Value<String?> description,
   Value<bool> isFavorite,
+  Value<DateTime> timestamp,
 });
 typedef $$LocationTBTableUpdateCompanionBuilder = LocationTBCompanion Function({
   Value<int?> id,
@@ -793,6 +830,7 @@ typedef $$LocationTBTableUpdateCompanionBuilder = LocationTBCompanion Function({
   Value<String> category,
   Value<String?> description,
   Value<bool> isFavorite,
+  Value<DateTime> timestamp,
 });
 
 class $$LocationTBTableTableManager extends RootTableManager<
@@ -826,6 +864,7 @@ class $$LocationTBTableTableManager extends RootTableManager<
             Value<String> category = const Value.absent(),
             Value<String?> description = const Value.absent(),
             Value<bool> isFavorite = const Value.absent(),
+            Value<DateTime> timestamp = const Value.absent(),
           }) =>
               LocationTBCompanion(
             id: id,
@@ -839,6 +878,7 @@ class $$LocationTBTableTableManager extends RootTableManager<
             category: category,
             description: description,
             isFavorite: isFavorite,
+            timestamp: timestamp,
           ),
           getInsertCompanionBuilder: ({
             Value<int?> id = const Value.absent(),
@@ -852,6 +892,7 @@ class $$LocationTBTableTableManager extends RootTableManager<
             required String category,
             Value<String?> description = const Value.absent(),
             Value<bool> isFavorite = const Value.absent(),
+            Value<DateTime> timestamp = const Value.absent(),
           }) =>
               LocationTBCompanion.insert(
             id: id,
@@ -865,6 +906,7 @@ class $$LocationTBTableTableManager extends RootTableManager<
             category: category,
             description: description,
             isFavorite: isFavorite,
+            timestamp: timestamp,
           ),
         ));
 }
@@ -938,6 +980,11 @@ class $$LocationTBTableFilterComposer
       column: $state.table.isFavorite,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get timestamp => $state.composableBuilder(
+      column: $state.table.timestamp,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
 class $$LocationTBTableOrderingComposer
@@ -995,6 +1042,11 @@ class $$LocationTBTableOrderingComposer
 
   ColumnOrderings<bool> get isFavorite => $state.composableBuilder(
       column: $state.table.isFavorite,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get timestamp => $state.composableBuilder(
+      column: $state.table.timestamp,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }

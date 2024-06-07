@@ -1,75 +1,92 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:locate_me/core/constant/constant_names.dart';
 
 class AppTextStyles {
-  static const TextStyle displayLarge = TextStyle(
-    fontSize: 57,
+  static TextStyle displayLarge = TextStyle(
+    fontFamily: appFontFamily,
+    fontSize: 50.sp,
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle displayMedium = TextStyle(
-    fontSize: 45,
+  static TextStyle displayMedium = TextStyle(
+    fontFamily: appFontFamily,
+    fontSize: 40.sp,
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle displaySmall = TextStyle(
-    fontSize: 36,
+  static TextStyle displaySmall = TextStyle(
+    fontFamily: appFontFamily,
+    fontSize: 32.sp,
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle headlineLarge = TextStyle(
-    fontSize: 32,
+  static TextStyle headlineLarge = TextStyle(
+    fontFamily: appFontFamily,
+    fontSize: 28.sp,
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle headlineMedium = TextStyle(
-    fontSize: 28,
+  static TextStyle headlineMedium = TextStyle(
+    fontFamily: appFontFamily,
+    fontSize: 24.sp,
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle headlineSmall = TextStyle(
-    fontSize: 24,
+  static TextStyle headlineSmall = TextStyle(
+    fontFamily: appFontFamily,
+    fontSize: 20.sp,
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle titleLarge = TextStyle(
-    fontSize: 22,
+  static TextStyle titleLarge = TextStyle(
+    fontFamily: appFontFamily,
+    fontSize: 18.sp,
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle titleMedium = TextStyle(
-    fontSize: 16,
+  static TextStyle titleMedium = TextStyle(
+    fontFamily: appFontFamily,
+    fontSize: 14.sp,
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle titleSmall = TextStyle(
-    fontSize: 14,
+  static TextStyle titleSmall = TextStyle(
+    fontFamily: appFontFamily,
+    fontSize: 12.sp,
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle bodyLarge = TextStyle(
-    fontSize: 16,
+  static TextStyle bodyLarge = TextStyle(
+    fontFamily: appFontFamily,
+    fontSize: 12.sp,
   );
 
-  static const TextStyle bodyMedium = TextStyle(
-    fontSize: 14,
+  static TextStyle bodyMedium = TextStyle(
+    fontFamily: appFontFamily,
+    fontSize: 10.sp,
   );
 
-  static const TextStyle bodySmall = TextStyle(
-    fontSize: 12,
+  static TextStyle bodySmall = TextStyle(
+    fontFamily: appFontFamily,
+    fontSize: 10.sp,
   );
 
-  static const TextStyle labelLarge = TextStyle(
-    fontSize: 14,
+  static TextStyle labelLarge = TextStyle(
+    fontFamily: appFontFamily,
+    fontSize: 12.sp,
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle labelMedium = TextStyle(
-    fontSize: 12,
+  static TextStyle labelMedium = TextStyle(
+    fontFamily: appFontFamily,
+    fontSize: 12.sp,
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle labelSmall = TextStyle(
-    fontSize: 11,
+  static TextStyle labelSmall = TextStyle(
+    fontFamily: appFontFamily,
+    fontSize: 10.sp,
     fontWeight: FontWeight.bold,
   );
 }

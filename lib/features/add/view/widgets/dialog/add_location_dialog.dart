@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:locate_me/core/extension/screen_size.dart';
 import 'package:locate_me/core/resources/icons.dart';
+import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 
 import '../../../../../core/constant/category.dart';
@@ -95,9 +96,9 @@ class _AddLocationViewState<T> extends State<AddLocationView<T>> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text(
+                        CustomText.bodyLarge(
                           'Save you location',
-                          style: TextStyle(
+                          customStyle: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
@@ -153,7 +154,7 @@ class _AddLocationViewState<T> extends State<AddLocationView<T>> {
                                     color: item.color,
                                   ),
                                   const SizedBox(width: 8),
-                                  Text(item.name),
+                                  CustomText.bodyLarge(item.name),
                                 ],
                               ),
                             ),

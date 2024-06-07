@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -5,11 +7,14 @@ import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/constant/category.dart';
 import 'package:locate_me/core/extension/screen_size.dart';
 import 'package:locate_me/core/navigation/routes.dart';
+import 'package:locate_me/core/widget/custom_favorite_icon_button.dart';
 import 'package:locate_me/core/widget/custom_rich_text.dart';
+import 'package:locate_me/core/widget/custom_text.dart';
+import 'package:locate_me/core/widget/dialogs/warning_dialog.dart';
 import 'package:locate_me/core/widget/rate.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
-
-import '../../provider/favorite_filter_provider.dart';
+import 'package:locate_me/features/home/provider/favorite_filter_provider.dart';
+import 'package:locate_me/features/home/provider/home_screen_repository_provider.dart';
 
 class LocationItem extends ConsumerWidget {
   final int index;
@@ -68,7 +73,7 @@ class LocationItem extends ConsumerWidget {
                                             : item.icon)),
                                 const SizedBox(width: 4),
                                 Expanded(
-                                  child: Text(
+                                  child: CustomText.bodyLarge(
                                     item.title,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
@@ -103,12 +108,12 @@ class LocationItem extends ConsumerWidget {
                                       FontAwesomeIcons.penToSquare,
                                       color: Colors.grey,
                                     )),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: const FaIcon(
-                                      color: Colors.grey,
-                                      FontAwesomeIcons.mapLocationDot,
-                                    )),
+                                // IconButton(
+                                //     onPressed: () {},
+                                //     icon: const FaIcon(
+                                //       color: Colors.grey,
+                                //       FontAwesomeIcons.mapLocationDot,
+                                //     )),
                                 IconButton(
                                     onPressed: () {},
                                     icon: const FaIcon(
@@ -116,7 +121,19 @@ class LocationItem extends ConsumerWidget {
                                       FontAwesomeIcons.route,
                                     )),
                                 IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      if (item.id == null) return;
+                                      showWarningDialog(
+                                        context: context,
+                                        title: 'Delete',
+                                        onConfirm: () async {
+                                          await ref
+                                              .read(
+                                                  homeScreenRepositoryProvider)
+                                              .deleteLocation(item.id!);
+                                        },
+                                      );
+                                    },
                                     icon: const FaIcon(
                                       color: Colors.grey,
                                       FontAwesomeIcons.trashCan,
@@ -133,9 +150,17 @@ class LocationItem extends ConsumerWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconButton(
-                      onPressed: () {},
-                      icon: const FaIcon(FontAwesomeIcons.bookmark)),
+                  CustomFavoriteIconButton(
+                    isFavorite: item.isFavorite,
+                    onPressed: () {
+                      log('~~~~~~~${item.id}');
+                      log('~~~~~~~${item.isFavorite}');
+                      if (item.id == null) return;
+                      ref
+                          .read(favoriteFilterProvider.notifier)
+                          .updateFavoriteStatus(id: item.id!);
+                    },
+                  ),
                   Column(
                     children: [
                       Rate(
@@ -143,7 +168,7 @@ class LocationItem extends ConsumerWidget {
                         draggable: false,
                         initialRating: item.rate,
                       ),
-                      Text('${item.rate}')
+                      CustomText.bodyLarge('${item.rate}')
                     ],
                   ),
                 ],

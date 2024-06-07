@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:latlong2/latlong.dart' as latLngTwo;
 import 'package:locate_me/core/helper/map/provider/map_setting_notifier_provider.dart';
 import 'package:locate_me/core/theme/google_map_style.dart';
+import 'package:locate_me/core/widget/custom_text.dart';
 
 import 'package:locate_me/features/add/provider/osm_location_provider.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
@@ -38,8 +39,8 @@ class _GoogleMapAddViewState extends State<GoogleMapAddView> {
       builder: (context, ref, child) {
         final pos = ref.watch(currentPositionProvider);
         if (pos.hasError) {
-          return const Center(
-            child: Text('Some error occurred!'),
+          return Center(
+            child: CustomText.bodyLarge('Some error occurred!'),
           );
         }
 

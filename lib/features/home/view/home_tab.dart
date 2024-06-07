@@ -1,16 +1,19 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:locate_me/core/constant/category.dart';
-import 'package:locate_me/core/dto/category_dto.dart';
 import 'package:locate_me/core/enums/enums.dart';
+import 'package:locate_me/core/extension/screen_size.dart';
 import 'package:locate_me/core/widget/category_item.dart';
 import 'package:locate_me/core/widget/custom_segmented_button.dart';
+import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/core/widget/empty_box.dart';
 import 'package:locate_me/core/widget/loading.dart';
 import 'package:locate_me/features/home/provider/category_filter_provider.dart';
 import 'package:locate_me/features/home/provider/filter_provider.dart';
 import 'package:locate_me/features/home/provider/home_view_mode_provider.dart';
+import 'package:locate_me/features/home/provider/search_input_provider.dart';
 import 'package:locate_me/features/home/view/widgets/list_on_map/osm_view/osm_view.dart';
 import 'package:locate_me/features/home/view/widgets/normal_list/normal_list.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -67,10 +70,13 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                           suffixIcon: const Icon(Icons.search),
                           labelText: 'Search...',
                         ),
+                        onChanged: (value) {
+                          ref.read(searchInputProvider.notifier).state = value;
+                        },
                       ),
                     ),
                     Container(
-                      height: MediaQuery.sizeOf(context).height * 0.08,
+                      height: context.screenWidth * 0.18,
                       alignment: Alignment.bottomCenter,
                       // color: Colors.blue,
                       child: Center(
@@ -80,10 +86,8 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                             final selectedCategory =
                                 ref.watch(categoryFilterProvider).name;
 
-                            log(selectedCategory);
-                            log(item.name);
                             return Padding(
-                                padding: const EdgeInsets.all(6.0),
+                                padding: const EdgeInsets.all(4.0),
                                 child: CategoryBox(
                                   isSelected: selectedCategory ==
                                       item.name.toLowerCase(),
@@ -94,7 +98,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                       (e) =>
                                           e.name.toLowerCase() ==
                                           item.name.toLowerCase(),
-                                      orElse: () => CategoryEnums.other,
+                                      orElse: () => CategoryEnums.all,
                                     );
 
                                     ref
@@ -121,6 +125,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                             },
                             homeViewMode: ref.watch(homeViewModeProvider),
                           ),
+                          Expanded(child: Container()),
                           const CustomSwitch()
                         ],
                       ),
@@ -144,11 +149,9 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                                       .when(
                                       data: (value) {
                                         return switch (value) {
-                                          MapLayer.google => GoogleView(
-                                              places: data,
-                                              polyLineFromPoint: false,
-                                            ),
-                                          MapLayer.osm => const OsmView(),
+                                          MapLayer.google =>
+                                            GoogleView(places: data),
+                                          MapLayer.osm => OsmView(places: data),
                                         };
                                       },
                                       error: (error, stackTrace) {
@@ -165,7 +168,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
             );
           },
           error: (error, stackTrace) {
-            return Center(child: Text('$error'));
+            return Center(child: CustomText.bodyLarge('$error'));
           },
           loading: () {
             return const MyLoading();

@@ -4,8 +4,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 
-import '../constant/category.dart';
-
 class CustomMarkerAddInfoBox extends StatefulWidget {
   final LatLng position;
   final bool showCard;
@@ -31,61 +29,54 @@ class _CustomMarkerAddInfoBoxState extends State<CustomMarkerAddInfoBox> {
         builder: (context, ref, child) {
           return Column(
             children: [
-              // Container(
-              //   color: Colors.transparent,
-              //   child: Center(
-              //     child: Container(
-              //       alignment: Alignment.center,
-              //       decoration: BoxDecoration(
-              //           color: showCardStat
-              //               ? Theme.of(context).colorScheme.primary
-              //               : null,
-              //           borderRadius: BorderRadius.circular(6)),
-              //       // width: 260,
-              //       // height: 120,
-              //       child: Padding(
-              //         padding: const EdgeInsets.all(8.0),
-              //         child: Column(
-              //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //           crossAxisAlignment: CrossAxisAlignment.center,
-              //           children: [
-              //             showCardStat
-              //                 ? CustomText.bodyLarge(
-              //                     'latitude: ${widget.position.latitude} \n longitude ${widget.position.longitude}',
-              //                     textAlign: TextAlign.center,
-              //                     customStyle: TextStyle(
-              //                         color: Theme.of(context)
-              //                             .colorScheme
-              //                             .onPrimary),
-              //                   )
-              //                 : Container(),
-              //           ],
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              Center(
-                child: widget.placeItemModel != null
-                    ? SizedBox(
-                        width: 40,
-                        height: 40,
-                        child: (Image.asset(
-                            categoryMap[widget.placeItemModel?.category] != null
-                                ? categoryMap[widget.placeItemModel?.category]!
-                                    .icon
-                                : widget.placeItemModel!.icon)),
-                      )
-                    : IconButton(
-                        icon: Icon(Icons.location_on,
-                            size: 50,
-                            color: Theme.of(context).colorScheme.primary),
-                        onPressed: () {
-                          // setState(() {
-                          //   showCardStat = !showCardStat;
-                          // });
-                        },
+              Container(
+                color: Colors.transparent,
+                child: Center(
+                  child: Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: showCardStat
+                            ? Theme.of(context).colorScheme.primary
+                            : null,
+                        borderRadius: BorderRadius.circular(6)),
+                    // width: 260,
+                    height: 30,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          showCardStat
+                              ? Expanded(
+                                  child: CustomText.bodyLarge(
+                                    '${widget.placeItemModel?.title}',
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    customStyle: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                        overflow: TextOverflow.ellipsis),
+                                  ),
+                                )
+                              : Container(),
+                        ],
                       ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: IconButton(
+                  icon: Icon(Icons.location_on,
+                      size: 50, color: Theme.of(context).colorScheme.primary),
+                  onPressed: () {
+                    setState(() {
+                      showCardStat = !showCardStat;
+                    });
+                  },
+                ),
               )
             ],
           );

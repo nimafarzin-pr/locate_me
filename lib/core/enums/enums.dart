@@ -1,5 +1,5 @@
 enum CategoryEnums {
-  other,
+  all,
   home,
   cafe,
   street,

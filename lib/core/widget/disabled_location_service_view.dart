@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:locate_me/core/widget/dialogs/permission.dart';
 
+import 'custom_text.dart';
+
 class DisabledLocationServiceView extends StatelessWidget {
   const DisabledLocationServiceView({super.key});
 
@@ -15,7 +17,7 @@ class DisabledLocationServiceView extends StatelessWidget {
         Center(
             child: Column(
           children: [
-            const Text(
+            CustomText.bodyLarge(
                 'Please enable location and grant location permission to continue!'),
             TextButton(
                 onPressed: () async {
@@ -24,7 +26,7 @@ class DisabledLocationServiceView extends StatelessWidget {
                     await showLocationServiceDialog(context);
                   }
                 },
-                child: const Text("Enable"))
+                child: CustomText.bodyLarge("Enable"))
           ],
         )),
       ],

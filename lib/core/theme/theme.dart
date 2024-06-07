@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:locate_me/core/constant/constant_names.dart';
 
 import '../sizing/my_text_size.dart';
 
@@ -46,8 +47,9 @@ class GlobalThemeData {
   // Function to build ThemeData
   static ThemeData _buildThemeData(ColorScheme colorScheme, Color focusColor) {
     return ThemeData(
-      fontFamily: 'IRANSansMobile',
-      textTheme: const TextTheme(
+      fontFamily: appFontFamily,
+      fontFamilyFallback: const [appFontFamily],
+      textTheme: TextTheme(
         displayLarge: AppTextStyles.displayLarge,
         displayMedium: AppTextStyles.displayMedium,
         displaySmall: AppTextStyles.displaySmall,

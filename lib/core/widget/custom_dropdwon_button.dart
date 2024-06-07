@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:locate_me/core/extension/screen_size.dart';
+import 'package:locate_me/core/widget/custom_text.dart';
 
 import '../utils/validators/input/input_validate.dart';
 import '../utils/validators/input/input_validate_Item/empty_data.dart';
@@ -32,9 +33,9 @@ class CustomDropdownField<T> extends StatelessWidget {
         menuMaxHeight: context.screenHeight / 3,
         hint: Align(
           alignment: Alignment.centerLeft,
-          child: Text(
+          child: CustomText.bodyLarge(
             hintText,
-            style: TextStyle(
+            customStyle: TextStyle(
               color: Colors.grey[400],
             ),
           ),

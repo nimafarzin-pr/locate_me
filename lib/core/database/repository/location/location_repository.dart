@@ -12,7 +12,7 @@ abstract class ILocationRepository {
   Future<int> deleteLocation(int id);
   Future<PlaceItemModel?> getLocation(int id);
   Future<void> deleteAllLocations();
-  Future<void> updateFavoriteStatus(int id, bool isFavorite);
+  Future<void> updateFavoriteStatus(int id);
   Stream<List<PlaceItemModel>> watchFavoriteLocations();
   Stream<List<PlaceItemModel>> watchLocationsByCategory(CategoryEnums category);
 }
