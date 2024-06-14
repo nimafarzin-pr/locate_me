@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:locate_me/core/router/router.dart';
+import 'package:locate_me/core/navigation/router/router.dart';
 import 'package:locate_me/core/theme/theme.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

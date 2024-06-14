@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:locate_me/core/database/type_converter/place_model_converter.dart';
 import 'package:locate_me/core/enums/enums.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
@@ -102,6 +104,7 @@ class LocationRepositoryImpl implements ILocationRepository {
 
   @override
   Future<void> updateLocation(int id, PlaceItemModel location) async {
+    log('INNN $id');
     try {
       final toDbModel =
           const DbPlaceModelConverter().toSql(location).toCompanion(true);

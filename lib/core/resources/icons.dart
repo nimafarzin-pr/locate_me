@@ -14,4 +14,5 @@ class MyIcons {
   static const String airport = 'assets/category/airport.png';
   static const String metro = 'assets/category/metro.png';
   static const String allCategory = 'assets/category/all.png';
+  static const String travel = 'assets/category/travel.png';
 }

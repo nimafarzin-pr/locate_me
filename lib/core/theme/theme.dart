@@ -12,16 +12,17 @@ class GlobalThemeData {
 
   // Light color scheme
   static const ColorScheme _lightColorScheme = ColorScheme(
-    primary: Color(0xFF4CAF50), // A vibrant green for app branding
-    onPrimary: Colors.white, // White text on primary color
-    secondary: Color(0xFF2196F3), // A bright blue for additional elements
-    onSecondary: Colors.white, // White text on secondary color
-    error: Colors.redAccent, // Red for error messages or alerts
-    onError: Colors.white, // Black text on background color
-    surface: Color(0xF5F5F5F5), // White surface color for elevated UI elements
-    onSurface: Color(0xFF333333), // Dark gray text on surface color
-    brightness: Brightness.light,
-  );
+      primary: Color(0xFF4CAF50), // A vibrant green for app branding
+      onPrimary: Colors.white, // White text on primary color
+      secondary: Color(0xFF2196F3), // A bright blue for additional elements
+      onSecondary: Colors.white, // White text on secondary color
+      error: Colors.redAccent, // Red for error messages or alerts
+      onError: Colors.white, // Black text on background color
+      surface:
+          Color(0xF5F5F5F5), // White surface color for elevated UI elements
+      onSurface: Color(0xFF333333), // Dark gray text on surface color
+      brightness: Brightness.light,
+      surfaceContainer: Colors.white);
 
 // Dark color scheme
   static const ColorScheme _darkColorScheme = ColorScheme(
@@ -33,6 +34,7 @@ class GlobalThemeData {
     onPrimary: Colors.white, // White text on primary color
     onSecondary: Colors.white, // White text on secondary color
     onSurface: Color(0xFFFFFFFF), // White text on surface color
+    surfaceContainer: Colors.black,
     brightness: Brightness.dark,
   );
 

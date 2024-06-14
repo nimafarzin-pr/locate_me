@@ -6,10 +6,12 @@ void showWarningDialog({
   required String title,
   String content = 'Do you want to continue?',
   required VoidCallback onConfirm,
+  bool showCancelButton = true,
 }) {
   showDialog(
     context: context,
     builder: (context) => WarningWidget(
+      showCancelButton: showCancelButton,
       title: title,
       content: content,
       onConfirm: onConfirm,

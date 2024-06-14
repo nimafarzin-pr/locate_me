@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,17 +15,18 @@ import 'package:locate_me/features/home/model/place_item_model.dart';
 import '../../../../core/widget/dialogs/custom_map_options.dart';
 import '../../../../core/widget/general_map_wrapper.dart';
 import '../../../../core/widget/loading.dart';
-import '../../provider/google_map_provider.dart';
+import '../../../home/provider/edit_item_provider.dart';
+import '../../provider/google_map_location_provider.dart';
 import 'dialog/add_location_dialog.dart';
 
-class GoogleMapAddView extends StatefulWidget {
+class GoogleMapAddView extends ConsumerStatefulWidget {
   const GoogleMapAddView({super.key});
 
   @override
-  State<GoogleMapAddView> createState() => _GoogleMapAddViewState();
+  ConsumerState<GoogleMapAddView> createState() => _GoogleMapAddViewState();
 }
 
-class _GoogleMapAddViewState extends State<GoogleMapAddView> {
+class _GoogleMapAddViewState extends ConsumerState<GoogleMapAddView> {
   late Completer<GoogleMapController> _mapController;
 
   @override
@@ -37,7 +39,7 @@ class _GoogleMapAddViewState extends State<GoogleMapAddView> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, child) {
-        final pos = ref.watch(currentPositionProvider);
+        final pos = ref.watch(googleMapCurrentPositionProvider);
         if (pos.hasError) {
           return Center(
             child: CustomText.bodyLarge('Some error occurred!'),
@@ -50,27 +52,49 @@ class _GoogleMapAddViewState extends State<GoogleMapAddView> {
 
         final result = pos.value!.location;
         final position = LatLng(result.lat, result.lng);
+        Set<Marker> marker = {};
+        final edit = ref.read(editItemProvider);
+        final isEditMode = ref.watch(isEditModeProvider);
+
+        marker = {
+          Marker(
+              icon: BitmapDescriptor.defaultMarkerWithHue(
+                  BitmapDescriptor.hueGreen),
+              markerId: const MarkerId('newMarker'),
+              position: position)
+        };
+        log('_+_+_$edit');
+        if (isEditMode) {
+          marker = {
+            Marker(
+                icon: BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueGreen),
+                markerId: const MarkerId('newMarker'),
+                position: LatLng(edit!.latlng.latitude, edit.latlng.longitude))
+          };
+        }
+
         return GeneralMapWrapper(
           map: GoogleMap(
             style: GoogleMapStyle.mapStyles[
                 ref.watch(mapSettingStyleNotifierProvider).value?.name],
             onCameraMove: (cameraPosition) {
+              if (isEditMode) {
+                ref.read(editItemProvider.notifier).updatePlaceItem(
+                    edit?.copyWith(
+                        latlng: LatLong(
+                            latitude: cameraPosition.target.latitude,
+                            longitude: cameraPosition.target.longitude)));
+              }
               final latlng2 = latLngTwo.LatLng(cameraPosition.target.latitude,
                   cameraPosition.target.longitude);
               ref
-                  .read(addScreenLocationProvider.notifier)
+                  .read(osmCurrentPositionProvider.notifier)
                   .updateLocation(latlng2);
             },
-            markers: {
-              Marker(
-                  icon: BitmapDescriptor.defaultMarkerWithHue(
-                      BitmapDescriptor.hueGreen),
-                  markerId: const MarkerId('newMarker'),
-                  position: position)
-            },
+            markers: marker,
             zoomControlsEnabled: false,
             onMapCreated: (controller) {
-              ref.refresh(addScreenLocationProvider);
               _mapController = Completer();
               _mapController.complete(controller);
             },
@@ -93,20 +117,25 @@ class _GoogleMapAddViewState extends State<GoogleMapAddView> {
           },
           myLocationOnTab: () {
             ref
-                .read(addScreenLocationProvider.notifier)
+                .read(osmCurrentPositionProvider.notifier)
                 .animateToMyLocationOnGoogleMap(mapController: _mapController);
           },
-          addLocationOnTab: () async {
+          addOrUpdateLocationOnTab: () async {
             await showDialog(
               barrierDismissible: true,
               context: context,
               builder: (context) {
-                return AddLocationView<PlaceItemModel>(
+                return AddOrUpdateLocationDialogView<PlaceItemModel>(
                   latLng: position,
-                  onAccept: (location) async {
-                    await ref
-                        .read(addScreenLocationProvider.notifier)
-                        .addLocation(location);
+                  onAccept: (PlaceItemModel location) async {
+                    log('>>|| $location');
+                    !isEditMode
+                        ? await ref
+                            .read(osmCurrentPositionProvider.notifier)
+                            .addLocationItem(location)
+                        : await ref
+                            .read(osmCurrentPositionProvider.notifier)
+                            .updateLocationItem(location);
                   },
                 );
               },

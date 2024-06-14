@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as googleLatLng;
+import 'package:latlong2/latlong.dart';
 
 part 'place_item_model.freezed.dart';
 part 'place_item_model.g.dart';
@@ -32,4 +34,11 @@ class LatLong with _$LatLong {
 
   factory LatLong.fromJson(Map<String, dynamic> json) =>
       _$LatLongFromJson(json);
+
+  factory LatLong.fromLatLang2(LatLng latlng) {
+    return LatLong(latitude: latlng.latitude, longitude: latlng.longitude);
+  }
+  factory LatLong.fromGoogleLatLong(googleLatLng.LatLng latlng) {
+    return LatLong(latitude: latlng.latitude, longitude: latlng.longitude);
+  }
 }

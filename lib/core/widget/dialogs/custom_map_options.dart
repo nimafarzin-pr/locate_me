@@ -39,7 +39,7 @@ class _CustomMapOptionsDialogState extends State<CustomMapOptionsDialog> {
             children: [
               InkWell(
                 onTap: () {
-                  context.pop();
+                  Navigator.pop(context);
                 },
               ),
               Center(
@@ -50,6 +50,9 @@ class _CustomMapOptionsDialogState extends State<CustomMapOptionsDialog> {
                   padding: const EdgeInsets.all(24),
                   margin: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        width: 2),
                     color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: const [

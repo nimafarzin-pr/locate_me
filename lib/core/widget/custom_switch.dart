@@ -17,7 +17,7 @@ class CustomSwitch extends ConsumerWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30.0),
         border: Border.all(color: Theme.of(context).colorScheme.onSurface),
-        color: Theme.of(context).colorScheme.surface,
+        color: Theme.of(context).colorScheme.surfaceContainer,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -57,12 +57,14 @@ class CustomSwitch extends ConsumerWidget {
           borderRadius: BorderRadius.circular(30.0),
           color: isActive
               ? Theme.of(context).colorScheme.primary
-              : Colors.transparent,
+              : Theme.of(context).colorScheme.surfaceContainer,
         ),
         child: CustomText.bodyLarge(
           label,
           customStyle: TextStyle(
-            color: isActive ? Colors.white : Colors.black,
+            color: isActive
+                ? Theme.of(context).colorScheme.surface
+                : Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
           ),
         ),

@@ -1,5 +1,5 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import 'custom_text.dart';
 
@@ -7,12 +7,14 @@ class WarningWidget extends StatelessWidget {
   final String title;
   final String content;
   final VoidCallback onConfirm;
+  final bool showCancelButton;
 
   const WarningWidget({
     super.key,
     required this.title,
     required this.content,
     required this.onConfirm,
+    this.showCancelButton = true,
   });
 
   @override
@@ -51,29 +53,36 @@ class WarningWidget extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextButton(
-                  style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                    side: const BorderSide(color: Colors.green),
-                    borderRadius: BorderRadius.circular(10),
-                  )),
-                  onPressed: () {
-                    context.pop();
-                  },
-                  child: CustomText.bodyLarge(
-                    'Cancel',
-                    customStyle: const TextStyle(
-                      color: Colors.grey,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
+                showCancelButton
+                    ? Row(
+                        children: [
+                          TextButton(
+                            style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                              side: const BorderSide(color: Colors.green),
+                              borderRadius: BorderRadius.circular(10),
+                            )),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: CustomText.bodyLarge(
+                              'Cancel',
+                              customStyle: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                        ],
+                      )
+                    : const SizedBox(),
                 ElevatedButton(
                   onPressed: () {
                     onConfirm();
-                    context.pop();
+                    Navigator.of(context).pop();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,

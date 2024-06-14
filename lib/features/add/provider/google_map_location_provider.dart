@@ -18,9 +18,10 @@ final listenablePositionProvider = FutureProvider.autoDispose((ref) async {
   return currentPosition;
 });
 
-final currentPositionProvider = FutureProvider.autoDispose((ref) async {
+final googleMapCurrentPositionProvider =
+    FutureProvider.autoDispose((ref) async {
   // final location = await Geolocator.getCurrentPosition();
-  final location = await ref.watch(addScreenLocationProvider.future);
+  final location = await ref.watch(osmCurrentPositionProvider.future);
 
   final places = [
     GoogleMapDto(
@@ -28,7 +29,7 @@ final currentPositionProvider = FutureProvider.autoDispose((ref) async {
         lng: location.longitude,
         customIcon: MyIcons.location)
   ];
-  final marker = ref.watch(getMarker(places.first).future);
+  // final marker = await ref.watch(getMarker(places.first).future);
   // return marker;
   return SingleMarkerDto(
     marker: {},

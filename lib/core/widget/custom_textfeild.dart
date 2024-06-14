@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import '../utils/validators/input/input_validate.dart';
@@ -16,10 +17,15 @@ class CustomTextField extends StatelessWidget {
   final InputBorder? focusedErrorBorder;
   final Color? cursorColor;
   final FormFieldValidator<String>? validator;
+  final Function(String)? onChanged;
+  final Widget? suffixIcon;
+  final Widget? prefixIcon;
+  final bool readOnly;
   // Add any other properties you might need
 
   const CustomTextField({
     super.key,
+    // Initialize any other properties with default values if needed
     required this.hintText,
     required this.controller,
     this.hintStyle,
@@ -32,7 +38,10 @@ class CustomTextField extends StatelessWidget {
     this.focusedErrorBorder,
     this.cursorColor,
     this.validator,
-    // Initialize any other properties with default values if needed
+    this.onChanged,
+    this.suffixIcon,
+    this.prefixIcon,
+    this.readOnly = false,
   });
 
   @override
@@ -40,6 +49,12 @@ class CustomTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
+        style: TextStyle(
+            color: readOnly
+                ? Theme.of(context).colorScheme.onSurface.withOpacity(0.5)
+                : null),
+        readOnly: readOnly,
+        onChanged: onChanged,
         controller: controller,
         validator: validator ??
             (value) {
@@ -54,11 +69,13 @@ class CustomTextField extends StatelessWidget {
               );
             },
         decoration: InputDecoration(
-          helperText: '',
+          suffixIcon: suffixIcon,
+          prefixIcon: prefixIcon,
           hintText: hintText,
           hintStyle: hintStyle ?? TextStyle(color: Colors.grey[400]),
           filled: true,
-          fillColor: fillColor ?? Colors.white,
+          fillColor:
+              fillColor ?? Theme.of(context).colorScheme.surfaceContainer,
           contentPadding: contentPadding ??
               const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
           border: border ??
@@ -66,43 +83,43 @@ class CustomTextField extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.0),
                 borderSide: const BorderSide(
                   color: Colors.greenAccent,
-                  width: 2.0,
+                  width: 1.0,
                 ),
               ),
           enabledBorder: enabledBorder ??
               OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
-                borderSide: const BorderSide(
-                  color: Colors.greenAccent,
-                  width: 2.0,
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  width: 1.0,
                 ),
               ),
           focusedBorder: focusedBorder ??
               OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
-                borderSide: const BorderSide(
-                  color: Colors.lightGreen,
-                  width: 2.0,
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  width: 1.0,
                 ),
               ),
           errorBorder: errorBorder ??
               OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
-                borderSide: const BorderSide(
-                  color: Colors.red,
-                  width: 2.0,
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.error,
+                  width: 1.0,
                 ),
               ),
           focusedErrorBorder: focusedErrorBorder ??
               OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
-                borderSide: const BorderSide(
-                  color: Colors.redAccent,
-                  width: 2.0,
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.error,
+                  width: 1.0,
                 ),
               ),
         ),
-        cursorColor: cursorColor ?? Colors.blueAccent,
+        cursorColor: cursorColor ?? Theme.of(context).colorScheme.secondary,
       ),
     );
   }

@@ -1,4 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:locate_me/core/extension/screen_size.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 
@@ -13,6 +15,11 @@ class CustomDropdownField<T> extends StatelessWidget {
   final String Function(T) itemAsString;
   final FormFieldValidator<T>? validator;
   final Row Function(T) itemAsWidget;
+  final InputBorder? border;
+  final InputBorder? enabledBorder;
+  final InputBorder? focusedBorder;
+  final InputBorder? errorBorder;
+  final InputBorder? focusedErrorBorder;
 
   const CustomDropdownField({
     super.key,
@@ -23,6 +30,11 @@ class CustomDropdownField<T> extends StatelessWidget {
     required this.itemAsString,
     this.validator,
     required this.itemAsWidget,
+    this.border,
+    this.enabledBorder,
+    this.focusedBorder,
+    this.errorBorder,
+    this.focusedErrorBorder,
   });
 
   @override
@@ -43,45 +55,50 @@ class CustomDropdownField<T> extends StatelessWidget {
         decoration: InputDecoration(
           alignLabelWithHint: true,
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Theme.of(context).colorScheme.surfaceContainer,
           helperText: '',
           contentPadding:
               const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(
-              color: Colors.greenAccent,
-              width: 2.0,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(
-              color: Colors.greenAccent,
-              width: 2.0,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(
-              color: Colors.lightGreen,
-              width: 2.0,
-            ),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(
-              color: Colors.red,
-              width: 2.0,
-            ),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(
-              color: Colors.redAccent,
-              width: 2.0,
-            ),
-          ),
+          border: border ??
+              OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: const BorderSide(
+                  color: Colors.greenAccent,
+                  width: 1.0,
+                ),
+              ),
+          enabledBorder: enabledBorder ??
+              OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  width: 1.0,
+                ),
+              ),
+          focusedBorder: focusedBorder ??
+              OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  width: 1.0,
+                ),
+              ),
+          errorBorder: errorBorder ??
+              OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.error,
+                  width: 1.0,
+                ),
+              ),
+          focusedErrorBorder: focusedErrorBorder ??
+              OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.error,
+                  width: 1.0,
+                ),
+              ),
         ),
         value: value,
         onChanged: onChanged,

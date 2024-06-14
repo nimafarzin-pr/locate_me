@@ -63,6 +63,7 @@ dependencies:
   url_launcher: ^6.2.6
   widget_to_marker: ^1.0.5
   flutter_screenutil: ^5.9.3
+  camera: ^0.11.0+1
 
 
 

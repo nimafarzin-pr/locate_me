@@ -13,6 +13,7 @@ import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/core/widget/dialogs/warning_dialog.dart';
 import 'package:locate_me/core/widget/rate.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
+import 'package:locate_me/features/home/provider/edit_item_provider.dart';
 import 'package:locate_me/features/home/provider/favorite_filter_provider.dart';
 import 'package:locate_me/features/home/provider/home_screen_repository_provider.dart';
 
@@ -36,14 +37,21 @@ class LocationItem extends ConsumerWidget {
           left: isCarouselItem ? 8 : 0,
           right: isCarouselItem ? 8 : 0),
       width: context.screenWidth,
-      height: context.screenHeight / 4,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
+      height: context.screenWidth / 1.8,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(
           Radius.circular(16),
+        ),
+        gradient: LinearGradient(
+          colors: [
+            Theme.of(context).colorScheme.primary.withOpacity(0.5),
+            Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+          ],
         ),
       ),
       child: Card(
         elevation: 3,
+        color: Theme.of(context).colorScheme.surfaceContainer,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -67,10 +75,16 @@ class LocationItem extends ConsumerWidget {
                                         width: 1,
                                       ),
                                     ),
-                                    child: Image.asset(
-                                        categoryMap[item.category] != null
-                                            ? categoryMap[item.category]!.icon
-                                            : item.icon)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Image.asset(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
+                                          categoryMap[item.category] != null
+                                              ? categoryMap[item.category]!.icon
+                                              : item.icon),
+                                    )),
                                 const SizedBox(width: 4),
                                 Expanded(
                                   child: CustomText.bodyLarge(
@@ -88,9 +102,9 @@ class LocationItem extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CustomRichText(
-                                    title: 'Address: ', value: item.address),
+                                    title: 'Title: ', value: item.title),
                                 CustomRichText(
-                                    title: 'Distance: ', value: item.distance),
+                                    title: 'Address: ', value: item.address),
                                 CustomRichText(
                                     title: 'Date: ', value: item.date),
                               ],
@@ -115,7 +129,13 @@ class LocationItem extends ConsumerWidget {
                                 //       FontAwesomeIcons.mapLocationDot,
                                 //     )),
                                 IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      log('ID>>> ${item.id}');
+                                      ref
+                                          .read(editItemProvider.notifier)
+                                          .updatePlaceItem(item);
+                                      context.push(Routes.add);
+                                    },
                                     icon: const FaIcon(
                                       color: Colors.grey,
                                       FontAwesomeIcons.route,

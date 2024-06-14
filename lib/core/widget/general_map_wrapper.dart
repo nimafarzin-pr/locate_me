@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../features/home/provider/edit_item_provider.dart';
 import 'custom_location_button.dart';
 
-class GeneralMapWrapper extends StatelessWidget {
+class GeneralMapWrapper extends ConsumerWidget {
   final Widget map;
   final Function() settingOnTab;
   final Function()? myLocationOnTab;
-  final Function()? addLocationOnTab;
+  final Function()? addOrUpdateLocationOnTab;
+
   const GeneralMapWrapper({
     super.key,
     required this.settingOnTab,
     this.myLocationOnTab,
-    this.addLocationOnTab,
+    this.addOrUpdateLocationOnTab,
     required this.map,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Stack(
       children: [
         map,
@@ -33,24 +36,26 @@ class GeneralMapWrapper extends StatelessWidget {
           top: 20,
           right: 20,
           child: FloatingActionButton(
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             onPressed: settingOnTab,
             child: FaIcon(
               FontAwesomeIcons.sliders,
-              color: Theme.of(context).colorScheme.onPrimary,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),
-        addLocationOnTab != null
+        addOrUpdateLocationOnTab != null
             ? Positioned(
                 bottom: 90,
                 right: 20,
                 child: FloatingActionButton(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  onPressed: addLocationOnTab ?? () {},
+                  backgroundColor: Theme.of(context).colorScheme.surface,
+                  onPressed: addOrUpdateLocationOnTab ?? () {},
                   child: FaIcon(
-                    FontAwesomeIcons.floppyDisk,
-                    color: Theme.of(context).colorScheme.onPrimary,
+                    ref.watch(isEditModeProvider)
+                        ? FontAwesomeIcons.edit
+                        : FontAwesomeIcons.plus,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               )
