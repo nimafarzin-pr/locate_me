@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:locate_me/core/extension/screen_size.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 
 import '../dto/category_dto.dart';
@@ -34,7 +33,7 @@ class CategoryBox extends StatelessWidget {
         elevation: 1,
         color: isSelected
             ? Theme.of(context).colorScheme.primary
-            : Theme.of(context).colorScheme.surface,
+            : Theme.of(context).colorScheme.surfaceContainer,
         child: InkWell(
           onTap: onTap,
           child: Center(
@@ -61,7 +60,7 @@ class CategoryBox extends StatelessWidget {
                         height: 16.w,
                         item.icon,
                         color: isSelected
-                            ? Theme.of(context).colorScheme.onSecondary
+                            ? Theme.of(context).colorScheme.surface
                             : Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
@@ -75,7 +74,7 @@ class CategoryBox extends StatelessWidget {
                         customStyle: TextStyle(
                             // fontSize: 12,
                             color: isSelected
-                                ? Theme.of(context).colorScheme.onSecondary
+                                ? Theme.of(context).colorScheme.surface
                                 : Theme.of(context).colorScheme.onSurface),
                       ),
                     )

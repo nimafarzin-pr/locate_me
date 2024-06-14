@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart' as flMap;
@@ -111,9 +112,15 @@ class AddLocationNotifier extends AutoDisposeAsyncNotifier<latLang2.LatLng> {
     await controller.animateCamera(CameraUpdate.newLatLng(position));
   }
 
-  Future<void> addLocation(PlaceItemModel location) async {
+  Future<void> addLocationItem(PlaceItemModel location) async {
     final repo = await ref.watch(addRepositoryProvider.future);
     await repo.addLocation(location: location);
+  }
+
+  Future<void> updateLocationItem(PlaceItemModel location) async {
+    log('??? $location');
+    final repo = await ref.watch(addRepositoryProvider.future);
+    await repo.updateLocation(location: location);
   }
 
   void editLocation() {}

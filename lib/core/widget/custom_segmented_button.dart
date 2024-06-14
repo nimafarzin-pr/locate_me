@@ -28,9 +28,9 @@ class _CustomSegmentedButtonState extends State<CustomSegmentedButton> {
         // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         visualDensity: VisualDensity(horizontal: 0.w, vertical: 0.w),
         elevation: 2,
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
         foregroundColor: Theme.of(context).colorScheme.onSurface,
-        selectedForegroundColor: Theme.of(context).colorScheme.onSecondary,
+        selectedForegroundColor: Theme.of(context).colorScheme.surfaceContainer,
         selectedBackgroundColor: Theme.of(context).colorScheme.primary,
       ),
       segments: <ButtonSegment<HomeViewMode>>[

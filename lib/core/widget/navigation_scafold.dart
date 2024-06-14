@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:locate_me/core/navigation/router/router.dart';
 
 // Stateful nested navigation based on:
 // https://github.com/flutter/packages/blob/main/packages/go_router/example/lib/stateful_shell_route.dart
@@ -13,16 +16,15 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
 
   void _goBranch(int index) {
-    if (true) {
-      navigationShell.goBranch(
-        index,
-        // A common pattern when using bottom navigation bars is to support
-        // navigating to the initial location when tapping the item that is
-        // already active. This example demonstrates how to support this behavior,
-        // using the initialLocation parameter of goBranch.
-        initialLocation: index == navigationShell.currentIndex,
-      );
-    }
+    log('R ${router.routerDelegate.currentConfiguration.fullPath}');
+    navigationShell.goBranch(
+      index,
+      // A common pattern when using bottom navigation bars is to support
+      // navigating to the initial location when tapping the item that is
+      // already active. This example demonstrates how to support this behavior,
+      // using the initialLocation parameter of goBranch.
+      initialLocation: index == navigationShell.currentIndex,
+    );
   }
 
   @override
@@ -33,7 +35,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
         body: navigationShell,
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Theme.of(context).colorScheme.surface,
+          backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
           unselectedItemColor: Theme.of(context).colorScheme.onSurface,
           selectedItemColor: Theme.of(context).colorScheme.primary,
           unselectedIconTheme: IconThemeData(size: 20.w),
@@ -46,11 +48,11 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.add),
+              icon: FaIcon(FontAwesomeIcons.plus),
               label: 'Add',
             ),
             BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.ellipsis),
+              icon: Icon(Icons.settings_suggest_outlined),
               label: 'Setting',
             ),
           ],

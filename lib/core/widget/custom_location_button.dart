@@ -11,14 +11,14 @@ class CustomLocationButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: onPressed,
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
       elevation: 10,
-      splashColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.4),
+      splashColor: Theme.of(context).colorScheme.onSecondary.withOpacity(0.4),
       child: Icon(Icons.my_location,
-          color: Theme.of(context).colorScheme.onPrimary),
+          color: Theme.of(context).colorScheme.onSurface),
     );
   }
 }

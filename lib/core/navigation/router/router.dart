@@ -8,9 +8,10 @@ import 'package:locate_me/features/setting/view/setting_tab.dart';
 
 // private navigators
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorAKey = GlobalKey<NavigatorState>(debugLabel: 'shellA');
-final _shellNavigatorBKey = GlobalKey<NavigatorState>(debugLabel: 'shellB');
-final _shellNavigatorCKey = GlobalKey<NavigatorState>(debugLabel: 'shellC');
+final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(debugLabel: 'shellA');
+final _shellNavigatorAddKey = GlobalKey<NavigatorState>(debugLabel: 'shellB');
+final _shellNavigatorSettingKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellC');
 
 final router = GoRouter(
   initialLocation: '/',
@@ -25,7 +26,7 @@ final router = GoRouter(
       branches: [
         // first branch (A)
         StatefulShellBranch(
-          navigatorKey: _shellNavigatorAKey,
+          navigatorKey: _shellNavigatorHomeKey,
           routes: [
             // top route inside branch
             GoRoute(
@@ -55,6 +56,7 @@ final router = GoRouter(
         ),
         // second branch (B)
         StatefulShellBranch(
+          navigatorKey: _shellNavigatorAddKey,
           routes: [
             // top route inside branch
             GoRoute(
@@ -69,7 +71,7 @@ final router = GoRouter(
         ),
         // second branch (C)
         StatefulShellBranch(
-          navigatorKey: _shellNavigatorCKey,
+          navigatorKey: _shellNavigatorSettingKey,
           routes: [
             // top route inside branch
             GoRoute(

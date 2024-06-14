@@ -1,13 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:locate_me/core/constant/category.dart';
 import 'package:locate_me/core/enums/enums.dart';
 import 'package:locate_me/core/extension/screen_size.dart';
 import 'package:locate_me/core/widget/category_item.dart';
 import 'package:locate_me/core/widget/custom_segmented_button.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
+import 'package:locate_me/core/widget/custom_textfeild.dart';
 import 'package:locate_me/core/widget/empty_box.dart';
 import 'package:locate_me/core/widget/loading.dart';
 import 'package:locate_me/features/home/provider/category_filter_provider.dart';
@@ -36,6 +34,14 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
 
   HomeViewMode homeListShowMode = HomeViewMode.list;
 
+  late TextEditingController _searchController;
+
+  @override
+  void initState() {
+    _searchController = TextEditingController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer(
@@ -46,34 +52,16 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
             final data = ref.watch(filteredItemsProvider);
             return Scaffold(
               body: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    Card(
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              width: 0,
-                              style: BorderStyle.none,
-                            ),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: const BorderSide(
-                              width: 0,
-                              style: BorderStyle.none,
-                            ),
-                          ),
-                          suffixIcon: const Icon(Icons.search),
-                          labelText: 'Search...',
-                        ),
-                        onChanged: (value) {
-                          ref.read(searchInputProvider.notifier).state = value;
-                        },
-                      ),
+                    CustomTextField(
+                      suffixIcon: const Icon(Icons.manage_search_sharp),
+                      onChanged: (value) {
+                        ref.read(searchInputProvider.notifier).state = value;
+                      },
+                      hintText: 'Search...',
+                      controller: _searchController,
                     ),
                     Container(
                       height: context.screenWidth * 0.18,

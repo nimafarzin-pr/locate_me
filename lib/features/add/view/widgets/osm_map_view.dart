@@ -10,6 +10,7 @@ import '../../../../core/widget/custom_add_info_box.dart';
 import '../../../../core/widget/dialogs/custom_map_options.dart';
 import '../../../../core/widget/general_map_wrapper.dart';
 import '../../../home/model/place_item_model.dart';
+import '../../../home/provider/edit_item_provider.dart';
 import '../../provider/osm_location_provider.dart';
 import 'dialog/add_location_dialog.dart';
 
@@ -39,17 +40,26 @@ class _HomePageState extends ConsumerState<OsmMapView>
   Widget build(BuildContext context) {
     return SafeArea(child: Consumer(
       builder: (context, ref, child) {
-        return ref.watch(addScreenLocationProvider).when(
+        return ref.watch(osmCurrentPositionProvider).when(
           data: (position) {
             return ref.watch(mapSettingStyleNotifierProvider).when(
               data: (data) {
+                final isEditMode = ref.watch(isEditModeProvider);
+                final editItem = ref.watch(editItemProvider);
                 return GeneralMapWrapper(
                   map: FlutterMap(
                     mapController: _mapController,
                     options: MapOptions(
                       onPositionChanged: (position, hasGesture) {
+                        if (isEditMode) {
+                          ref.read(editItemProvider.notifier).updatePlaceItem(
+                              editItem?.copyWith(
+                                  latlng: LatLong(
+                                      latitude: position.center!.latitude,
+                                      longitude: position.center!.longitude)));
+                        }
                         ref
-                            .read(addScreenLocationProvider.notifier)
+                            .read(osmCurrentPositionProvider.notifier)
                             .updateLocation(position.center);
                       },
                       initialCenter: position,
@@ -99,24 +109,28 @@ class _HomePageState extends ConsumerState<OsmMapView>
                   },
                   myLocationOnTab: () {
                     ref
-                        .read(addScreenLocationProvider.notifier)
+                        .read(osmCurrentPositionProvider.notifier)
                         .animateToMyLocationOnOsm(
                             destZoom: 20,
                             mapController: _mapController,
                             vsync: this);
                   },
-                  addLocationOnTab: () async {
+                  addOrUpdateLocationOnTab: () async {
                     await showDialog(
                       barrierDismissible: true,
                       context: context,
                       builder: (context) {
-                        return AddLocationView<PlaceItemModel>(
+                        return AddOrUpdateLocationDialogView<PlaceItemModel>(
                           latLng: googleMap.LatLng(
                               position.latitude, position.longitude),
                           onAccept: (location) async {
-                            await ref
-                                .read(addScreenLocationProvider.notifier)
-                                .addLocation(location);
+                            !isEditMode
+                                ? await ref
+                                    .read(osmCurrentPositionProvider.notifier)
+                                    .addLocationItem(location)
+                                : await ref
+                                    .read(osmCurrentPositionProvider.notifier)
+                                    .updateLocationItem(location);
                           },
                         );
                       },

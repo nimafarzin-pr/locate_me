@@ -1,10 +1,13 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:locate_me/core/extension/screen_size.dart';
 import 'package:locate_me/core/resources/icons.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
@@ -12,26 +15,37 @@ import 'package:locate_me/features/home/model/place_item_model.dart';
 
 import '../../../../../core/constant/category.dart';
 import '../../../../../core/dto/category_dto.dart';
-
 import '../../../../../core/widget/custom_accept_button.dart';
 import '../../../../../core/widget/custom_dropdwon_button.dart';
 import '../../../../../core/widget/custom_textfeild.dart';
+import '../../../../home/provider/edit_item_provider.dart';
 
-class AddLocationView<T> extends StatefulWidget {
+class AddOrUpdateLocationDialogView<T> extends ConsumerStatefulWidget {
   final LatLng latLng;
-  final Future<void> Function(T item) onAccept;
+  final String? title;
+  final String? address;
+  final String? description;
+  final String? category;
 
-  const AddLocationView({
+  final Future<void> Function(PlaceItemModel item) onAccept;
+
+  const AddOrUpdateLocationDialogView({
     super.key,
-    required this.onAccept,
     required this.latLng,
+    this.title,
+    this.address,
+    this.description,
+    this.category,
+    required this.onAccept,
   });
 
   @override
-  State<AddLocationView<T>> createState() => _AddLocationViewState<T>();
+  ConsumerState<AddOrUpdateLocationDialogView> createState() =>
+      _AddLocationViewState<T>();
 }
 
-class _AddLocationViewState<T> extends State<AddLocationView<T>> {
+class _AddLocationViewState<T>
+    extends ConsumerState<AddOrUpdateLocationDialogView> {
   final TextEditingController _latitudeController = TextEditingController();
   final TextEditingController _longitudeController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
@@ -41,10 +55,34 @@ class _AddLocationViewState<T> extends State<AddLocationView<T>> {
   final _formKey = GlobalKey<FormState>();
   CategoryItem? selectedCategory;
   double rate = 5;
+  String? date;
+  bool isFavorite = false;
 
   @override
   void initState() {
     super.initState();
+
+    Future.delayed(Duration.zero).then(
+      (value) async {
+        final edit = ref.watch(editItemProvider);
+        log('>>>>> $edit');
+        if (edit != null) {
+          setState(() {
+            // _latitudeController.text = edit.latlng.latitude.toString();
+            // _longitudeController.text = edit.latlng.longitude.toString();
+            _titleController.text = edit.title;
+            _addressController.text = edit.address;
+            _descriptionController.text = edit.description;
+            _categoryController.text = edit.category;
+            selectedCategory = categoryMap[edit.category];
+            rate = edit.rate;
+            date = edit.date;
+            isFavorite = edit.isFavorite;
+          });
+        }
+      },
+    );
+
     _latitudeController.text = widget.latLng.latitude.toString();
     _longitudeController.text = widget.latLng.longitude.toString();
   }
@@ -64,23 +102,27 @@ class _AddLocationViewState<T> extends State<AddLocationView<T>> {
   Widget build(BuildContext context) {
     double width = context.screenWidth;
     double height = context.screenHeight;
+    final editState = ref.watch(editItemProvider);
+    final isEditMode = ref.watch(isEditModeProvider);
+
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: Stack(
           children: [
             InkWell(
               onTap: () {
-                context.pop();
+                Navigator.pop(context);
               },
             ),
             Center(
               child: Container(
+                alignment: Alignment.center,
                 width: width / 1.1,
-                height: height / 1.2,
+                height: width / 0.6,
                 padding: const EdgeInsets.all(24),
                 margin: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: const [
                     BoxShadow(
@@ -108,12 +150,14 @@ class _AddLocationViewState<T> extends State<AddLocationView<T>> {
                           children: [
                             Expanded(
                               child: CustomTextField(
+                                  readOnly: true,
                                   hintText: 'latitude',
                                   controller: _latitudeController),
                             ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: CustomTextField(
+                                  readOnly: true,
                                   hintText: 'longitude',
                                   controller: _longitudeController),
                             ),
@@ -148,10 +192,11 @@ class _AddLocationViewState<T> extends State<AddLocationView<T>> {
                               itemAsWidget: (CategoryItem item) => Row(
                                 children: [
                                   Image(
-                                    width: 40,
-                                    height: 40,
+                                    width: 30,
+                                    height: 30,
                                     image: AssetImage(item.icon),
-                                    color: item.color,
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
                                   ),
                                   const SizedBox(width: 8),
                                   CustomText.bodyLarge(item.name),
@@ -159,7 +204,7 @@ class _AddLocationViewState<T> extends State<AddLocationView<T>> {
                               ),
                             ),
                             RatingBar.builder(
-                              initialRating: 5,
+                              initialRating: rate,
                               minRating: 1,
                               direction: Axis.horizontal,
                               allowHalfRating: true,
@@ -193,20 +238,30 @@ class _AddLocationViewState<T> extends State<AddLocationView<T>> {
                               final lng =
                                   double.parse(_longitudeController.text);
                               final data = PlaceItemModel(
-                                  icon: MyIcons.location,
+                                  icon: isEditMode
+                                      ? editState!.icon
+                                      : MyIcons.location,
+                                  id: ref.watch(editItemProvider)?.id,
                                   title: _titleController.text,
                                   address: _addressController.text,
-                                  distance: "",
-                                  date: DateTime.now().toIso8601String(),
+                                  description: _descriptionController.text,
+                                  date:
+                                      date ?? DateTime.now().toIso8601String(),
                                   category: selectedCategory != null
                                       ? selectedCategory!.name
                                       : "",
                                   latlng:
                                       LatLong(latitude: lat, longitude: lng),
                                   rate: rate,
-                                  isFavorite: false);
-                              await widget.onAccept(data as T);
-                              context.pop();
+                                  isFavorite: isFavorite);
+                              await widget.onAccept(data);
+                              Navigator.pop(context);
+                              if (isEditMode) {
+                                ref
+                                    .read(editItemProvider.notifier)
+                                    .updatePlaceItem(null);
+                                context.pop();
+                              }
                             },
                           ),
                         ),
