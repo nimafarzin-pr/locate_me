@@ -36,7 +36,7 @@ class Rate extends StatelessWidget {
           itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
           itemBuilder: (context, _) => Icon(
             Icons.star,
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.tertiary,
           ),
           onRatingUpdate: onRatingUpdate ?? (_) {},
           updateOnDrag: draggable,

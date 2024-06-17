@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:locate_me/core/constant/constant_names.dart';
+import 'package:locate_me/core/sizing/my_text_size.dart';
 
 class CustomRichText extends StatelessWidget {
   final String title;
@@ -17,14 +18,17 @@ class CustomRichText extends StatelessWidget {
         text: TextSpan(
           text: title,
           style: TextStyle(
+              fontSize: AppTextFontsAndSizing.bodyMediumFontSize,
               fontFamily: appFontFamily,
               fontWeight: FontWeight.normal,
               color: Theme.of(context).colorScheme.onSurface),
           children: <TextSpan>[
             TextSpan(
                 text: value,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w100, fontFamily: appFontFamily)),
+                style: TextStyle(
+                    fontSize: AppTextFontsAndSizing.bodySmallFontSize,
+                    fontWeight: FontWeight.w100,
+                    fontFamily: appFontFamily)),
           ],
         ),
       ),

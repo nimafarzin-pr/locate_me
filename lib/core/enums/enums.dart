@@ -14,4 +14,5 @@ enum CategoryEnums {
   college,
   airport,
   metro,
+  travel
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +11,7 @@ import 'package:locate_me/core/widget/loading.dart';
 
 import '../../../../../../core/helper/map/provider/map_setting_notifier_provider.dart';
 import '../../../../../../core/theme/osm_map_style.dart';
-import '../../../../../../core/widget/custom_add_info_box.dart';
+import '../../../../../../core/widget/custom_marker_add_info_box.dart';
 import '../../../../../../core/widget/dialogs/custom_map_options.dart';
 import '../../../../../../core/widget/general_map_wrapper.dart';
 import '../../../../model/dto/slider_notifier_dto.dart';
@@ -42,22 +44,13 @@ class _OsmViewState extends State<OsmView> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  int carouselIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, child) {
         return GeneralMapWrapper(
-          settingOnTab: () async {
-            await showDialog(
-              barrierDismissible: true,
-              context: context,
-              builder: (context) {
-                return CustomMapOptionsDialog(
-                  onOptionSelected: (p0) {},
-                );
-              },
-            );
-          },
           map: Stack(
             children: [
               ref.watch(mapSettingStyleNotifierProvider).when(
@@ -78,15 +71,21 @@ class _OsmViewState extends State<OsmView> with TickerProviderStateMixin {
                           ),
                       MarkerLayer(
                           rotate: true,
+                          alignment: Alignment.topCenter,
                           markers: widget.places.map((e) {
+                            final dex = widget.places.indexOf(e);
                             return Marker(
-                              height: context.screenHeight / 8,
+                              height: context.screenWidth / 3,
                               width: context.screenWidth / 2,
-                              alignment: Alignment.center,
+                              alignment: Alignment.topCenter,
                               point:
                                   LatLng(e.latlng.latitude, e.latlng.longitude),
                               child: CustomMarkerAddInfoBox(
+                                  markerColor: dex == carouselIndex
+                                      ? Theme.of(context).colorScheme.secondary
+                                      : null,
                                   placeItemModel: e,
+                                  showCard: dex == carouselIndex,
                                   position: LatLng(
                                       e.latlng.latitude, e.latlng.longitude)),
                               rotate: true,
@@ -111,6 +110,11 @@ class _OsmViewState extends State<OsmView> with TickerProviderStateMixin {
                   child: CustomCarouselSlider(
                     data: widget.places,
                     onPageChanged: (index, reason) async {
+                      log('$reason');
+
+                      setState(() {
+                        carouselIndex = index;
+                      });
                       final newData = SliderNotifierDTO<MapController>(
                           mapController: _mapController,
                           vsync: this,

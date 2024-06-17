@@ -5,4 +5,15 @@ class Routes {
   static const String add = '/add';
   static const String settings = '/setting';
   static const String search = '/search';
+  static const String editLocation = 'editLocationItem';
+
+  static List<String> routes = [
+    root,
+    home,
+    map,
+    add,
+    settings,
+    search,
+    editLocation
+  ];
 }

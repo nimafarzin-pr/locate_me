@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -9,13 +11,13 @@ import 'package:locate_me/core/widget/loading.dart';
 import 'package:locate_me/core/widget/permission_denied_screen.dart';
 import 'package:locate_me/features/add/view/widgets/google_map_view.dart';
 import 'package:locate_me/features/add/view/widgets/osm_map_view.dart';
+import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
 
 import '../../../core/helper/google_map/provider/permission_provider.dart';
 import '../../../core/helper/map/provider/map_setting_notifier_provider.dart';
 import '../../home/model/place_item_model.dart';
-import '../../home/provider/edit_item_provider.dart';
 import '../provider/osm_location_provider.dart';
-import 'widgets/dialog/add_location_dialog.dart';
+import 'widgets/dialog/add_or_update_location_dialog.dart';
 
 class AddTab extends ConsumerStatefulWidget {
   const AddTab({super.key});
@@ -29,26 +31,25 @@ class _AddTabState extends ConsumerState<AddTab> {
   void initState() {
     Future.delayed(Duration.zero).then(
       (value) async {
-        final edit = ref.read(editItemProvider);
+        final edit = ref.watch(editStateProvider);
         if (edit != null &&
-            !(router.routerDelegate.currentConfiguration.fullPath
-                .contains(Routes.add))) {
+            (router.routerDelegate.currentConfiguration.fullPath
+                .contains(Routes.editLocation))) {
+          log('EDDDIT++++ ${ref.read(editStateProvider)}');
+
           await showDialog(
             barrierDismissible: true,
             context: context,
             builder: (context) {
               return AddOrUpdateLocationDialogView<PlaceItemModel>(
+                editItem: edit,
                 latLng: LatLng(edit.latlng.latitude, edit.latlng.longitude),
                 onAccept: (location) async {
-                  final editItem = ref.read(editItemProvider);
-                  final isEditMode = editItem != null;
-                  !isEditMode
-                      ? await ref
-                          .read(osmCurrentPositionProvider.notifier)
-                          .addLocationItem(location)
-                      : await ref
-                          .read(osmCurrentPositionProvider.notifier)
-                          .updateLocationItem(location);
+                  await ref
+                      .read(currentPositionProvider.notifier)
+                      .updateLocationItem(location);
+                  ref.read(editStateProvider.notifier).state = null;
+                  ref.invalidate(editStateProvider);
                 },
               );
             },

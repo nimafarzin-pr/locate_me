@@ -14,7 +14,7 @@ final _shellNavigatorSettingKey =
     GlobalKey<NavigatorState>(debugLabel: 'shellC');
 
 final router = GoRouter(
-  initialLocation: '/',
+  initialLocation: Routes.root,
   navigatorKey: _rootNavigatorKey,
   debugLogDiagnostics: true,
   routes: [
@@ -30,27 +30,25 @@ final router = GoRouter(
           routes: [
             // top route inside branch
             GoRoute(
-              path: '/',
+              path: Routes.root,
+              name: Routes.root,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
                 child: const HomeTab(),
               ),
-              // routes: [
-              //   // child route
-              //   GoRoute(
-              //     path: Routes.home,
-              //     name: Routes.home,
-              //     pageBuilder: (context, state) {
-              //       // final Map<String, dynamic> param =
-              //       //     state.extra as Map<String, dynamic>;
-              //       // final symbol = param['symbolId']!;
-              //       return NoTransitionPage(
-              //         key: state.pageKey,
-              //         child: const AddTab(),
-              //       );
-              //     },
-              //   ),
-              // ],
+              routes: [
+                // child route
+                GoRoute(
+                  path: Routes.editLocation,
+                  name: Routes.editLocation,
+                  pageBuilder: (context, state) {
+                    return NoTransitionPage(
+                      key: state.pageKey,
+                      child: const AddTab(),
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),
