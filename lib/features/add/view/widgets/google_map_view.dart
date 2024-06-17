@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 import 'dart:developer';
 
@@ -5,22 +6,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:latlong2/latlong.dart' as latLngTwo;
+
 import 'package:locate_me/core/helper/map/provider/map_setting_notifier_provider.dart';
 import 'package:locate_me/core/theme/google_map_style.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
-
 import 'package:locate_me/features/add/provider/osm_location_provider.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
+import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
 
 import '../../../../core/widget/dialogs/custom_map_options.dart';
 import '../../../../core/widget/general_map_wrapper.dart';
 import '../../../../core/widget/loading.dart';
-import '../../../home/provider/edit_item_provider.dart';
 import '../../provider/google_map_location_provider.dart';
-import 'dialog/add_location_dialog.dart';
+import 'dialog/add_or_update_location_dialog.dart';
 
 class GoogleMapAddView extends ConsumerStatefulWidget {
-  const GoogleMapAddView({super.key});
+  const GoogleMapAddView({
+    super.key,
+  });
 
   @override
   ConsumerState<GoogleMapAddView> createState() => _GoogleMapAddViewState();
@@ -28,7 +31,6 @@ class GoogleMapAddView extends ConsumerStatefulWidget {
 
 class _GoogleMapAddViewState extends ConsumerState<GoogleMapAddView> {
   late Completer<GoogleMapController> _mapController;
-
   @override
   void initState() {
     _mapController = Completer();
@@ -37,60 +39,54 @@ class _GoogleMapAddViewState extends ConsumerState<GoogleMapAddView> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, ref, child) {
-        final pos = ref.watch(googleMapCurrentPositionProvider);
-        if (pos.hasError) {
-          return Center(
-            child: CustomText.bodyLarge('Some error occurred!'),
-          );
-        }
+    final editItem = ref.watch(editStateProvider);
+    final pos = ref.watch(googleMapCurrentPositionProvider);
+    if (pos.hasError) {
+      return Center(
+        child: CustomText.bodyLarge('Some error occurred!'),
+      );
+    }
 
-        if (pos.value == null) {
-          return const MyLoading();
-        }
+    if (pos.value == null) {
+      return const MyLoading();
+    }
 
-        final result = pos.value!.location;
-        final position = LatLng(result.lat, result.lng);
-        Set<Marker> marker = {};
-        final edit = ref.read(editItemProvider);
-        final isEditMode = ref.watch(isEditModeProvider);
+    final result = pos.value!.location;
+    final position = LatLng(result.lat, result.lng);
+    final marker = {
+      Marker(
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+          markerId: const MarkerId('newMarker'),
+          position: editItem != null
+              ? LatLng(editItem.latlng.latitude, editItem.latlng.longitude)
+              : position)
+    };
 
-        marker = {
-          Marker(
-              icon: BitmapDescriptor.defaultMarkerWithHue(
-                  BitmapDescriptor.hueGreen),
-              markerId: const MarkerId('newMarker'),
-              position: position)
-        };
-        log('_+_+_$edit');
-        if (isEditMode) {
-          marker = {
-            Marker(
-                icon: BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueGreen),
-                markerId: const MarkerId('newMarker'),
-                position: LatLng(edit!.latlng.latitude, edit.latlng.longitude))
-          };
-        }
-
-        return GeneralMapWrapper(
+    return SafeArea(
+      child: BackButtonListener(
+        onBackButtonPressed: () async {
+          ref.read(editStateProvider.notifier).state = null;
+          return false;
+        },
+        child: GeneralMapWrapper(
+          isEditMode: editItem != null,
           map: GoogleMap(
             style: GoogleMapStyle.mapStyles[
                 ref.watch(mapSettingStyleNotifierProvider).value?.name],
             onCameraMove: (cameraPosition) {
-              if (isEditMode) {
-                ref.read(editItemProvider.notifier).updatePlaceItem(
-                    edit?.copyWith(
-                        latlng: LatLong(
-                            latitude: cameraPosition.target.latitude,
-                            longitude: cameraPosition.target.longitude)));
+              if (editItem != null) {
+                ref.read(editStateProvider.notifier).state = editItem.copyWith(
+                    latlng: LatLong(
+                        latitude: cameraPosition.target.latitude,
+                        longitude: cameraPosition.target.longitude));
+              } else {
+                final latlng2 = latLngTwo.LatLng(cameraPosition.target.latitude,
+                    cameraPosition.target.longitude);
+                ref
+                    .read(currentPositionProvider.notifier)
+                    .updateLocation(latlng2);
               }
-              final latlng2 = latLngTwo.LatLng(cameraPosition.target.latitude,
-                  cameraPosition.target.longitude);
-              ref
-                  .read(osmCurrentPositionProvider.notifier)
-                  .updateLocation(latlng2);
             },
             markers: marker,
             zoomControlsEnabled: false,
@@ -100,24 +96,13 @@ class _GoogleMapAddViewState extends ConsumerState<GoogleMapAddView> {
             },
             compassEnabled: false,
             initialCameraPosition: CameraPosition(
-              target: position,
-              zoom: 14.4746,
+              target: marker.first.position,
+              zoom: 20.4746,
             ),
           ),
-          settingOnTab: () async {
-            await showDialog(
-              barrierDismissible: true,
-              context: context,
-              builder: (context) {
-                return CustomMapOptionsDialog(
-                  onOptionSelected: (p0) {},
-                );
-              },
-            );
-          },
           myLocationOnTab: () {
             ref
-                .read(osmCurrentPositionProvider.notifier)
+                .read(currentPositionProvider.notifier)
                 .animateToMyLocationOnGoogleMap(mapController: _mapController);
           },
           addOrUpdateLocationOnTab: () async {
@@ -126,23 +111,29 @@ class _GoogleMapAddViewState extends ConsumerState<GoogleMapAddView> {
               context: context,
               builder: (context) {
                 return AddOrUpdateLocationDialogView<PlaceItemModel>(
-                  latLng: position,
+                  latLng: marker.first.position,
+                  editItem: editItem,
                   onAccept: (PlaceItemModel location) async {
                     log('>>|| $location');
-                    !isEditMode
-                        ? await ref
-                            .read(osmCurrentPositionProvider.notifier)
-                            .addLocationItem(location)
-                        : await ref
-                            .read(osmCurrentPositionProvider.notifier)
-                            .updateLocationItem(location);
+                    if (editItem == null) {
+                      await ref
+                          .read(currentPositionProvider.notifier)
+                          .addLocationItem(location);
+                    } else {
+                      await ref
+                          .read(currentPositionProvider.notifier)
+                          .updateLocationItem(location);
+
+                      ref.read(editStateProvider.notifier).state = null;
+                      ref.invalidate(editStateProvider);
+                    }
                   },
                 );
               },
             );
           },
-        );
-      },
+        ),
+      ),
     );
   }
 }

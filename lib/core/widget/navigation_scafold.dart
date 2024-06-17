@@ -6,6 +6,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/navigation/router/router.dart';
 
+import '../navigation/routes.dart';
+
 // Stateful nested navigation based on:
 // https://github.com/flutter/packages/blob/main/packages/go_router/example/lib/stateful_shell_route.dart
 class ScaffoldWithNestedNavigation extends StatelessWidget {
@@ -16,7 +18,6 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
 
   void _goBranch(int index) {
-    log('R ${router.routerDelegate.currentConfiguration.fullPath}');
     navigationShell.goBranch(
       index,
       // A common pattern when using bottom navigation bars is to support
@@ -25,39 +26,46 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
       // using the initialLocation parameter of goBranch.
       initialLocation: index == navigationShell.currentIndex,
     );
+    log('R++++ ${router.routerDelegate.currentConfiguration.uri}');
   }
 
   @override
   Widget build(BuildContext context) {
+    log('NAV++++ ${router.routerDelegate.currentConfiguration.uri}');
+
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: navigationShell,
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-          unselectedItemColor: Theme.of(context).colorScheme.onSurface,
-          selectedItemColor: Theme.of(context).colorScheme.primary,
-          unselectedIconTheme: IconThemeData(size: 20.w),
-          selectedIconTheme: IconThemeData(size: 22.w),
-          // selectedItemColor: Colors.blueGrey,
-          currentIndex: navigationShell.currentIndex,
-          items: const [
-            BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.house),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.plus),
-              label: 'Add',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings_suggest_outlined),
-              label: 'Setting',
-            ),
-          ],
-          onTap: _goBranch,
-        ),
+        bottomNavigationBar: router.routerDelegate.currentConfiguration.uri
+                    .toString() ==
+                '/${Routes.editLocation}'
+            ? null
+            : BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+                unselectedItemColor: Theme.of(context).colorScheme.onSurface,
+                selectedItemColor: Theme.of(context).colorScheme.primary,
+                unselectedIconTheme: IconThemeData(size: 20.w),
+                selectedIconTheme: IconThemeData(size: 22.w),
+                // selectedItemColor: Colors.blueGrey,
+                currentIndex: navigationShell.currentIndex,
+                items: const [
+                  BottomNavigationBarItem(
+                    icon: FaIcon(FontAwesomeIcons.house),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: FaIcon(FontAwesomeIcons.plus),
+                    label: 'Add',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.settings_suggest_outlined),
+                    label: 'Setting',
+                  ),
+                ],
+                onTap: _goBranch,
+              ),
       ),
     );
   }

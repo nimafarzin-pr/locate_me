@@ -12,13 +12,13 @@ import 'package:locate_me/core/extension/screen_size.dart';
 import 'package:locate_me/core/resources/icons.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
+import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
 
 import '../../../../../core/constant/category.dart';
 import '../../../../../core/dto/category_dto.dart';
 import '../../../../../core/widget/custom_accept_button.dart';
 import '../../../../../core/widget/custom_dropdwon_button.dart';
 import '../../../../../core/widget/custom_textfeild.dart';
-import '../../../../home/provider/edit_item_provider.dart';
 
 class AddOrUpdateLocationDialogView<T> extends ConsumerStatefulWidget {
   final LatLng latLng;
@@ -26,6 +26,7 @@ class AddOrUpdateLocationDialogView<T> extends ConsumerStatefulWidget {
   final String? address;
   final String? description;
   final String? category;
+  final PlaceItemModel? editItem;
 
   final Future<void> Function(PlaceItemModel item) onAccept;
 
@@ -36,6 +37,7 @@ class AddOrUpdateLocationDialogView<T> extends ConsumerStatefulWidget {
     this.address,
     this.description,
     this.category,
+    required this.editItem,
     required this.onAccept,
   });
 
@@ -64,27 +66,27 @@ class _AddLocationViewState<T>
 
     Future.delayed(Duration.zero).then(
       (value) async {
-        final edit = ref.watch(editItemProvider);
-        log('>>>>> $edit');
-        if (edit != null) {
-          setState(() {
-            // _latitudeController.text = edit.latlng.latitude.toString();
-            // _longitudeController.text = edit.latlng.longitude.toString();
-            _titleController.text = edit.title;
-            _addressController.text = edit.address;
-            _descriptionController.text = edit.description;
-            _categoryController.text = edit.category;
-            selectedCategory = categoryMap[edit.category];
-            rate = edit.rate;
-            date = edit.date;
-            isFavorite = edit.isFavorite;
-          });
-        }
+        setState(() {
+          if (widget.editItem != null) {
+            _titleController.text = widget.editItem!.title;
+            _addressController.text = widget.editItem!.address;
+            _descriptionController.text = widget.editItem!.description;
+            _categoryController.text = widget.editItem!.category;
+            selectedCategory = categoryMap[widget.editItem!.category];
+            rate = widget.editItem!.rate;
+            date = widget.editItem!.date;
+            isFavorite = widget.editItem!.isFavorite;
+            _latitudeController.text =
+                ref.read(editStateProvider)!.latlng.latitude.toString();
+            _longitudeController.text =
+                ref.read(editStateProvider)!.latlng.longitude.toString();
+          } else {
+            _latitudeController.text = widget.latLng.latitude.toString();
+            _longitudeController.text = widget.latLng.longitude.toString();
+          }
+        });
       },
     );
-
-    _latitudeController.text = widget.latLng.latitude.toString();
-    _longitudeController.text = widget.latLng.longitude.toString();
   }
 
   @override
@@ -102,8 +104,6 @@ class _AddLocationViewState<T>
   Widget build(BuildContext context) {
     double width = context.screenWidth;
     double height = context.screenHeight;
-    final editState = ref.watch(editItemProvider);
-    final isEditMode = ref.watch(isEditModeProvider);
 
     return Scaffold(
         backgroundColor: Colors.transparent,
@@ -230,7 +230,9 @@ class _AddLocationViewState<T>
                         ),
                         Center(
                           child: AcceptButton(
-                            buttonText: 'Accept',
+                            buttonText: widget.editItem != null
+                                ? 'Apply changes'
+                                : 'Add',
                             onPressed: () async {
                               if (!_formKey.currentState!.validate()) return;
                               final lat =
@@ -238,10 +240,10 @@ class _AddLocationViewState<T>
                               final lng =
                                   double.parse(_longitudeController.text);
                               final data = PlaceItemModel(
-                                  icon: isEditMode
-                                      ? editState!.icon
+                                  icon: widget.editItem != null
+                                      ? widget.editItem!.icon
                                       : MyIcons.location,
-                                  id: ref.watch(editItemProvider)?.id,
+                                  id: ref.watch(editStateProvider)?.id,
                                   title: _titleController.text,
                                   address: _addressController.text,
                                   description: _descriptionController.text,
@@ -256,10 +258,10 @@ class _AddLocationViewState<T>
                                   isFavorite: isFavorite);
                               await widget.onAccept(data);
                               Navigator.pop(context);
-                              if (isEditMode) {
-                                ref
-                                    .read(editItemProvider.notifier)
-                                    .updatePlaceItem(null);
+                              if (widget.editItem != null) {
+                                // ref
+                                //     .read(editStateProvider.notifier)
+                                //     .updatePlaceItem(null);
                                 context.pop();
                               }
                             },

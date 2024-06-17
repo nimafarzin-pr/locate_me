@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 
 import '../dto/category_dto.dart';
+import '../sizing/app_sizing.dart';
 
 class CategoryBox extends StatelessWidget {
   final CategoryItem item;
@@ -19,10 +20,9 @@ class CategoryBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
-          Radius.circular(6),
+          Radius.circular(AppSizes.smallBorderRadius),
         ),
         // color: isSelected
         //     ? Theme.of(context).colorScheme.primary
@@ -45,11 +45,11 @@ class CategoryBox extends StatelessWidget {
               // height: context.screenHeight * 0.16,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(
-                  Radius.circular(6),
+                  Radius.circular(AppSizes.smallBorderRadius),
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(AppSizes.smallPadding),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -72,7 +72,6 @@ class CategoryBox extends StatelessWidget {
                         item.name,
                         maxLines: 1,
                         customStyle: TextStyle(
-                            // fontSize: 12,
                             color: isSelected
                                 ? Theme.of(context).colorScheme.surface
                                 : Theme.of(context).colorScheme.onSurface),

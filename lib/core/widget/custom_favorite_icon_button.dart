@@ -12,12 +12,14 @@ class CustomFavoriteIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(
+    return GestureDetector(
+      onTap: onPressed,
+      child: Icon(
+        size: 30,
         isFavorite ? Icons.favorite : Icons.favorite_border,
-        color: isFavorite ? Theme.of(context).colorScheme.primary : Colors.grey,
+        color:
+            isFavorite ? Theme.of(context).colorScheme.tertiary : Colors.grey,
       ),
-      onPressed: onPressed,
     );
   }
 }

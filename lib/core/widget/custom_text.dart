@@ -19,7 +19,7 @@ class CustomText extends StatelessWidget {
     this.overflow,
     this.textScaler,
     this.textWidthBasis,
-  }) : style = AppTextStyles.displayLarge.merge(customStyle);
+  }) : style = AppTextFontsAndSizing.displayLarge.merge(customStyle);
 
   CustomText.headlineMedium(
     this.text, {
@@ -30,7 +30,7 @@ class CustomText extends StatelessWidget {
     this.overflow,
     this.textScaler,
     this.textWidthBasis,
-  }) : style = AppTextStyles.headlineMedium.merge(customStyle);
+  }) : style = AppTextFontsAndSizing.headlineMedium.merge(customStyle);
 
   CustomText.bodyLarge(
     this.text, {
@@ -41,7 +41,7 @@ class CustomText extends StatelessWidget {
     this.overflow,
     this.textScaler,
     this.textWidthBasis,
-  }) : style = AppTextStyles.bodyLarge.merge(customStyle);
+  }) : style = AppTextFontsAndSizing.bodyLarge.merge(customStyle);
 
   CustomText.labelSmall(
     this.text, {
@@ -52,7 +52,7 @@ class CustomText extends StatelessWidget {
     this.overflow,
     this.textScaler,
     this.textWidthBasis,
-  }) : style = AppTextStyles.labelSmall.merge(customStyle);
+  }) : style = AppTextFontsAndSizing.labelSmall.merge(customStyle);
 
   @override
   Widget build(BuildContext context) {

@@ -2,16 +2,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/extension/screen_size.dart';
 import 'package:locate_me/core/helper/map/model/map_settings_model.dart';
 import 'package:locate_me/core/helper/map/provider/map_setting_notifier_provider.dart';
+import 'package:locate_me/core/sizing/my_text_size.dart';
 import 'package:locate_me/core/theme/general_map_style_colors.dart';
 
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/core/widget/loading.dart';
 
 import '../../helper/map/enums/map_enum.dart';
+import '../../sizing/app_sizing.dart';
 import '../custom_dropdwon_button.dart';
 
 class CustomMapOptionsDialog extends StatefulWidget {
@@ -47,14 +48,15 @@ class _CustomMapOptionsDialogState extends State<CustomMapOptionsDialog> {
                   alignment: Alignment.center,
                   width: width / 1.1,
                   height: width,
-                  padding: const EdgeInsets.all(24),
-                  margin: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(AppSizes.largePadding),
+                  margin: const EdgeInsets.all(AppSizes.largePadding),
                   decoration: BoxDecoration(
                     border: Border.all(
                         color: Theme.of(context).colorScheme.onSurface,
                         width: 2),
                     color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius:
+                        BorderRadius.circular(AppSizes.veryLargeBorderRadius),
                     boxShadow: const [
                       BoxShadow(
                         color: Colors.black26,
@@ -69,12 +71,12 @@ class _CustomMapOptionsDialogState extends State<CustomMapOptionsDialog> {
                     children: [
                       CustomText.bodyLarge(
                         'Choose an option',
-                        customStyle: const TextStyle(
-                          fontSize: 20,
+                        customStyle: TextStyle(
+                          fontSize: AppTextFontsAndSizing.headlineSmallFontSize,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: AppSizes.largePadding),
                       ref.watch(mapSettingNotifierProvider).when(
                         data: (data) {
                           return Column(
@@ -188,7 +190,8 @@ class _CustomMapOptionsDialogState extends State<CustomMapOptionsDialog> {
                                 itemAsString: (MapStyle item) => item.name,
                                 itemAsWidget: (MapStyle item) => Row(
                                   children: [
-                                    const SizedBox(width: 8),
+                                    const SizedBox(
+                                        width: AppSizes.smallPadding),
                                     Card(
                                       clipBehavior: Clip.hardEdge,
                                       elevation: 2,
@@ -202,7 +205,8 @@ class _CustomMapOptionsDialogState extends State<CustomMapOptionsDialog> {
                                                 BorderRadius.circular(10)),
                                       ),
                                     ),
-                                    const SizedBox(width: 8),
+                                    const SizedBox(
+                                        width: AppSizes.smallPadding),
                                     CustomText.bodyLarge(item.name),
                                   ],
                                 ),

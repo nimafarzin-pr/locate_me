@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:locate_me/core/sizing/my_text_size.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/core/widget/dialogs/warning_dialog.dart';
+
+import '../sizing/app_sizing.dart';
 
 final loadingProvider = StateProvider<bool>((ref) => false);
 
@@ -22,12 +25,12 @@ class AcceptButton extends ConsumerWidget {
       child: Container(
         height: 48,
         width: 200,
-        margin: const EdgeInsets.symmetric(vertical: 10.0),
+        margin: const EdgeInsets.symmetric(vertical: AppSizes.smallMargin),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(AppSizes.smallBorderRadius),
           border: Border.all(
-            color: Theme.of(context).colorScheme.onSecondary,
-            width: 2.0,
+            color: Theme.of(context).colorScheme.surface,
+            width: AppSizes.mediumBorderWidth,
           ),
           gradient: LinearGradient(
             colors: [
@@ -60,11 +63,10 @@ class AcceptButton extends ConsumerWidget {
           },
           style: TextButton.styleFrom(
             foregroundColor: Colors.white,
-            padding:
-                const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+            padding: const EdgeInsets.all(AppSizes.mediumPadding),
             backgroundColor: Colors.transparent,
-            textStyle: const TextStyle(
-              fontSize: 18,
+            textStyle: TextStyle(
+              fontSize: AppTextFontsAndSizing.titleLargeFontSize,
               fontWeight: FontWeight.bold,
             ),
           ),

@@ -21,7 +21,7 @@ final listenablePositionProvider = FutureProvider.autoDispose((ref) async {
 final googleMapCurrentPositionProvider =
     FutureProvider.autoDispose((ref) async {
   // final location = await Geolocator.getCurrentPosition();
-  final location = await ref.watch(osmCurrentPositionProvider.future);
+  final location = await ref.watch(currentPositionProvider.future);
 
   final places = [
     GoogleMapDto(

@@ -1,21 +1,26 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as googleMap;
+import 'package:latlong2/latlong.dart';
+
 import 'package:locate_me/core/theme/osm_map_style.dart';
 import 'package:locate_me/core/widget/loading.dart';
+import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
 
 import '../../../../core/helper/map/provider/map_setting_notifier_provider.dart';
-import '../../../../core/widget/custom_add_info_box.dart';
+import '../../../../core/widget/custom_marker_add_info_box.dart';
 import '../../../../core/widget/dialogs/custom_map_options.dart';
 import '../../../../core/widget/general_map_wrapper.dart';
 import '../../../home/model/place_item_model.dart';
-import '../../../home/provider/edit_item_provider.dart';
 import '../../provider/osm_location_provider.dart';
-import 'dialog/add_location_dialog.dart';
+import 'dialog/add_or_update_location_dialog.dart';
 
 class OsmMapView extends ConsumerStatefulWidget {
-  const OsmMapView({super.key});
+  const OsmMapView({
+    super.key,
+  });
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _HomePageState();
 }
@@ -38,31 +43,41 @@ class _HomePageState extends ConsumerState<OsmMapView>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Consumer(
-      builder: (context, ref, child) {
-        return ref.watch(osmCurrentPositionProvider).when(
-          data: (position) {
-            return ref.watch(mapSettingStyleNotifierProvider).when(
-              data: (data) {
-                final isEditMode = ref.watch(isEditModeProvider);
-                final editItem = ref.watch(editItemProvider);
-                return GeneralMapWrapper(
+    final editItem = ref.watch(editStateProvider);
+    return ref.watch(currentPositionProvider).when(
+      data: (position) {
+        final currentPositions = editItem != null
+            ? LatLng(editItem.latlng.latitude, editItem.latlng.longitude)
+            : position;
+        return ref.watch(mapSettingStyleNotifierProvider).when(
+          data: (data) {
+            return SafeArea(
+              child: BackButtonListener(
+                onBackButtonPressed: () async {
+                  ref.read(editStateProvider.notifier).state = null;
+                  return false;
+                },
+                child: GeneralMapWrapper(
+                  isEditMode: editItem != null,
                   map: FlutterMap(
                     mapController: _mapController,
                     options: MapOptions(
                       onPositionChanged: (position, hasGesture) {
-                        if (isEditMode) {
-                          ref.read(editItemProvider.notifier).updatePlaceItem(
-                              editItem?.copyWith(
+                        if (editItem != null) {
+                          ref.read(editStateProvider.notifier).state = ref
+                              .watch(editStateProvider)
+                              ?.copyWith(
                                   latlng: LatLong(
                                       latitude: position.center!.latitude,
-                                      longitude: position.center!.longitude)));
+                                      longitude: position.center!.longitude));
+                        } else {
+                          ref
+                              .read(currentPositionProvider.notifier)
+                              .updateLocation(position.center);
                         }
-                        ref
-                            .read(osmCurrentPositionProvider.notifier)
-                            .updateLocation(position.center);
                       },
-                      initialCenter: position,
+                      initialCenter: currentPositions,
+                      initialZoom: 20.0,
                     ),
                     children: [
                       TileLayer(
@@ -88,28 +103,18 @@ class _HomePageState extends ConsumerState<OsmMapView>
                             width: 200.0,
                             height: 200,
                             alignment: Alignment.center,
-                            point: position,
-                            child: CustomMarkerAddInfoBox(position: position),
+                            point: currentPositions,
+                            child: CustomMarkerAddInfoBox(
+                                position: currentPositions),
                             rotate: true,
                           ),
                         ],
                       ),
                     ],
                   ),
-                  settingOnTab: () async {
-                    await showDialog(
-                      barrierDismissible: true,
-                      context: context,
-                      builder: (context) {
-                        return CustomMapOptionsDialog(
-                          onOptionSelected: (p0) {},
-                        );
-                      },
-                    );
-                  },
                   myLocationOnTab: () {
                     ref
-                        .read(osmCurrentPositionProvider.notifier)
+                        .read(currentPositionProvider.notifier)
                         .animateToMyLocationOnOsm(
                             destZoom: 20,
                             mapController: _mapController,
@@ -121,29 +126,29 @@ class _HomePageState extends ConsumerState<OsmMapView>
                       context: context,
                       builder: (context) {
                         return AddOrUpdateLocationDialogView<PlaceItemModel>(
-                          latLng: googleMap.LatLng(
-                              position.latitude, position.longitude),
-                          onAccept: (location) async {
-                            !isEditMode
-                                ? await ref
-                                    .read(osmCurrentPositionProvider.notifier)
-                                    .addLocationItem(location)
-                                : await ref
-                                    .read(osmCurrentPositionProvider.notifier)
-                                    .updateLocationItem(location);
+                          editItem: editItem,
+                          latLng: googleMap.LatLng(currentPositions.latitude,
+                              currentPositions.longitude),
+                          onAccept: (PlaceItemModel location) async {
+                            if (editItem == null) {
+                              await ref
+                                  .read(currentPositionProvider.notifier)
+                                  .addLocationItem(location);
+                            } else {
+                              await ref
+                                  .read(currentPositionProvider.notifier)
+                                  .updateLocationItem(location);
+
+                              ref.read(editStateProvider.notifier).state = null;
+                              ref.invalidate(editStateProvider);
+                            }
                           },
                         );
                       },
                     );
                   },
-                );
-              },
-              error: (error, stackTrace) {
-                return ErrorWidget(error);
-              },
-              loading: () {
-                return const MyLoading();
-              },
+                ),
+              ),
             );
           },
           error: (error, stackTrace) {
@@ -154,6 +159,12 @@ class _HomePageState extends ConsumerState<OsmMapView>
           },
         );
       },
-    ));
+      error: (error, stackTrace) {
+        return ErrorWidget(error);
+      },
+      loading: () {
+        return const MyLoading();
+      },
+    );
   }
 }

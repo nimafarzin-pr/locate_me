@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,15 +5,17 @@ import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/constant/category.dart';
 import 'package:locate_me/core/extension/screen_size.dart';
 import 'package:locate_me/core/navigation/routes.dart';
+import 'package:locate_me/core/sizing/app_sizing.dart';
+import 'package:locate_me/core/sizing/my_text_size.dart';
 import 'package:locate_me/core/widget/custom_favorite_icon_button.dart';
 import 'package:locate_me/core/widget/custom_rich_text.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/core/widget/dialogs/warning_dialog.dart';
 import 'package:locate_me/core/widget/rate.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
-import 'package:locate_me/features/home/provider/edit_item_provider.dart';
 import 'package:locate_me/features/home/provider/favorite_filter_provider.dart';
 import 'package:locate_me/features/home/provider/home_screen_repository_provider.dart';
+import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
 
 class LocationItem extends ConsumerWidget {
   final int index;
@@ -33,14 +33,14 @@ class LocationItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       margin: EdgeInsets.only(
-          top: index == 0 ? 0 : 12.0,
-          left: isCarouselItem ? 8 : 0,
-          right: isCarouselItem ? 8 : 0),
+          top: index == 0 ? 0 : AppSizes.smallMargin,
+          left: isCarouselItem ? AppSizes.smallMargin : 0,
+          right: isCarouselItem ? AppSizes.smallMargin : 0),
       width: context.screenWidth,
-      height: context.screenWidth / 1.8,
+      height: context.screenWidth / 2.4,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(
-          Radius.circular(16),
+          Radius.circular(AppSizes.mediumBorderRadius),
         ),
         gradient: LinearGradient(
           colors: [
@@ -53,8 +53,10 @@ class LocationItem extends ConsumerWidget {
         elevation: 3,
         color: Theme.of(context).colorScheme.surfaceContainer,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(AppSizes.smallPadding),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 child: Column(
@@ -63,31 +65,41 @@ class LocationItem extends ConsumerWidget {
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
+                          Flexible(
+                            flex: 1,
                             child: Row(
                               children: [
                                 Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      border: Border.all(
-                                        width: 1,
-                                      ),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.surface,
+                                    borderRadius: BorderRadius.circular(
+                                        AppSizes.mediumBorderRadius),
+                                    border: Border.all(
+                                      width: AppSizes.thinBorderWidth,
                                     ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Image.asset(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface,
-                                          categoryMap[item.category] != null
-                                              ? categoryMap[item.category]!.icon
-                                              : item.icon),
-                                    )),
-                                const SizedBox(width: 4),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(
+                                        AppSizes.verySmallPadding),
+                                    child: Image.asset(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
+                                        categoryMap[item.category] != null
+                                            ? categoryMap[item.category]!.icon
+                                            : item.icon),
+                                  ),
+                                ),
+                                const SizedBox(
+                                    width: AppSizes.verySmallScreenGutter),
                                 Expanded(
                                   child: CustomText.bodyLarge(
+                                    customStyle: TextStyle(
+                                        fontSize: AppTextFontsAndSizing
+                                            .bodyMediumFontSize),
                                     item.title,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
@@ -96,10 +108,11 @@ class LocationItem extends ConsumerWidget {
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          Flexible(
+                            flex: 2,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 CustomRichText(
                                     title: 'Title: ', value: item.title),
@@ -110,34 +123,31 @@ class LocationItem extends ConsumerWidget {
                               ],
                             ),
                           ),
-                          Expanded(
+                          Flexible(
+                            flex: 1,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 IconButton(
                                     onPressed: () {
-                                      context.go(Routes.map);
-                                    },
-                                    icon: const FaIcon(
-                                      FontAwesomeIcons.penToSquare,
-                                      color: Colors.grey,
-                                    )),
-                                // IconButton(
-                                //     onPressed: () {},
-                                //     icon: const FaIcon(
-                                //       color: Colors.grey,
-                                //       FontAwesomeIcons.mapLocationDot,
-                                //     )),
-                                IconButton(
-                                    onPressed: () {
-                                      log('ID>>> ${item.id}');
                                       ref
-                                          .read(editItemProvider.notifier)
-                                          .updatePlaceItem(item);
-                                      context.push(Routes.add);
+                                          .read(editStateProvider.notifier)
+                                          .state = item;
+                                      // context.go(Routes.editLocation);
+                                      context.goNamed(Routes.editLocation);
                                     },
-                                    icon: const FaIcon(
-                                      color: Colors.grey,
+                                    icon: FaIcon(
+                                      FontAwesomeIcons.penToSquare,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                    )),
+                                IconButton(
+                                    onPressed: () {},
+                                    icon: FaIcon(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                       FontAwesomeIcons.route,
                                     )),
                                 IconButton(
@@ -154,8 +164,9 @@ class LocationItem extends ConsumerWidget {
                                         },
                                       );
                                     },
-                                    icon: const FaIcon(
-                                      color: Colors.grey,
+                                    icon: FaIcon(
+                                      color:
+                                          Theme.of(context).colorScheme.error,
                                       FontAwesomeIcons.trashCan,
                                     )),
                               ],
@@ -167,31 +178,38 @@ class LocationItem extends ConsumerWidget {
                   ],
                 ),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomFavoriteIconButton(
-                    isFavorite: item.isFavorite,
-                    onPressed: () {
-                      log('~~~~~~~${item.id}');
-                      log('~~~~~~~${item.isFavorite}');
-                      if (item.id == null) return;
-                      ref
-                          .read(favoriteFilterProvider.notifier)
-                          .updateFavoriteStatus(id: item.id!);
-                    },
-                  ),
-                  Column(
-                    children: [
-                      Rate(
-                        direction: Axis.vertical,
-                        draggable: false,
-                        initialRating: item.rate,
-                      ),
-                      CustomText.bodyLarge('${item.rate}')
-                    ],
-                  ),
-                ],
+              Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    CustomFavoriteIconButton(
+                      isFavorite: item.isFavorite,
+                      onPressed: () {
+                        if (item.id == null) return;
+                        ref
+                            .read(favoriteFilterProvider.notifier)
+                            .updateFavoriteStatus(id: item.id!);
+                      },
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Rate(
+                          direction: Axis.vertical,
+                          draggable: false,
+                          initialRating: item.rate,
+                        ),
+                        CustomText.bodyLarge(
+                          '${item.rate}',
+                          customStyle: TextStyle(
+                              fontSize:
+                                  AppTextFontsAndSizing.bodyMediumFontSize),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               )
             ],
           ),
