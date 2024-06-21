@@ -62,8 +62,7 @@ class AcceptButton extends ConsumerWidget {
             }
           },
           style: TextButton.styleFrom(
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.all(AppSizes.mediumPadding),
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
             backgroundColor: Colors.transparent,
             textStyle: TextStyle(
               fontSize: AppTextFontsAndSizing.titleLargeFontSize,

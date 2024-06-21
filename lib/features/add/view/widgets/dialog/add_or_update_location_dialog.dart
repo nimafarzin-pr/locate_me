@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,9 +14,10 @@ import 'package:locate_me/core/resources/icons.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
+import 'package:locate_me/generated/locale_keys.g.dart';
 
-import '../../../../../core/constant/category.dart';
-import '../../../../../core/dto/category_dto.dart';
+import '../../../../../core/common_features/category/constant/category.dart';
+import '../../../../../core/common_features/category/dto/category_dto.dart';
 import '../../../../../core/widget/custom_accept_button.dart';
 import '../../../../../core/widget/custom_dropdwon_button.dart';
 import '../../../../../core/widget/custom_textfeild.dart';
@@ -139,7 +141,9 @@ class _AddLocationViewState<T>
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         CustomText.bodyLarge(
-                          'Save you location',
+                          ref.watch(editStateProvider) != null
+                              ? LocaleKeys.edit_your_location.tr()
+                              : LocaleKeys.add_new_location.tr(),
                           customStyle: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -166,21 +170,21 @@ class _AddLocationViewState<T>
                         Column(
                           children: [
                             CustomTextField(
-                              hintText: 'title',
+                              hintText: LocaleKeys.title.tr(),
                               controller: _titleController,
                             ),
                             CustomTextField(
-                                hintText: 'address',
+                                hintText: LocaleKeys.address.tr(),
                                 controller: _addressController),
                             CustomTextField(
-                              hintText: 'description',
+                              hintText: LocaleKeys.description.tr(),
                               controller: _descriptionController,
                               validator: (value) {
                                 return null;
                               },
                             ),
                             CustomDropdownField<CategoryItem>(
-                              hintText: 'Select a category',
+                              hintText: LocaleKeys.select_category.tr(),
                               items: category,
                               value: selectedCategory,
                               onChanged: (CategoryItem? newValue) {
@@ -231,8 +235,8 @@ class _AddLocationViewState<T>
                         Center(
                           child: AcceptButton(
                             buttonText: widget.editItem != null
-                                ? 'Apply changes'
-                                : 'Add',
+                                ? LocaleKeys.applyEdit.tr()
+                                : LocaleKeys.add.tr(),
                             onPressed: () async {
                               if (!_formKey.currentState!.validate()) return;
                               final lat =

@@ -1,5 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:locate_me/core/constant/category.dart';
+import 'package:locate_me/core/common_features/category/constant/category.dart';
 import 'package:locate_me/core/enums/enums.dart';
 import 'package:locate_me/core/extension/screen_size.dart';
 import 'package:locate_me/core/widget/category_item.dart';
@@ -15,10 +16,14 @@ import 'package:locate_me/features/home/provider/search_input_provider.dart';
 import 'package:locate_me/features/home/view/widgets/list_on_map/osm_view/osm_view.dart';
 import 'package:locate_me/features/home/view/widgets/normal_list/normal_list.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:locate_me/features/setting/provider/theme_notifier_provider.dart';
+import 'package:locate_me/generated/locale_keys.g.dart';
 
-import '../../../core/helper/map/enums/map_enum.dart';
-import '../../../core/helper/map/provider/map_setting_notifier_provider.dart';
+import '../../../core/common_features/category/enums/category.dart';
+import '../../../core/common_features/map/core/enums/map_enum.dart';
+import '../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
 import '../../../core/widget/custom_switch.dart';
+import '../provider/favorite_filter_provider.dart';
 import '../provider/location_provider.dart';
 import 'widgets/list_on_map/google_view/google_view.dart';
 
@@ -50,6 +55,8 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
         return locations.when(
           data: (places) {
             final data = ref.watch(filteredItemsProvider);
+            final itemViewState = ref.watch(favoriteFilterProvider);
+
             return Scaffold(
               body: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -60,7 +67,7 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                       onChanged: (value) {
                         ref.read(searchInputProvider.notifier).state = value;
                       },
-                      hintText: 'Search...',
+                      hintText: LocaleKeys.search.tr(),
                       controller: _searchController,
                     ),
                     Container(
@@ -114,7 +121,16 @@ class _HomeTabState extends State<HomeTab> with TickerProviderStateMixin {
                             homeViewMode: ref.watch(homeViewModeProvider),
                           ),
                           Expanded(child: Container()),
-                          const CustomSwitch()
+                          CustomSwitch(
+                            labelOne: LocaleKeys.allItems.tr(),
+                            labelTwo: LocaleKeys.favorites.tr(),
+                            onTapOne: () => ref
+                                .read(favoriteFilterProvider.notifier)
+                                .updateFavoriteView(ItemViewState.all),
+                            onTapTwo: () => ref
+                                .read(favoriteFilterProvider.notifier)
+                                .updateFavoriteView(ItemViewState.favorites),
+                          )
                         ],
                       ),
                     ),

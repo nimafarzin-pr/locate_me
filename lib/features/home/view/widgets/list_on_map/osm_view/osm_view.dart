@@ -9,8 +9,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:locate_me/core/extension/screen_size.dart';
 import 'package:locate_me/core/widget/loading.dart';
 
-import '../../../../../../core/helper/map/provider/map_setting_notifier_provider.dart';
-import '../../../../../../core/theme/osm_map_style.dart';
+import '../../../../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
+import '../../../../../../core/common_features/map/core/theme/osm_map_style.dart';
 import '../../../../../../core/widget/custom_marker_add_info_box.dart';
 import '../../../../../../core/widget/dialogs/custom_map_options.dart';
 import '../../../../../../core/widget/general_map_wrapper.dart';

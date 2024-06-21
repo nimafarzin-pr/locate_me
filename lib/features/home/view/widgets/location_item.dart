@@ -1,8 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:locate_me/core/constant/category.dart';
+import 'package:locate_me/core/common_features/category/constant/category.dart';
 import 'package:locate_me/core/extension/screen_size.dart';
 import 'package:locate_me/core/navigation/routes.dart';
 import 'package:locate_me/core/sizing/app_sizing.dart';
@@ -16,6 +17,11 @@ import 'package:locate_me/features/home/model/place_item_model.dart';
 import 'package:locate_me/features/home/provider/favorite_filter_provider.dart';
 import 'package:locate_me/features/home/provider/home_screen_repository_provider.dart';
 import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
+import 'package:locate_me/features/setting/provider/language_notifier_provider.dart';
+import 'package:locate_me/generated/locale_keys.g.dart';
+import 'package:shamsi_date/shamsi_date.dart';
+
+import '../../../../core/utils/date_converter.dart';
 
 class LocationItem extends ConsumerWidget {
   final int index;
@@ -115,11 +121,16 @@ class LocationItem extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 CustomRichText(
-                                    title: 'Title: ', value: item.title),
+                                    title: '${LocaleKeys.title.tr()}: ',
+                                    value: item.title),
                                 CustomRichText(
-                                    title: 'Address: ', value: item.address),
+                                    title: '${LocaleKeys.address.tr()}: ',
+                                    value: item.address),
                                 CustomRichText(
-                                    title: 'Date: ', value: item.date),
+                                    title: '${LocaleKeys.date.tr()}: ',
+                                    value: context.locale.languageCode == 'fa'
+                                        ? DateConverter.toShamsi(item.date)
+                                        : DateConverter.toGregorian(item.date)),
                               ],
                             ),
                           ),

@@ -3,11 +3,12 @@ import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:locate_me/core/enums/enums.dart';
-import 'package:locate_me/core/helper/map/enums/map_enum.dart';
+import 'package:locate_me/core/common_features/map/core/enums/map_enum.dart';
 import 'package:locate_me/features/home/provider/category_filter_provider.dart';
 import 'package:locate_me/features/home/provider/favorite_filter_provider.dart';
 import 'package:locate_me/features/home/provider/search_input_provider.dart';
 
+import '../../../core/common_features/category/enums/category.dart';
 import '../model/place_item_model.dart';
 import 'location_provider.dart';
 

@@ -1,10 +1,13 @@
 import 'dart:developer';
 
+// import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' as tr;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/navigation/router/router.dart';
+import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../navigation/routes.dart';
 
@@ -41,30 +44,35 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
                     .toString() ==
                 '/${Routes.editLocation}'
             ? null
-            : BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-                unselectedItemColor: Theme.of(context).colorScheme.onSurface,
-                selectedItemColor: Theme.of(context).colorScheme.primary,
-                unselectedIconTheme: IconThemeData(size: 20.w),
-                selectedIconTheme: IconThemeData(size: 22.w),
-                // selectedItemColor: Colors.blueGrey,
-                currentIndex: navigationShell.currentIndex,
-                items: const [
-                  BottomNavigationBarItem(
-                    icon: FaIcon(FontAwesomeIcons.house),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: FaIcon(FontAwesomeIcons.plus),
-                    label: 'Add',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.settings_suggest_outlined),
-                    label: 'Setting',
-                  ),
-                ],
-                onTap: _goBranch,
+            : Directionality(
+                textDirection: TextDirection.ltr,
+                child: BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+
+                  backgroundColor:
+                      Theme.of(context).colorScheme.surfaceContainer,
+                  unselectedItemColor: Theme.of(context).colorScheme.onSurface,
+                  selectedItemColor: Theme.of(context).colorScheme.primary,
+                  unselectedIconTheme: IconThemeData(size: 20.w),
+                  selectedIconTheme: IconThemeData(size: 22.w),
+                  // selectedItemColor: Colors.blueGrey,
+                  currentIndex: navigationShell.currentIndex,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: const FaIcon(FontAwesomeIcons.house),
+                      label: LocaleKeys.home.tr(),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: const FaIcon(FontAwesomeIcons.plus),
+                      label: LocaleKeys.add.tr(),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: const Icon(Icons.settings_suggest_outlined),
+                      label: LocaleKeys.settings.tr(),
+                    ),
+                  ],
+                  onTap: _goBranch,
+                ),
               ),
       ),
     );

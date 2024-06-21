@@ -1,6 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:locate_me/core/sizing/my_text_size.dart';
 
+import '../../generated/locale_keys.g.dart';
 import '../utils/validators/input/input_validate.dart';
 import '../utils/validators/input/input_validate_Item/empty_data.dart';
 
@@ -50,6 +53,7 @@ class CustomTextField extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
         style: TextStyle(
+            fontSize: AppTextFontsAndSizing.bodySmallFontSize,
             color: readOnly
                 ? Theme.of(context).colorScheme.onSurface.withOpacity(0.5)
                 : null),
@@ -63,7 +67,7 @@ class CustomTextField extends StatelessWidget {
                 value: value.toString(),
                 validations: [
                   EmptyData(
-                    errorMessage: 'Field is required',
+                    errorMessage: LocaleKeys.field_required.tr(),
                   ),
                 ],
               );

@@ -1,0 +1,16 @@
+import '../../../../../features/home/model/place_item_model.dart';
+
+abstract class IAppSettingsRepository {
+  Future<int> getThemeMode();
+
+  Future<void> setThemeMode(int mode);
+
+  Stream<String?> watchLanguage();
+
+  Future<String> getLanguage();
+
+  Future<void> setLanguage(String language);
+
+  Future<List<PlaceItemModel>> getLocations();
+  Future<void> replaceData(String data);
+}

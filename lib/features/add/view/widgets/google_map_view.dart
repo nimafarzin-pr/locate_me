@@ -7,8 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:latlong2/latlong.dart' as latLngTwo;
 
-import 'package:locate_me/core/helper/map/provider/map_setting_notifier_provider.dart';
-import 'package:locate_me/core/theme/google_map_style.dart';
+import 'package:locate_me/core/common_features/map/provider/map_setting_notifier_provider.dart';
+import 'package:locate_me/core/common_features/map/core/theme/google_map_style.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/features/add/provider/osm_location_provider.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';

@@ -1,8 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 
-import '../dto/category_dto.dart';
+import '../common_features/category/dto/category_dto.dart';
 import '../sizing/app_sizing.dart';
 
 class CategoryBox extends StatelessWidget {
@@ -68,8 +69,8 @@ class CategoryBox extends StatelessWidget {
                       height: 6,
                     ),
                     Expanded(
-                      child: CustomText.bodyLarge(
-                        item.name,
+                      child: CustomText.labelSmall(
+                        item.translationKey.tr(),
                         maxLines: 1,
                         customStyle: TextStyle(
                             color: isSelected

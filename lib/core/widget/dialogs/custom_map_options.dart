@@ -1,19 +1,22 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:locate_me/core/extension/screen_size.dart';
-import 'package:locate_me/core/helper/map/model/map_settings_model.dart';
-import 'package:locate_me/core/helper/map/provider/map_setting_notifier_provider.dart';
-import 'package:locate_me/core/sizing/my_text_size.dart';
-import 'package:locate_me/core/theme/general_map_style_colors.dart';
 
+import 'package:locate_me/core/extension/screen_size.dart';
+import 'package:locate_me/core/common_features/map/model/map_settings_model.dart';
+import 'package:locate_me/core/common_features/map/provider/map_setting_notifier_provider.dart';
+import 'package:locate_me/core/sizing/my_text_size.dart';
+import 'package:locate_me/core/common_features/map/core/theme/general_map_style_colors.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/core/widget/loading.dart';
+import 'package:locate_me/generated/locale_keys.g.dart';
 
-import '../../helper/map/enums/map_enum.dart';
+import '../../common_features/map/core/enums/map_enum.dart';
 import '../../sizing/app_sizing.dart';
 import '../custom_dropdwon_button.dart';
+import '../custom_radio.dart';
 
 class CustomMapOptionsDialog extends StatefulWidget {
   final void Function(String) onOptionSelected;
@@ -70,7 +73,7 @@ class _CustomMapOptionsDialogState extends State<CustomMapOptionsDialog> {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       CustomText.bodyLarge(
-                        'Choose an option',
+                        LocaleKeys.map_settings.tr(),
                         customStyle: TextStyle(
                           fontSize: AppTextFontsAndSizing.headlineSmallFontSize,
                           fontWeight: FontWeight.bold,
@@ -83,7 +86,8 @@ class _CustomMapOptionsDialogState extends State<CustomMapOptionsDialog> {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               ListTile(
-                                title: CustomText.bodyLarge('Change Map'),
+                                title: CustomText.bodyLarge(
+                                    LocaleKeys.change_map.tr()),
                               ),
                               Row(
                                 mainAxisAlignment:
@@ -91,8 +95,12 @@ class _CustomMapOptionsDialogState extends State<CustomMapOptionsDialog> {
                                 mainAxisSize: MainAxisSize.max,
                                 children: <Widget>[
                                   Expanded(
-                                    child: ListTile(
-                                      onTap: () {
+                                    child: CustomRadio<MapLayer>(
+                                      isSelect:
+                                          data.mapLayer == MapLayer.google,
+                                      groupValue:
+                                          data.mapLayer ?? MapLayer.google,
+                                      onChanged: (p0) {
                                         ref
                                             .read(mapSettingNotifierProvider
                                                 .notifier)
@@ -102,33 +110,15 @@ class _CustomMapOptionsDialogState extends State<CustomMapOptionsDialog> {
                                                         mapLayer:
                                                             MapLayer.google));
                                       },
-                                      title: CustomText.labelSmall(
-                                        'Google map',
-                                      ),
-                                      leading: SizedBox(
-                                        width: 20,
-                                        height: 20,
-                                        child: Radio<MapLayer>(
-                                          value: MapLayer.google,
-                                          groupValue:
-                                              data.mapLayer ?? MapLayer.osm,
-                                          onChanged: (MapLayer? value) {
-                                            ref
-                                                .read(mapSettingNotifierProvider
-                                                    .notifier)
-                                                .updateSettings(
-                                                    const MapSettingsModel()
-                                                        .copyWith(
-                                                            mapLayer: MapLayer
-                                                                .google));
-                                          },
-                                        ),
-                                      ),
+                                      title: "Google Map",
+                                      value: MapLayer.google,
                                     ),
                                   ),
                                   Expanded(
-                                    child: ListTile(
-                                      onTap: () {
+                                    child: CustomRadio<MapLayer>(
+                                      isSelect: data.mapLayer == MapLayer.osm,
+                                      groupValue: data.mapLayer ?? MapLayer.osm,
+                                      onChanged: (p0) {
                                         ref
                                             .read(mapSettingNotifierProvider
                                                 .notifier)
@@ -138,41 +128,20 @@ class _CustomMapOptionsDialogState extends State<CustomMapOptionsDialog> {
                                                         mapLayer:
                                                             MapLayer.osm));
                                       },
-                                      title: CustomText.labelSmall(
-                                        'Open street map',
-                                        maxLines: 1,
-                                      ),
-                                      leading: SizedBox(
-                                        width: 20,
-                                        height: 20,
-                                        child: Radio<MapLayer>(
-                                          visualDensity:
-                                              VisualDensity.comfortable,
-                                          value: MapLayer.osm,
-                                          groupValue:
-                                              data.mapLayer ?? MapLayer.osm,
-                                          onChanged: (MapLayer? value) {
-                                            ref
-                                                .read(mapSettingNotifierProvider
-                                                    .notifier)
-                                                .updateSettings(
-                                                    const MapSettingsModel()
-                                                        .copyWith(
-                                                            mapLayer:
-                                                                MapLayer.osm));
-                                          },
-                                        ),
-                                      ),
+                                      title: "Open Street Map",
+                                      value: MapLayer.osm,
                                     ),
                                   ),
                                 ],
                               ),
-                              ListTile(title: CustomText.bodyLarge('Map type')),
+                              ListTile(
+                                  title: CustomText.bodyLarge(
+                                      LocaleKeys.map_style.tr())),
                               CustomDropdownField<MapStyle>(
                                 validator: (value) {
                                   return null;
                                 },
-                                hintText: 'Select your map style',
+                                hintText: LocaleKeys.select_your_map_style.tr(),
                                 items: MapStyle.values.toList(),
                                 value: ref
                                     .watch(mapSettingStyleNotifierProvider)
@@ -187,7 +156,7 @@ class _CustomMapOptionsDialogState extends State<CustomMapOptionsDialog> {
                                       .read(mapSettingNotifierProvider.notifier)
                                       .updateSettings(newData);
                                 },
-                                itemAsString: (MapStyle item) => item.name,
+                                itemAsString: (MapStyle item) => item.name.tr(),
                                 itemAsWidget: (MapStyle item) => Row(
                                   children: [
                                     const SizedBox(
@@ -207,7 +176,7 @@ class _CustomMapOptionsDialogState extends State<CustomMapOptionsDialog> {
                                     ),
                                     const SizedBox(
                                         width: AppSizes.smallPadding),
-                                    CustomText.bodyLarge(item.name),
+                                    CustomText.labelSmall(item.name.tr()),
                                   ],
                                 ),
                               ),
