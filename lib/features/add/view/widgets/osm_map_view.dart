@@ -5,11 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as googleMap;
 import 'package:latlong2/latlong.dart';
 
-import 'package:locate_me/core/theme/osm_map_style.dart';
+import 'package:locate_me/core/common_features/map/core/theme/osm_map_style.dart';
 import 'package:locate_me/core/widget/loading.dart';
 import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
 
-import '../../../../core/helper/map/provider/map_setting_notifier_provider.dart';
+import '../../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
 import '../../../../core/widget/custom_marker_add_info_box.dart';
 import '../../../../core/widget/dialogs/custom_map_options.dart';
 import '../../../../core/widget/general_map_wrapper.dart';

@@ -7,7 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/core/widget/dialogs/permission.dart';
 
-import '../helper/google_map/provider/permission_provider.dart';
+import '../common_features/map/core/google_map/provider/permission_provider.dart';
 
 class PermissionDeniedScreen extends StatelessWidget {
   const PermissionDeniedScreen({super.key});

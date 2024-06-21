@@ -1,12 +1,25 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:locate_me/features/home/provider/favorite_filter_provider.dart';
 
-import '../helper/map/enums/map_enum.dart';
+import '../common_features/map/core/enums/map_enum.dart';
 import 'custom_text.dart';
 
 class CustomSwitch extends ConsumerWidget {
-  const CustomSwitch({super.key});
+  final String labelOne;
+  final String labelTwo;
+  final Function() onTapOne;
+  final Function() onTapTwo;
+
+  const CustomSwitch({
+    super.key,
+    required this.labelOne,
+    required this.labelTwo,
+    required this.onTapOne,
+    required this.onTapTwo,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,21 +36,15 @@ class CustomSwitch extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildSwitchButton(
-            context: context,
-            label: 'All Items',
-            isActive: itemViewState == ItemViewState.all,
-            onTap: () => ref
-                .read(favoriteFilterProvider.notifier)
-                .updateFavoriteView(ItemViewState.all),
-          ),
+              context: context,
+              label: labelOne,
+              isActive: itemViewState == ItemViewState.all,
+              onTap: onTapOne),
           _buildSwitchButton(
-            context: context,
-            label: 'Favorites',
-            isActive: itemViewState == ItemViewState.favorites,
-            onTap: () => ref
-                .read(favoriteFilterProvider.notifier)
-                .updateFavoriteView(ItemViewState.favorites),
-          ),
+              context: context,
+              label: labelTwo,
+              isActive: itemViewState == ItemViewState.favorites,
+              onTap: onTapTwo),
         ],
       ),
     );
@@ -59,11 +66,11 @@ class CustomSwitch extends ConsumerWidget {
               ? Theme.of(context).colorScheme.primary
               : Theme.of(context).colorScheme.surfaceContainer,
         ),
-        child: CustomText.bodyLarge(
+        child: CustomText.labelSmall(
           label,
           customStyle: TextStyle(
             color: isActive
-                ? Theme.of(context).colorScheme.surface
+                ? Theme.of(context).colorScheme.onPrimary
                 : Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
           ),

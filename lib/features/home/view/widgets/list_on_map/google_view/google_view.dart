@@ -7,9 +7,9 @@ import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/core/widget/general_map_wrapper.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 
-import '../../../../../../core/helper/google_map/provider/multiple_marker_provider.dart';
-import '../../../../../../core/helper/map/provider/map_setting_notifier_provider.dart';
-import '../../../../../../core/theme/google_map_style.dart';
+import '../../../../../../core/common_features/map/core/google_map/provider/multiple_marker_provider.dart';
+import '../../../../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
+import '../../../../../../core/common_features/map/core/theme/google_map_style.dart';
 import '../../../../model/dto/slider_notifier_dto.dart';
 import '../../../../provider/slider_location_provider.dart';
 import '../../custom_slider.dart';
