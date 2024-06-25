@@ -12,5 +12,5 @@ abstract class IAppSettingsRepository {
   Future<void> setLanguage(String language);
 
   Future<List<PlaceItemModel>> getLocations();
-  Future<void> replaceData(String data);
+  Future<void> replaceOrUpdateData(List<PlaceItemModel> data);
 }

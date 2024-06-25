@@ -29,7 +29,7 @@ class SettingsRepository {
     return await _appSettingsRepositoryImpl.getLocations();
   }
 
-  Future<void> importData(String data) async {
-    await _appSettingsRepositoryImpl.replaceData(data);
+  Future<void> importData(List<PlaceItemModel> data) async {
+    await _appSettingsRepositoryImpl.replaceOrUpdateData(data);
   }
 }

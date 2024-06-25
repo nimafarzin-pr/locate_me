@@ -103,11 +103,9 @@ class _MapListState extends ConsumerState<GoogleView>
             ));
           },
           loading: () {
-            // Show loading indicator if needed
             return const Center(child: CircularProgressIndicator());
           },
           error: (err, stack) {
-            // Show error message
             return Container(
               height: MediaQuery.sizeOf(context).height,
               width: MediaQuery.sizeOf(context).width,

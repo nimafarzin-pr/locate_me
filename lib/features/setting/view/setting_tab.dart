@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
+import 'package:locate_me/features/setting/view/widgets/items/import.dart';
 
 import 'package:locate_me/generated/locale_keys.g.dart';
 
@@ -21,6 +22,8 @@ class SettingsTab extends ConsumerStatefulWidget {
 }
 
 class _SettingTabState extends ConsumerState<SettingsTab> {
+  late final TextEditingController _fileName = TextEditingController();
+
   List<SettingItemDto> get settingsItems => [
         SettingItemDto(
           title: LocaleKeys.language.tr(),
@@ -40,16 +43,26 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
         SettingItemDto(
           title: LocaleKeys.export.tr(),
           icon: FontAwesomeIcons.upload,
-          onTap: (p0) {
-            ref.read(exportAndImportNotifierProvider.notifier).exportData();
+          onTap: (p0) async {
+            await showExportModal(context, _fileName).then((_) {
+              _fileName.clear();
+            });
           },
         ),
         SettingItemDto(
-          title: LocaleKeys.import.tr(),
-          icon: FontAwesomeIcons.download,
-          onTap: (context) => showExportDialog(context),
-        ),
+            title: LocaleKeys.import.tr(),
+            icon: FontAwesomeIcons.download,
+            onTap: (context) async {
+              ref.read(importNotifierProvider.notifier).importData();
+              await showImportModal(context);
+            })
       ];
+
+  @override
+  void dispose() {
+    _fileName.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext rootContext) {

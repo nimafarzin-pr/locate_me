@@ -1,7 +1,15 @@
+import 'package:locate_me/core/riverpod/riverpod_actions_common_state.dart';
 import 'package:riverpod/riverpod.dart';
 
-import '../../home/model/place_item_model.dart';
-import '../viewmodel/export_import_notifier.dart';
+import '../viewmodel/export_notifier.dart';
+import '../viewmodel/import_state.dart';
 
-final exportAndImportNotifierProvider =
-    AsyncNotifierProvider<DataNotifier, List<PlaceItemModel>>(DataNotifier.new);
+final exportNotifierProvider =
+    StateNotifierProvider<ExportNotifier, RiverpodActionsCommonState>((ref) {
+  return ExportNotifier();
+});
+
+final importNotifierProvider =
+    StateNotifierProvider<ImportNotifier, RiverpodActionsCommonState>((ref) {
+  return ImportNotifier();
+});

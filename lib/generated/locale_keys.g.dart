@@ -87,5 +87,11 @@ abstract class  LocaleKeys {
   static const search_location = 'search_location';
   static const empty_list = 'empty_list';
   static const select_your_map_style = 'select_your_map_style';
+  static const do_you_want_to_continue = 'do_you_want_to_continue';
+  static const export_hint = 'export_hint';
+  static const no_valid_data = 'no_valid_data';
+  static const success_backup = 'success_backup';
+  static const success_import = 'success_import';
+  static const error_backup = 'error_backup';
 
 }

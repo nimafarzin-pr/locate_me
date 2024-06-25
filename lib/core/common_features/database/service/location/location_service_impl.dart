@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:drift/drift.dart';
 import 'package:locate_me/core/common_features/database/db/db.dart';
-import 'package:locate_me/core/enums/enums.dart';
+import 'package:locate_me/features/home/model/place_item_model.dart';
 
 import '../../../category/enums/category.dart';
 import 'location_service.dart';
@@ -92,5 +92,12 @@ class LocationServiceImpl
           .where((location) => location.category == category.name)
           .toList();
     });
+  }
+
+  @override
+  Future<void> importLocations(List<LocationTBCompanion> data) async {
+    for (var item in data) {
+      await insert(item);
+    }
   }
 }
