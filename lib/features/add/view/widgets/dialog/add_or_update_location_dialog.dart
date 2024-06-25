@@ -120,7 +120,7 @@ class _AddLocationViewState<T>
               child: Container(
                 alignment: Alignment.center,
                 width: width / 1.1,
-                height: width / 0.6,
+                height: width / 0.65,
                 padding: const EdgeInsets.all(24),
                 margin: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
@@ -192,7 +192,8 @@ class _AddLocationViewState<T>
                                   selectedCategory = newValue;
                                 });
                               },
-                              itemAsString: (CategoryItem item) => item.name,
+                              itemAsString: (CategoryItem item) =>
+                                  item.name.tr(),
                               itemAsWidget: (CategoryItem item) => Row(
                                 children: [
                                   Image(
@@ -203,7 +204,7 @@ class _AddLocationViewState<T>
                                         Theme.of(context).colorScheme.onSurface,
                                   ),
                                   const SizedBox(width: 8),
-                                  CustomText.bodyLarge(item.name),
+                                  CustomText.bodyLarge(item.name.tr()),
                                 ],
                               ),
                             ),

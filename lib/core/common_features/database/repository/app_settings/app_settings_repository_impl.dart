@@ -71,5 +71,9 @@ class AppSettingsRepositoryImpl extends IAppSettingsRepository {
   }
 
   @override
-  Future<void> replaceData(String data) async {}
+  Future<void> replaceOrUpdateData(List<PlaceItemModel> data) async {
+    final riverpod = ProviderContainer();
+    final repo = riverpod.read(locationDBRepositoryProvider);
+    await repo.importLocations(data);
+  }
 }

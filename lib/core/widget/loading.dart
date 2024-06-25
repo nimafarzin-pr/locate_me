@@ -1,16 +1,26 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 class MyLoading extends StatelessWidget {
-  const MyLoading({super.key});
+  final double size;
+  const MyLoading({
+    super.key,
+    this.size = 50,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      mainAxisSize: MainAxisSize.max,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Center(child: CircularProgressIndicator()),
+        Center(
+            child: SizedBox(
+                width: size,
+                height: size,
+                child: CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.primary))),
       ],
     );
   }

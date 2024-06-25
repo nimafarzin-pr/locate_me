@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+
 import 'package:locate_me/core/sizing/my_text_size.dart';
 
 import '../../generated/locale_keys.g.dart';
@@ -24,6 +25,8 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final bool readOnly;
+  final FocusNode? focusNode;
+  final bool autofocus;
   // Add any other properties you might need
 
   const CustomTextField({
@@ -45,6 +48,8 @@ class CustomTextField extends StatelessWidget {
     this.suffixIcon,
     this.prefixIcon,
     this.readOnly = false,
+    this.focusNode,
+    this.autofocus = false,
   });
 
   @override
@@ -59,7 +64,9 @@ class CustomTextField extends StatelessWidget {
                 : null),
         readOnly: readOnly,
         onChanged: onChanged,
+        focusNode: focusNode,
         controller: controller,
+        autofocus: autofocus,
         validator: validator ??
             (value) {
               return ValidateInput.schema(

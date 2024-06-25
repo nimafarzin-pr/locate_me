@@ -128,9 +128,8 @@ class LocationItem extends ConsumerWidget {
                                     value: item.address),
                                 CustomRichText(
                                     title: '${LocaleKeys.date.tr()}: ',
-                                    value: context.locale.languageCode == 'fa'
-                                        ? DateConverter.toShamsi(item.date)
-                                        : DateConverter.toGregorian(item.date)),
+                                    value:
+                                        DateConverter.autoConverter(item.date)),
                               ],
                             ),
                           ),
@@ -166,12 +165,19 @@ class LocationItem extends ConsumerWidget {
                                       if (item.id == null) return;
                                       showWarningDialog(
                                         context: context,
-                                        title: 'Delete',
+                                        content:
+                                            '${item.title}\n\n${LocaleKeys.do_you_want_to_continue.tr()}',
+                                        iconColor:
+                                            Theme.of(context).colorScheme.error,
+                                        title: LocaleKeys.delete.tr(),
                                         onConfirm: () async {
                                           await ref
                                               .read(
                                                   homeScreenRepositoryProvider)
                                               .deleteLocation(item.id!);
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop();
                                         },
                                       );
                                     },

@@ -74,6 +74,9 @@ dependencies:
   shamsi_date: ^1.0.2
   share_plus: ^9.0.0
   file_picker: ^8.0.5
+  device_info_plus: ^10.1.0
+  permission_handler: ^11.3.1
+
 
 
 

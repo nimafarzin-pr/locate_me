@@ -85,7 +85,15 @@
     "choose_an_option":"Choose An Option",
     "search_location":"Search Location",
     "empty_list":"You don't add any item",
-     "select_your_map_style":"Select your map style"
+    "select_your_map_style":"Select your map style",
+    "do_you_want_to_continue":"Do you want to continue?",
+    "export_hint":"Your backup data will be saved in the download directory",
+    "no_valid_data":"No valid data found in the file!",
+    "success_backup":"Backup completed successfully",
+    "success_import":"Data import was successful.",
+    "error_backup":"Backup failed"
+
+
     
   }
   

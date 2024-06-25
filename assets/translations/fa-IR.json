@@ -83,8 +83,16 @@
     "change_map": "تغییر نقشه",
     "map_type": "نوع نقشه",
     "choose_an_option": "یک گزینه را انتخاب کنید",
-      "search_location":"جستحوی مکان",
+    "search_location":"جستحوی مکان",
     "empty_list":"شما آیتمی اضافه نکردید",
-    "select_your_map_style":"ظاهر نقشه را انتخاب کنید"
+    "select_your_map_style":"ظاهر نقشه را انتخاب کنید",
+    "do_you_want_to_continue":"آیا میخواهید ادامه دهید؟",
+    "export_hint":"دیتای بک آپ شما در دایرکتوری دانلود ذخیره خواهد شد",
+    "no_valid_data":"هیچ داده معتبری در فایل یافت نشد!",
+    "success_backup":"بک آپ گیری با موفقیت انجام شد",
+    "success_import":"بازیابی دیتا با موفقت انجام شد",
+    "error_backup":"خطا در بک آپ گیری"
+
+
 
 }

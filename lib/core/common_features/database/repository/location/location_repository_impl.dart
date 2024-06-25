@@ -226,4 +226,19 @@ class LocationRepositoryImpl implements ILocationRepository {
       print(stackTrace);
     });
   }
+
+  @override
+  Future<void> importLocations(List<PlaceItemModel> data) async {
+    try {
+      final toDriftLocations = data.map(
+        (e) {
+          return const DbPlaceModelConverter().toSql(e).toCompanion(true);
+        },
+      ).toList();
+      await _databaseService.importLocations(toDriftLocations);
+    } catch (e) {
+      print('Error in watchLocations stream: $e');
+      rethrow;
+    }
+  }
 }
