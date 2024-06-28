@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/navigation/routes.dart';
+import 'package:locate_me/core/widget/background_wrapper.dart';
 import 'package:locate_me/core/widget/navigation_scafold.dart';
 import 'package:locate_me/features/add/view/add_tab.dart';
 import 'package:locate_me/features/home/view/home_tab.dart';
@@ -34,7 +35,7 @@ final router = GoRouter(
               name: Routes.root,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
-                child: const HomeTab(),
+                child: const BackgroundWrapper(child: HomeTab()),
               ),
               routes: [
                 // child route
@@ -77,7 +78,7 @@ final router = GoRouter(
               name: Routes.settings,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
-                child: const SettingsTab(),
+                child: const BackgroundWrapper(child: SettingsTab()),
               ),
             ),
           ],

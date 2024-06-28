@@ -61,7 +61,7 @@ class CategoryBox extends StatelessWidget {
                         height: 16.w,
                         item.icon,
                         color: isSelected
-                            ? Theme.of(context).colorScheme.surface
+                            ? Theme.of(context).colorScheme.onPrimary
                             : Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
@@ -69,12 +69,12 @@ class CategoryBox extends StatelessWidget {
                       height: 6,
                     ),
                     Expanded(
-                      child: CustomText.labelSmall(
+                      child: CustomText.bodySmall(
                         item.translationKey.tr(),
                         maxLines: 1,
                         customStyle: TextStyle(
                             color: isSelected
-                                ? Theme.of(context).colorScheme.surface
+                                ? Theme.of(context).colorScheme.onPrimary
                                 : Theme.of(context).colorScheme.onSurface),
                       ),
                     )

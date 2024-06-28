@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +14,9 @@ import '../../../../../../core/common_features/map/provider/map_setting_notifier
 import '../../../../../../core/common_features/map/core/theme/osm_map_style.dart';
 import '../../../../../../core/widget/custom_marker_add_info_box.dart';
 import '../../../../../../core/widget/dialogs/custom_map_options.dart';
+import '../../../../../../core/widget/dialogs/status_widget.dart';
 import '../../../../../../core/widget/general_map_wrapper.dart';
+import '../../../../../../generated/locale_keys.g.dart';
 import '../../../../model/dto/slider_notifier_dto.dart';
 import '../../../../model/place_item_model.dart';
 import '../../../../provider/slider_location_provider.dart';
@@ -95,7 +98,11 @@ class _OsmViewState extends State<OsmView> with TickerProviderStateMixin {
                   );
                 },
                 error: (error, stackTrace) {
-                  return ErrorWidget(error);
+                  return StatusWidget(
+                    title: LocaleKeys.error.tr(),
+                    content: "$error",
+                    iconColor: Theme.of(context).colorScheme.error,
+                  );
                 },
                 loading: () {
                   return const MyLoading();

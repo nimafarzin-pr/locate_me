@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/features/setting/view/widgets/items/import.dart';
@@ -68,26 +69,63 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
   Widget build(BuildContext rootContext) {
     return Scaffold(
       appBar: AppBar(
-          // elevation: 2,
-          // backgroundColor: Theme.of(context).colorScheme.surface,
-          title: CustomText.headlineMedium(LocaleKeys.settings.tr())),
-      body: ListView.builder(
-        itemCount: settingsItems.length,
-        itemBuilder: (context, index) {
-          final item = settingsItems[index];
-          return Card(
-            color: Theme.of(rootContext).colorScheme.surfaceContainer,
-            margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child: ListTile(
-              leading: FaIcon(item.icon,
-                  color: Theme.of(context).colorScheme.primary),
-              title: CustomText.bodyLarge(item.title),
-              trailing: Icon(Icons.arrow_forward_ios,
-                  color: Theme.of(context).colorScheme.primary, size: 16),
-              onTap: () => item.onTap(context),
-            ),
-          );
-        },
+        backgroundColor: Colors.transparent,
+        // elevation: 4,
+        toolbarHeight: 60,
+        title: Center(
+            child: CustomText.headlineMedium(
+          LocaleKeys.settings.tr(),
+          customStyle:
+              TextStyle(color: Theme.of(context).colorScheme.onSurface),
+        )),
+      ),
+      backgroundColor: Colors.transparent,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GridView.builder(
+          itemCount: settingsItems.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 8.0,
+            mainAxisSpacing: 8.0,
+            childAspectRatio: 3 / 2,
+          ),
+          itemBuilder: (context, index) {
+            final item = settingsItems[index];
+            return Card(
+              color: Theme.of(rootContext).colorScheme.surface,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              elevation: 4.0,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16.0),
+                onTap: () => item.onTap(context),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FaIcon(
+                        item.icon,
+                        color: Theme.of(context).colorScheme.primary,
+                        size: 30.0,
+                      ),
+                      const SizedBox(height: 16.0),
+                      CustomText.bodySmall(item.title),
+                      const SizedBox(height: 8.0),
+                      // Icon(
+                      //   Icons.arrow_forward_ios,
+                      //   color: Theme.of(context).colorScheme.primary,
+                      //   size: 16.0,
+                      // ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

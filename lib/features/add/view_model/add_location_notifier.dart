@@ -10,7 +10,7 @@ import 'package:latlong2/latlong.dart' as latLang2;
 import 'package:locate_me/features/add/provider/add_repository_provider.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 
-class AddLocationNotifier extends AutoDisposeAsyncNotifier<latLang2.LatLng> {
+class AddLocationNotifier extends AsyncNotifier<latLang2.LatLng> {
   @override
   Future<latLang2.LatLng> build() async {
     return await _getCurrentLocation();

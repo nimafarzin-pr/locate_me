@@ -1,18 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:locate_me/core/extension/theme_extension.dart';
 import 'package:locate_me/core/sizing/my_text_size.dart';
+import 'package:locate_me/core/widget/accept_button/provider.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
-import 'package:locate_me/core/widget/dialogs/warning_dialog.dart';
 import 'package:locate_me/core/widget/loading.dart';
 
-import '../sizing/app_sizing.dart';
-
-final loadingProvider = StateProvider<bool>((ref) => false);
+import '../../sizing/app_sizing.dart';
 
 class AcceptButton extends ConsumerWidget {
   final String buttonText;
-  final Future<void> Function() onPressed;
+  final Future Function() onPressed;
 
   const AcceptButton({
     super.key,
@@ -46,14 +45,15 @@ class AcceptButton extends ConsumerWidget {
         child: ElevatedButton(
           onPressed: () async {
             if (isLoading) return;
+            ref.read(loadingProvider.notifier).updateLoadingState(true);
+            log('$isLoading');
             try {
-              ref.read(loadingProvider.notifier).state = true;
               await onPressed();
-              ref.read(loadingProvider.notifier).state = false;
+              ref.read(loadingProvider.notifier).updateLoadingState(false);
             } catch (e) {
-              ref.read(loadingProvider.notifier).state = false;
+              ref.read(loadingProvider.notifier).updateLoadingState(false);
             } finally {
-              ref.read(loadingProvider.notifier).state = false;
+              ref.read(loadingProvider.notifier).updateLoadingState(false);
             }
           },
           style: ButtonStyle(
@@ -79,7 +79,8 @@ class AcceptButton extends ConsumerWidget {
           ),
           child: Center(
             child: isLoading
-                ? const MyLoading(
+                ? MyLoading(
+                    color: Theme.of(context).colorScheme.onPrimary,
                     size: 16,
                   )
                 : CustomText.bodyLarge(buttonText),

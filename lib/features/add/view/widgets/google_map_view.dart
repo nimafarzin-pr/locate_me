@@ -14,7 +14,6 @@ import 'package:locate_me/features/add/provider/osm_location_provider.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
 
-import '../../../../core/widget/dialogs/custom_map_options.dart';
 import '../../../../core/widget/general_map_wrapper.dart';
 import '../../../../core/widget/loading.dart';
 import '../../provider/google_map_location_provider.dart';

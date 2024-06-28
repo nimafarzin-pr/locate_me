@@ -2,7 +2,6 @@
 import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:locate_me/core/enums/enums.dart';
 import 'package:locate_me/core/common_features/map/core/enums/map_enum.dart';
 import 'package:locate_me/features/home/provider/category_filter_provider.dart';
 import 'package:locate_me/features/home/provider/favorite_filter_provider.dart';

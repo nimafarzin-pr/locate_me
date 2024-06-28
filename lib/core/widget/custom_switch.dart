@@ -66,7 +66,7 @@ class CustomSwitch extends ConsumerWidget {
               ? Theme.of(context).colorScheme.primary
               : Theme.of(context).colorScheme.surfaceContainer,
         ),
-        child: CustomText.labelSmall(
+        child: CustomText.bodySmall(
           label,
           customStyle: TextStyle(
             color: isActive

@@ -3,19 +3,18 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:locate_me/core/extension/screen_size.dart';
 import 'package:locate_me/core/extension/theme_extension.dart';
-import 'package:locate_me/core/sizing/app_sizing.dart';
 import 'package:locate_me/core/widget/loading.dart';
 import 'package:locate_me/features/setting/provider/export_import_notifier.dart';
 import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../../../../../core/widget/cancel_button.dart';
-import '../../../../../core/widget/custom_accept_button.dart';
+import '../../../../../core/widget/accept_button/custom_accept_button.dart';
 import '../../../../../core/widget/custom_text.dart';
 import '../../../../../core/widget/custom_textfeild.dart';
 import '../../../../../core/widget/dialogs/diolog_wrapper.dart';
 import '../../../../../core/widget/dialogs/status_widget.dart';
+import '../../../../../core/widget/fade_in_scale_animation.dart';
 
 class ExportModal extends StatefulWidget {
   final TextEditingController fileName;
@@ -23,7 +22,7 @@ class ExportModal extends StatefulWidget {
   const ExportModal({super.key, required this.fileName});
 
   @override
-  _ExportModalState createState() => _ExportModalState();
+  State<ExportModal> createState() => _ExportModalState();
 }
 
 class _ExportModalState extends State<ExportModal> {
@@ -44,94 +43,92 @@ class _ExportModalState extends State<ExportModal> {
 
   @override
   Widget build(BuildContext context) {
-    return DialogWrapper(
-      child: Consumer(
-        builder: (context, ref, child) {
-          final state = ref.watch(exportNotifierProvider);
-          if (state.isLoading) {
-            return const MyLoading();
-          } else if (state.successMessage != null) {
-            return StatusWidget(
-              title: LocaleKeys.export.tr(),
-              iconColor: Theme.of(context).colorScheme.success,
-              content: state.successMessage,
-              showCancelButton: false,
-              onConfirm: () async {
-                Navigator.of(context, rootNavigator: true).pop();
-                ref.invalidate(exportNotifierProvider);
-              },
-            );
-          } else if (state.errorMessage != null) {
-            return StatusWidget(
-              title: LocaleKeys.export.tr(),
-              iconColor: Theme.of(context).colorScheme.error,
-              content: state.errorMessage,
-              showCancelButton: false,
-              onConfirm: () async {
-                Navigator.of(context, rootNavigator: true).pop();
-                ref.invalidate(exportNotifierProvider);
-              },
-            );
-          } else {
-            return Builder(builder: (bContext) {
-              return Form(
-                key: formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.warning_amber_rounded,
-                      color: Theme.of(context).colorScheme.warning,
-                      size: 50,
-                    ),
-                    const SizedBox(height: 20),
-                    CustomText.headlineMedium(
-                      LocaleKeys.export.tr(),
-                    ),
-                    const SizedBox(height: 10),
-                    CustomText.bodyLarge(
-                      LocaleKeys.export_hint.tr(),
-                      textAlign: TextAlign.center,
-                      customStyle: TextStyle(
-                        fontSize: 16,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withOpacity(0.5),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    CustomTextField(
-                      hintText: LocaleKeys.title.tr(),
-                      controller: widget.fileName,
-                      focusNode: focusNode,
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const CancelButton(),
-                        const SizedBox(width: 12),
-                        AcceptButton(
-                          buttonText: LocaleKeys.ok.tr(),
-                          onPressed: () async {
-                            if (!(formKey.currentState!.validate())) {
-                              return;
-                            }
-                            final req =
-                                ref.read(exportNotifierProvider.notifier);
-                            // TODO: ASYNC for rivepod future void not working and if i use await for below fucntion my button not work currectly
-                            req.exportData(widget.fileName.text);
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+    return FadeInScaleAnimation(
+      child: DialogWrapper(
+        child: Consumer(
+          builder: (context, ref, child) {
+            final state = ref.watch(exportNotifierProvider);
+            if (state.isLoading) {
+              return MyLoading(color: Theme.of(context).colorScheme.onPrimary);
+            } else if (state.successMessage != null) {
+              return StatusWidget(
+                title: LocaleKeys.export.tr(),
+                iconColor: Theme.of(context).colorScheme.success,
+                content: state.successMessage,
+                showCancelButton: false,
+                onConfirm: () async {
+                  Navigator.of(context, rootNavigator: true).pop();
+                },
               );
-            });
-          }
-        },
+            } else if (state.errorMessage != null) {
+              return StatusWidget(
+                title: LocaleKeys.export.tr(),
+                iconColor: Theme.of(context).colorScheme.error,
+                content: state.errorMessage,
+                showCancelButton: false,
+                onConfirm: () async {
+                  Navigator.of(context, rootNavigator: true).pop();
+                },
+              );
+            } else {
+              return Builder(builder: (bContext) {
+                return Form(
+                  key: formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.warning_amber_rounded,
+                        color: Theme.of(context).colorScheme.warning,
+                        size: 50,
+                      ),
+                      const SizedBox(height: 20),
+                      CustomText.headlineMedium(
+                        LocaleKeys.export.tr(),
+                      ),
+                      const SizedBox(height: 10),
+                      CustomText.bodySmall(
+                        LocaleKeys.export_hint.tr(),
+                        textAlign: TextAlign.center,
+                        customStyle: TextStyle(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withOpacity(0.5),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      CustomTextField(
+                        hintText: LocaleKeys.title.tr(),
+                        controller: widget.fileName,
+                        focusNode: focusNode,
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const CancelButton(),
+                          const SizedBox(width: 12),
+                          AcceptButton(
+                            buttonText: LocaleKeys.ok.tr(),
+                            onPressed: () async {
+                              if (!(formKey.currentState!.validate())) {
+                                return;
+                              }
+                              final req =
+                                  ref.read(exportNotifierProvider.notifier);
+                              await req.exportData(widget.fileName.text);
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              });
+            }
+          },
+        ),
       ),
     );
   }

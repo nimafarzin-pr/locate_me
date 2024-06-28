@@ -48,7 +48,7 @@ class CustomDropdownField<T> extends StatelessWidget {
         menuMaxHeight: context.screenHeight / 3,
         hint: Align(
           alignment: Alignment.centerLeft,
-          child: CustomText.labelSmall(
+          child: CustomText.bodySmall(
             hintText,
             customStyle: TextStyle(
               color: Colors.grey[400],
