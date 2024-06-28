@@ -5,11 +5,9 @@ import '../viewmodel/export_notifier.dart';
 import '../viewmodel/import_state.dart';
 
 final exportNotifierProvider =
-    StateNotifierProvider<ExportNotifier, RiverpodActionsCommonState>((ref) {
-  return ExportNotifier();
-});
+    AutoDisposeNotifierProvider<ExportNotifier, RiverpodActionsCommonState>(
+        ExportNotifier.new);
 
 final importNotifierProvider =
-    StateNotifierProvider<ImportNotifier, RiverpodActionsCommonState>((ref) {
-  return ImportNotifier();
-});
+    NotifierProvider<ImportNotifier, RiverpodActionsCommonState>(
+        ImportNotifier.new);

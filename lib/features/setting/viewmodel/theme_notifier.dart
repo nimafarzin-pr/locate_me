@@ -3,44 +3,20 @@ import 'package:locate_me/features/setting/provider/app_settings_repository_prov
 
 import '../../../core/enums/enums.dart';
 
-class ThemeNotifier extends StateNotifier<AppThemeMode> {
-  ThemeNotifier(this.ref) : super(AppThemeMode.auto) {
-    _loadTheme();
-  }
+class ThemeNotifier extends AsyncNotifier<AppThemeMode> {
+  @override
+  Future<AppThemeMode> build() async => await loadTheme();
 
-  final Ref ref;
-
-  Future<void> _loadTheme() async {
+  Future<AppThemeMode> loadTheme() async {
     final repo = ref.read(appSettingsRepositoryProvider);
     final themeModeIndex = await repo.getThemeMode();
-    state = AppThemeMode.values[themeModeIndex];
+    state = AsyncData(AppThemeMode.values[themeModeIndex]);
+    return AppThemeMode.values[themeModeIndex];
   }
 
-  void setTheme(AppThemeMode themeMode) {
+  void setTheme(AppThemeMode themeMode) async {
     final repo = ref.read(appSettingsRepositoryProvider);
-    repo.setThemeMode(themeMode.index);
-    state = themeMode;
+    await repo.setThemeMode(themeMode.index);
+    state = AsyncData(themeMode);
   }
 }
-
-
-
-// class ThemeNotifier extends AsyncNotifier<AppThemeMode> {
-//   @override
-//   Future<AppThemeMode> build() async {
-//     return await loadTheme();
-//   }
-
-//   Future<AppThemeMode> loadTheme() async {
-//     final repo = ref.read(appSettingsRepositoryProvider);
-//     final themeModeIndex = await repo.getThemeMode();
-//     state = AsyncData(AppThemeMode.values[themeModeIndex]);
-//     return AppThemeMode.values[themeModeIndex];
-//   }
-
-//   void setTheme(AppThemeMode themeMode) async {
-//     final repo = ref.read(appSettingsRepositoryProvider);
-//     await repo.setThemeMode(themeMode.index);
-//     state = AsyncData(themeMode);
-//   }
-// }

@@ -17,9 +17,7 @@ import 'package:locate_me/features/home/model/place_item_model.dart';
 import 'package:locate_me/features/home/provider/favorite_filter_provider.dart';
 import 'package:locate_me/features/home/provider/home_screen_repository_provider.dart';
 import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
-import 'package:locate_me/features/setting/provider/language_notifier_provider.dart';
 import 'package:locate_me/generated/locale_keys.g.dart';
-import 'package:shamsi_date/shamsi_date.dart';
 
 import '../../../../core/utils/date_converter.dart';
 
@@ -44,19 +42,12 @@ class LocationItem extends ConsumerWidget {
           right: isCarouselItem ? AppSizes.smallMargin : 0),
       width: context.screenWidth,
       height: context.screenWidth / 2.4,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
           Radius.circular(AppSizes.mediumBorderRadius),
-        ),
-        gradient: LinearGradient(
-          colors: [
-            Theme.of(context).colorScheme.primary.withOpacity(0.5),
-            Theme.of(context).colorScheme.secondary.withOpacity(0.5),
-          ],
         ),
       ),
       child: Card(
-        elevation: 3,
         color: Theme.of(context).colorScheme.surfaceContainer,
         child: Padding(
           padding: const EdgeInsets.all(AppSizes.smallPadding),
@@ -89,7 +80,7 @@ class LocationItem extends ConsumerWidget {
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(
-                                        AppSizes.verySmallPadding),
+                                        AppSizes.smallPadding),
                                     child: Image.asset(
                                         color: Theme.of(context)
                                             .colorScheme
@@ -150,14 +141,16 @@ class LocationItem extends ConsumerWidget {
                                       FontAwesomeIcons.penToSquare,
                                       color: Theme.of(context)
                                           .colorScheme
-                                          .secondary,
+                                          .secondary
+                                          .withOpacity(0.7),
                                     )),
                                 IconButton(
                                     onPressed: () {},
                                     icon: FaIcon(
                                       color: Theme.of(context)
                                           .colorScheme
-                                          .secondary,
+                                          .secondary
+                                          .withOpacity(0.7),
                                       FontAwesomeIcons.route,
                                     )),
                                 IconButton(
@@ -166,7 +159,7 @@ class LocationItem extends ConsumerWidget {
                                       showWarningDialog(
                                         context: context,
                                         content:
-                                            '${item.title}\n\n${LocaleKeys.do_you_want_to_continue.tr()}',
+                                            '${LocaleKeys.delete.tr()} ${item.title}\n\n${LocaleKeys.do_you_want_to_continue.tr()}',
                                         iconColor:
                                             Theme.of(context).colorScheme.error,
                                         title: LocaleKeys.delete.tr(),
@@ -182,8 +175,10 @@ class LocationItem extends ConsumerWidget {
                                       );
                                     },
                                     icon: FaIcon(
-                                      color:
-                                          Theme.of(context).colorScheme.error,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .error
+                                          .withOpacity(0.7),
                                       FontAwesomeIcons.trashCan,
                                     )),
                               ],
@@ -195,38 +190,35 @@ class LocationItem extends ConsumerWidget {
                   ],
                 ),
               ),
-              Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    CustomFavoriteIconButton(
-                      isFavorite: item.isFavorite,
-                      onPressed: () {
-                        if (item.id == null) return;
-                        ref
-                            .read(favoriteFilterProvider.notifier)
-                            .updateFavoriteStatus(id: item.id!);
-                      },
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Rate(
-                          direction: Axis.vertical,
-                          draggable: false,
-                          initialRating: item.rate,
-                        ),
-                        CustomText.bodyLarge(
-                          '${item.rate}',
-                          customStyle: TextStyle(
-                              fontSize:
-                                  AppTextFontsAndSizing.bodyMediumFontSize),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  CustomFavoriteIconButton(
+                    isFavorite: item.isFavorite,
+                    onPressed: () {
+                      if (item.id == null) return;
+                      ref
+                          .read(favoriteFilterProvider.notifier)
+                          .updateFavoriteStatus(id: item.id!);
+                    },
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Rate(
+                        direction: Axis.vertical,
+                        draggable: false,
+                        initialRating: item.rate,
+                      ),
+                      CustomText.bodyLarge(
+                        '${item.rate}',
+                        customStyle: TextStyle(
+                            fontSize: AppTextFontsAndSizing.bodyMediumFontSize),
+                      )
+                    ],
+                  ),
+                ],
               )
             ],
           ),

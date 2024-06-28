@@ -1,23 +1,27 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:locate_me/core/common_features/map/core/enums/map_enum.dart';
 import 'package:locate_me/core/navigation/router/router.dart';
 import 'package:locate_me/core/navigation/routes.dart';
-import 'package:locate_me/core/widget/disabled_location_service_view.dart';
 import 'package:locate_me/core/widget/loading.dart';
-import 'package:locate_me/core/widget/permission_denied_screen.dart';
 import 'package:locate_me/features/add/view/widgets/google_map_view.dart';
 import 'package:locate_me/features/add/view/widgets/osm_map_view.dart';
 import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
+import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../../../core/common_features/map/core/google_map/provider/permission_provider.dart';
 import '../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
+import '../../../core/widget/dialogs/permission.dart';
+import '../../../core/widget/dialogs/status_widget.dart';
 import '../../home/model/place_item_model.dart';
 import '../provider/osm_location_provider.dart';
 import 'widgets/dialog/add_or_update_location_dialog.dart';
+import 'package:app_settings/app_settings.dart';
 
 class AddTab extends ConsumerStatefulWidget {
   const AddTab({super.key});
@@ -35,8 +39,6 @@ class _AddTabState extends ConsumerState<AddTab> {
         if (edit != null &&
             (router.routerDelegate.currentConfiguration.fullPath
                 .contains(Routes.editLocation))) {
-          log('EDDDIT++++ ${ref.read(editStateProvider)}');
-
           await showDialog(
             barrierDismissible: true,
             context: context,
@@ -67,10 +69,35 @@ class _AddTabState extends ConsumerState<AddTab> {
       AsyncValue(:final SystemAndPermissionStatus error?) => Builder(
           builder: (_) {
             if (error == SystemAndPermissionStatus.systemLocationDisable) {
-              return const DisabledLocationServiceView();
+              return errorWidget(
+                buttonTitle: LocaleKeys.enable.tr(),
+                context: context,
+                onConfirm: () async {
+                  final status = await Geolocator.isLocationServiceEnabled();
+                  if (!status) {
+                    await showLocationServiceDialog(context);
+                  }
+                },
+              );
             } else if (error == SystemAndPermissionStatus.permissionDenied ||
                 error == SystemAndPermissionStatus.permissionDeniedForEver) {
-              return const PermissionDeniedScreen();
+              return errorWidget(
+                buttonTitle: LocaleKeys.refresh_accept.tr(),
+                context: context,
+                onConfirm: () async {
+                  final permissionStatus = await Geolocator.checkPermission();
+                  if (permissionStatus == LocationPermission.deniedForever ||
+                      permissionStatus == LocationPermission.denied) {
+                    await showPermissionSettingsDialog(context,
+                        onAcceptPressed: () async {
+                      await AppSettings.openAppSettings(
+                          type: AppSettingsType.location);
+                    });
+                  } else {
+                    ref.refresh(permissionProvider);
+                  }
+                },
+              );
             } else {
               return const MyLoading();
             }
@@ -86,7 +113,11 @@ class _AddTabState extends ConsumerState<AddTab> {
                 };
               },
               error: (error, stackTrace) {
-                return ErrorWidget(error);
+                return StatusWidget(
+                  title: LocaleKeys.error.tr(),
+                  content: "$error",
+                  iconColor: Theme.of(context).colorScheme.error,
+                );
               },
               loading: () {
                 return const MyLoading();
@@ -96,5 +127,25 @@ class _AddTabState extends ConsumerState<AddTab> {
         ),
       _ => const MyLoading(),
     };
+  }
+
+  Center errorWidget({
+    required Future<void> Function()? onConfirm,
+    required BuildContext context,
+    required String buttonTitle,
+  }) {
+    return Center(
+      child: IntrinsicHeight(
+        child: Center(
+          child: StatusWidget(
+              onConfirm: onConfirm,
+              acceptButtonTitle: buttonTitle,
+              showCancelButton: false,
+              title: LocaleKeys.error.tr(),
+              content: LocaleKeys.disabled_location_and_permission_error.tr(),
+              iconColor: Theme.of(context).colorScheme.error),
+        ),
+      ),
+    );
   }
 }

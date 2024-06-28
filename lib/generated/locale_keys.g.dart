@@ -93,5 +93,11 @@ abstract class  LocaleKeys {
   static const success_backup = 'success_backup';
   static const success_import = 'success_import';
   static const error_backup = 'error_backup';
+  static const error = 'error';
+  static const disabled_location_and_permission_error = 'disabled_location_and_permission_error';
+  static const enable = 'enable';
+  static const refresh_accept = 'refresh_accept';
+  static const accept = 'accept';
+  static const refresh = 'refresh';
 
 }

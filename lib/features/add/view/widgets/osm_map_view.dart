@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,8 +12,9 @@ import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
 
 import '../../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
 import '../../../../core/widget/custom_marker_add_info_box.dart';
-import '../../../../core/widget/dialogs/custom_map_options.dart';
+import '../../../../core/widget/dialogs/status_widget.dart';
 import '../../../../core/widget/general_map_wrapper.dart';
+import '../../../../generated/locale_keys.g.dart';
 import '../../../home/model/place_item_model.dart';
 import '../../provider/osm_location_provider.dart';
 import 'dialog/add_or_update_location_dialog.dart';
@@ -152,7 +154,11 @@ class _HomePageState extends ConsumerState<OsmMapView>
             );
           },
           error: (error, stackTrace) {
-            return ErrorWidget(error);
+            return StatusWidget(
+              title: LocaleKeys.error.tr(),
+              content: "$error",
+              iconColor: Theme.of(context).colorScheme.error,
+            );
           },
           loading: () {
             return const MyLoading();
@@ -160,7 +166,11 @@ class _HomePageState extends ConsumerState<OsmMapView>
         );
       },
       error: (error, stackTrace) {
-        return ErrorWidget(error);
+        return StatusWidget(
+          title: LocaleKeys.error.tr(),
+          content: "$error",
+          iconColor: Theme.of(context).colorScheme.error,
+        );
       },
       loading: () {
         return const MyLoading();

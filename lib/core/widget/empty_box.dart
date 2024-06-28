@@ -16,7 +16,7 @@ class EmptyBox extends StatelessWidget {
       children: [
         const FaIcon(FontAwesomeIcons.inbox),
         const SizedBox(height: 12),
-        CustomText.labelSmall(LocaleKeys.empty_list.tr())
+        CustomText.bodySmall(LocaleKeys.empty_list.tr())
       ],
     );
   }

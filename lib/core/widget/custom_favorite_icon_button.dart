@@ -15,7 +15,7 @@ class CustomFavoriteIconButton extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Icon(
-        size: 30,
+        size: 24,
         isFavorite ? Icons.favorite : Icons.favorite_border,
         color:
             isFavorite ? Theme.of(context).colorScheme.tertiary : Colors.grey,

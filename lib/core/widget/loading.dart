@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 
 class MyLoading extends StatelessWidget {
   final double size;
+  final Color? color;
   const MyLoading({
     super.key,
     this.size = 50,
+    this.color,
   });
 
   @override
@@ -20,7 +22,8 @@ class MyLoading extends StatelessWidget {
                 width: size,
                 height: size,
                 child: CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.primary))),
+                    strokeWidth: 0.8,
+                    color: color ?? Theme.of(context).colorScheme.primary))),
       ],
     );
   }

@@ -17,6 +17,8 @@ import '../../common_features/map/core/enums/map_enum.dart';
 import '../../sizing/app_sizing.dart';
 import '../custom_dropdwon_button.dart';
 import '../custom_radio.dart';
+import '../fade_in_scale_animation.dart';
+import 'status_widget.dart';
 
 class CustomMapOptionsDialog extends StatefulWidget {
   final void Function(String) onOptionSelected;
@@ -35,168 +37,179 @@ class _CustomMapOptionsDialogState extends State<CustomMapOptionsDialog> {
   Widget build(BuildContext context) {
     double width = context.screenWidth;
     double height = context.screenHeight;
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Consumer(
-        builder: (context, ref, child) {
-          return Stack(
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              Center(
-                child: Container(
-                  alignment: Alignment.center,
-                  width: width / 1.1,
-                  height: width,
-                  padding: const EdgeInsets.all(AppSizes.largePadding),
-                  margin: const EdgeInsets.all(AppSizes.largePadding),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        width: 2),
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius:
-                        BorderRadius.circular(AppSizes.veryLargeBorderRadius),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 10,
-                        offset: Offset(0, 10),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      CustomText.bodyLarge(
-                        LocaleKeys.map_settings.tr(),
-                        customStyle: TextStyle(
-                          fontSize: AppTextFontsAndSizing.headlineSmallFontSize,
-                          fontWeight: FontWeight.bold,
+    return FadeInScaleAnimation(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Consumer(
+          builder: (context, ref, child) {
+            return Stack(
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Center(
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: width / 1.1,
+                    height: width,
+                    padding: const EdgeInsets.all(AppSizes.largePadding),
+                    margin: const EdgeInsets.all(AppSizes.largePadding),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Theme.of(context).colorScheme.onSurface,
+                          width: 2),
+                      color: Theme.of(context).colorScheme.surface,
+                      borderRadius:
+                          BorderRadius.circular(AppSizes.veryLargeBorderRadius),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 10,
+                          offset: Offset(0, 10),
                         ),
-                      ),
-                      const SizedBox(height: AppSizes.largePadding),
-                      ref.watch(mapSettingNotifierProvider).when(
-                        data: (data) {
-                          return Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              ListTile(
-                                title: CustomText.bodyLarge(
-                                    LocaleKeys.change_map.tr()),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                mainAxisSize: MainAxisSize.max,
-                                children: <Widget>[
-                                  Expanded(
-                                    child: CustomRadio<MapLayer>(
-                                      isSelect:
-                                          data.mapLayer == MapLayer.google,
-                                      groupValue:
-                                          data.mapLayer ?? MapLayer.google,
-                                      onChanged: (p0) {
-                                        ref
-                                            .read(mapSettingNotifierProvider
-                                                .notifier)
-                                            .updateSettings(
-                                                const MapSettingsModel()
-                                                    .copyWith(
-                                                        mapLayer:
-                                                            MapLayer.google));
-                                      },
-                                      title: "Google Map",
-                                      value: MapLayer.google,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: CustomRadio<MapLayer>(
-                                      isSelect: data.mapLayer == MapLayer.osm,
-                                      groupValue: data.mapLayer ?? MapLayer.osm,
-                                      onChanged: (p0) {
-                                        ref
-                                            .read(mapSettingNotifierProvider
-                                                .notifier)
-                                            .updateSettings(
-                                                const MapSettingsModel()
-                                                    .copyWith(
-                                                        mapLayer:
-                                                            MapLayer.osm));
-                                      },
-                                      title: "Open Street Map",
-                                      value: MapLayer.osm,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              ListTile(
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        CustomText.bodyLarge(
+                          LocaleKeys.map_settings.tr(),
+                          customStyle: TextStyle(
+                            fontSize:
+                                AppTextFontsAndSizing.headlineSmallFontSize,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: AppSizes.largePadding),
+                        ref.watch(mapSettingNotifierProvider).when(
+                          data: (data) {
+                            return Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                ListTile(
                                   title: CustomText.bodyLarge(
-                                      LocaleKeys.map_style.tr())),
-                              CustomDropdownField<MapStyle>(
-                                validator: (value) {
-                                  return null;
-                                },
-                                hintText: LocaleKeys.select_your_map_style.tr(),
-                                items: MapStyle.values.toList(),
-                                value: ref
-                                    .watch(mapSettingStyleNotifierProvider)
-                                    .value,
-                                onChanged: (MapStyle? newValue) {
-                                  final newData = newValue != null
-                                      ? const MapSettingsModel()
-                                          .copyWith(mapStyle: newValue)
-                                      : const MapSettingsModel().copyWith(
-                                          mapStyle: MapStyle.standard);
-                                  ref
-                                      .read(mapSettingNotifierProvider.notifier)
-                                      .updateSettings(newData);
-                                },
-                                itemAsString: (MapStyle item) => item.name.tr(),
-                                itemAsWidget: (MapStyle item) => Row(
-                                  children: [
-                                    const SizedBox(
-                                        width: AppSizes.smallPadding),
-                                    Card(
-                                      clipBehavior: Clip.hardEdge,
-                                      elevation: 2,
-                                      child: Container(
-                                        width: 40,
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                            color:
-                                                generalStyleColors[item.name],
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
+                                      LocaleKeys.change_map.tr()),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: CustomRadio<MapLayer>(
+                                        isSelect:
+                                            data.mapLayer == MapLayer.google,
+                                        groupValue:
+                                            data.mapLayer ?? MapLayer.google,
+                                        onChanged: (p0) {
+                                          ref
+                                              .read(mapSettingNotifierProvider
+                                                  .notifier)
+                                              .updateSettings(
+                                                  const MapSettingsModel()
+                                                      .copyWith(
+                                                          mapLayer:
+                                                              MapLayer.google));
+                                        },
+                                        title: "Google Map",
+                                        value: MapLayer.google,
                                       ),
                                     ),
-                                    const SizedBox(
-                                        width: AppSizes.smallPadding),
-                                    CustomText.labelSmall(item.name.tr()),
+                                    Expanded(
+                                      child: CustomRadio<MapLayer>(
+                                        isSelect: data.mapLayer == MapLayer.osm,
+                                        groupValue:
+                                            data.mapLayer ?? MapLayer.osm,
+                                        onChanged: (p0) {
+                                          ref
+                                              .read(mapSettingNotifierProvider
+                                                  .notifier)
+                                              .updateSettings(
+                                                  const MapSettingsModel()
+                                                      .copyWith(
+                                                          mapLayer:
+                                                              MapLayer.osm));
+                                        },
+                                        title: "Open Street Map",
+                                        value: MapLayer.osm,
+                                      ),
+                                    ),
                                   ],
                                 ),
-                              ),
-                            ],
-                          );
-                        },
-                        error: (error, stackTrace) {
-                          return ErrorWidget(error);
-                        },
-                        loading: () {
-                          return const MyLoading();
-                        },
-                      ),
-                    ],
+                                ListTile(
+                                    title: CustomText.bodyLarge(
+                                        LocaleKeys.map_style.tr())),
+                                CustomDropdownField<MapStyle>(
+                                  validator: (value) {
+                                    return null;
+                                  },
+                                  hintText:
+                                      LocaleKeys.select_your_map_style.tr(),
+                                  items: MapStyle.values.toList(),
+                                  value: ref
+                                      .watch(mapSettingStyleNotifierProvider)
+                                      .value,
+                                  onChanged: (MapStyle? newValue) {
+                                    final newData = newValue != null
+                                        ? const MapSettingsModel()
+                                            .copyWith(mapStyle: newValue)
+                                        : const MapSettingsModel().copyWith(
+                                            mapStyle: MapStyle.standard);
+                                    ref
+                                        .read(
+                                            mapSettingNotifierProvider.notifier)
+                                        .updateSettings(newData);
+                                  },
+                                  itemAsString: (MapStyle item) =>
+                                      item.name.tr(),
+                                  itemAsWidget: (MapStyle item) => Row(
+                                    children: [
+                                      const SizedBox(
+                                          width: AppSizes.smallPadding),
+                                      Card(
+                                        clipBehavior: Clip.hardEdge,
+                                        elevation: 2,
+                                        child: Container(
+                                          width: 40,
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                              color:
+                                                  generalStyleColors[item.name],
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                          width: AppSizes.smallPadding),
+                                      CustomText.bodySmall(item.name.tr()),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                          error: (error, stackTrace) {
+                            return StatusWidget(
+                              title: LocaleKeys.error.tr(),
+                              content: "$error",
+                              iconColor: Theme.of(context).colorScheme.error,
+                            );
+                          },
+                          loading: () {
+                            return const MyLoading();
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }

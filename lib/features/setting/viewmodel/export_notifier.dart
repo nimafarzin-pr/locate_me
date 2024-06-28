@@ -14,9 +14,7 @@ import '../../../core/utils/permissions.dart';
 import '../provider/app_settings_repository_provider.dart';
 import '../provider/language_notifier_provider.dart';
 
-class ExportNotifier extends StateNotifier<RiverpodActionsCommonState> {
-  ExportNotifier() : super(RiverpodActionsCommonState());
-
+class ExportNotifier extends AutoDisposeNotifier<RiverpodActionsCommonState> {
   Future<void> exportData(String fileName) async {
     state = state.copyWith(
         isLoading: true,
@@ -31,16 +29,17 @@ class ExportNotifier extends StateNotifier<RiverpodActionsCommonState> {
       final fName = "$fileName $date";
       final repo = ref.read(appSettingsRepositoryProvider);
       final data = await repo.getExportedData();
-      final jsonString = jsonEncode(data);
+      final toJson = jsonEncode(data);
+      final toBase64 = EncryptUtils.jsonToBase64(toJson);
       if (Platform.isAndroid) {
         final file = await PermissionsUtils.createFilePath(fileName: fileName);
-        await file.writeAsString(EncryptUtils.jsonToBase64(jsonString));
+        await file.writeAsString(toBase64);
       } else {
         final directory = await getApplicationDocumentsDirectory();
-        final file = File('${directory.path}/locations_export.json');
-        await file.writeAsString(jsonString);
-        await Share.shareXFiles([XFile(file.path)],
-            text: LocaleKeys.export.tr());
+        final file = File('${directory.path}/$fileName.txt');
+        await file.writeAsString(toBase64);
+        await Share.shareXFiles([XFile(file.path, name: fileName)],
+            text: fileName, subject: fileName);
       }
       state = state.copyWith(
           isLoading: false,
@@ -52,4 +51,11 @@ class ExportNotifier extends StateNotifier<RiverpodActionsCommonState> {
           isLoading: false, errorMessage: LocaleKeys.error_backup.tr());
     }
   }
+
+  @override
+  RiverpodActionsCommonState build() => RiverpodActionsCommonState(
+      isLoading: false,
+      successMessage: null,
+      errorMessage: null,
+      isCancel: null);
 }

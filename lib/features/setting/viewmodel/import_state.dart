@@ -11,9 +11,7 @@ import '../../../core/riverpod/riverpod_actions_common_state.dart';
 import '../../home/model/place_item_model.dart';
 import '../provider/app_settings_repository_provider.dart';
 
-class ImportNotifier extends StateNotifier<RiverpodActionsCommonState> {
-  ImportNotifier() : super(RiverpodActionsCommonState());
-
+class ImportNotifier extends Notifier<RiverpodActionsCommonState> {
   Future<void> importData() async {
     state = state.copyWith(
         isLoading: true,
@@ -26,31 +24,24 @@ class ImportNotifier extends StateNotifier<RiverpodActionsCommonState> {
         type: FileType.custom,
         allowedExtensions: ['txt'],
       );
-      if (result != null && result.files.single.path != null) {
-        final file = File(result.files.single.path!);
-        final jsonString = await file.readAsString();
-        final decode =
-            json.decode(EncryptUtils.base64ToJson(jsonString)) as List<dynamic>;
+      if (result != null && result.paths[0] != null) {
+        final file = File(result.paths[0]!);
+        final base64String = await file.readAsString();
+        final jsonFromBase64 = EncryptUtils.base64ToJson(base64String);
+        final decode = json.decode(jsonFromBase64) as List<dynamic>;
         final List<PlaceItemModel> data = decode
             .map((e) => PlaceItemModel.fromJson(e as Map<String, dynamic>))
             .toList();
-        if (data.isNotEmpty) {
-          final ref = ProviderContainer();
-          final repo = ref.read(appSettingsRepositoryProvider);
-          await repo.importData(data);
-          state = state.copyWith(
-            isLoading: false,
-            successMessage: LocaleKeys.success_import.tr(),
-            errorMessage: null,
-          );
-        } else {
-          state = state.copyWith(
-            isLoading: false,
-            successMessage: null,
-            errorMessage: LocaleKeys.no_valid_data.tr(),
-          );
-        }
+        final ref = ProviderContainer();
+        final repo = ref.read(appSettingsRepositoryProvider);
+        await repo.importData(data);
+        state = state.copyWith(
+          isLoading: false,
+          successMessage: LocaleKeys.success_import.tr(),
+          errorMessage: null,
+        );
       } else {
+        ref.invalidateSelf();
         state = state.copyWith(
             isLoading: false,
             successMessage: null,
@@ -65,4 +56,11 @@ class ImportNotifier extends StateNotifier<RiverpodActionsCommonState> {
       );
     }
   }
+
+  @override
+  RiverpodActionsCommonState build() => RiverpodActionsCommonState(
+      isLoading: true,
+      successMessage: null,
+      errorMessage: null,
+      isCancel: null);
 }

@@ -39,12 +39,12 @@ class _CustomSegmentedButtonState extends State<CustomSegmentedButton> {
       segments: <ButtonSegment<HomeViewMode>>[
         ButtonSegment<HomeViewMode>(
           value: HomeViewMode.list,
-          label: CustomText.labelSmall(LocaleKeys.list.tr()),
+          label: CustomText.bodySmall(LocaleKeys.list.tr()),
           icon: const Icon(Icons.list),
         ),
         ButtonSegment<HomeViewMode>(
             value: HomeViewMode.map,
-            label: CustomText.labelSmall(LocaleKeys.map.tr()),
+            label: CustomText.bodySmall(LocaleKeys.map.tr()),
             icon: const Icon(Icons.map_outlined)),
       ],
       onSelectionChanged: widget.onSelectionChanged,

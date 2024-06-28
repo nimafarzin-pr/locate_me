@@ -10,7 +10,7 @@ class CustomText extends StatelessWidget {
   final TextScaler? textScaler;
   final TextWidthBasis? textWidthBasis;
 
-  CustomText.displayLarge(
+  CustomText.headlineLarge(
     this.text, {
     super.key,
     TextStyle? customStyle,
@@ -43,7 +43,7 @@ class CustomText extends StatelessWidget {
     this.textWidthBasis,
   }) : style = AppTextFontsAndSizing.bodyLarge.merge(customStyle);
 
-  CustomText.labelSmall(
+  CustomText.bodySmall(
     this.text, {
     super.key,
     TextStyle? customStyle,
@@ -52,7 +52,7 @@ class CustomText extends StatelessWidget {
     this.overflow,
     this.textScaler,
     this.textWidthBasis,
-  }) : style = AppTextFontsAndSizing.labelSmall.merge(customStyle);
+  }) : style = AppTextFontsAndSizing.bodySmall.merge(customStyle);
 
   @override
   Widget build(BuildContext context) {

@@ -48,7 +48,7 @@ class CustomRadio<T> extends StatelessWidget {
               groupValue: groupValue,
               onChanged: onChanged,
             ),
-            CustomText.labelSmall(title),
+            CustomText.bodySmall(title),
           ],
         ),
       ),
