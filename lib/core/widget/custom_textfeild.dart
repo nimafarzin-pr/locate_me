@@ -27,6 +27,7 @@ class CustomTextField extends StatelessWidget {
   final bool readOnly;
   final FocusNode? focusNode;
   final bool autofocus;
+  final TextAlign textAlign;
   // Add any other properties you might need
 
   const CustomTextField({
@@ -50,6 +51,7 @@ class CustomTextField extends StatelessWidget {
     this.readOnly = false,
     this.focusNode,
     this.autofocus = false,
+    this.textAlign = TextAlign.start,
   });
 
   @override
@@ -57,6 +59,7 @@ class CustomTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
+        textAlign: textAlign,
         style: TextStyle(
             fontSize: AppTextFontsAndSizing.bodySmallFontSize,
             color: readOnly
@@ -92,16 +95,13 @@ class CustomTextField extends StatelessWidget {
           border: border ??
               OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
-                borderSide: const BorderSide(
-                  color: Colors.greenAccent,
-                  width: 1.0,
-                ),
+                borderSide: BorderSide.none,
               ),
           enabledBorder: enabledBorder ??
               OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
                 borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.onSurface,
+                  color: Theme.of(context).colorScheme.primary,
                   width: 1.0,
                 ),
               ),

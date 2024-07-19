@@ -1,8 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:locate_me/core/navigation/routes.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/features/setting/view/widgets/items/import.dart';
 
@@ -56,6 +57,12 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
             onTap: (context) async {
               ref.read(importNotifierProvider.notifier).importData();
               await showImportModal(context);
+            }),
+        SettingItemDto(
+            title: LocaleKeys.categories.tr(),
+            icon: FontAwesomeIcons.list,
+            onTap: (context) async {
+              context.goNamed(Routes.categoryList);
             })
       ];
 
@@ -73,7 +80,7 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
         // elevation: 4,
         toolbarHeight: 60,
         title: Center(
-            child: CustomText.headlineMedium(
+            child: CustomText.headlineSmall(
           LocaleKeys.settings.tr(),
           customStyle:
               TextStyle(color: Theme.of(context).colorScheme.onSurface),

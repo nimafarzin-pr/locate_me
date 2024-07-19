@@ -14,7 +14,7 @@ import '../../../../../core/widget/custom_text.dart';
 import '../../../../../core/widget/custom_textfeild.dart';
 import '../../../../../core/widget/dialogs/diolog_wrapper.dart';
 import '../../../../../core/widget/dialogs/status_widget.dart';
-import '../../../../../core/widget/fade_in_scale_animation.dart';
+import '../../../../../core/widget/animation/fade_in_scale_animation.dart';
 
 class ExportModal extends StatefulWidget {
   final TextEditingController fileName;
@@ -83,7 +83,7 @@ class _ExportModalState extends State<ExportModal> {
                         size: 50,
                       ),
                       const SizedBox(height: 20),
-                      CustomText.headlineMedium(
+                      CustomText.headlineSmall(
                         LocaleKeys.export.tr(),
                       ),
                       const SizedBox(height: 10),

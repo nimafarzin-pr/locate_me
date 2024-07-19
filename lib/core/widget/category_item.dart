@@ -1,13 +1,12 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:locate_me/core/utils/icon_picker_utils.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
+import 'package:locate_me/features/setting/model/category_model.dart';
 
-import '../common_features/category/dto/category_dto.dart';
 import '../sizing/app_sizing.dart';
 
 class CategoryBox extends StatelessWidget {
-  final CategoryItem item;
+  final CategoryModel item;
   final VoidCallback onTap;
   final bool isSelected;
 
@@ -20,6 +19,7 @@ class CategoryBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final icon = IconPickerUtils.iconPickerDeserializer(item.emoji);
     return Container(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
@@ -32,9 +32,15 @@ class CategoryBox extends StatelessWidget {
       child: Card(
         clipBehavior: Clip.hardEdge,
         elevation: 1,
-        color: isSelected
-            ? Theme.of(context).colorScheme.primary
-            : Theme.of(context).colorScheme.surfaceContainer,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSizes.smallBorderRadius),
+          side: BorderSide(
+              color: isSelected
+                  ? Theme.of(context).colorScheme.primary
+                  : Colors.transparent,
+              width: 2),
+        ),
+        color: Theme.of(context).colorScheme.surfaceContainer,
         child: InkWell(
           onTap: onTap,
           child: Center(
@@ -44,6 +50,7 @@ class CategoryBox extends StatelessWidget {
               // padding: EdgeInsets.all(3.w),
               // width: context.screenWidth * 0.16,
               // height: context.screenHeight * 0.16,
+              constraints: const BoxConstraints(minWidth: 50),
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(
                   Radius.circular(AppSizes.smallBorderRadius),
@@ -53,30 +60,24 @@ class CategoryBox extends StatelessWidget {
                 padding: const EdgeInsets.all(AppSizes.smallPadding),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Image.asset(
-                        width: 34.w,
-                        height: 16.w,
-                        item.icon,
-                        color: isSelected
-                            ? Theme.of(context).colorScheme.onPrimary
-                            : Theme.of(context).colorScheme.onSurface,
+                      child: Icon(
+                        icon,
+                        color: Color(item.color),
                       ),
                     ),
-                    const SizedBox(
-                      height: 6,
-                    ),
-                    Expanded(
-                      child: CustomText.bodySmall(
-                        item.translationKey.tr(),
-                        maxLines: 1,
-                        customStyle: TextStyle(
-                            color: isSelected
-                                ? Theme.of(context).colorScheme.onPrimary
-                                : Theme.of(context).colorScheme.onSurface),
+                    const Expanded(
+                      child: SizedBox(
+                        height: 4,
                       ),
+                    ),
+                    CustomText.bodySmall(
+                      item.name,
+                      maxLines: 1,
+                      customStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface),
                     )
                   ],
                 ),

@@ -71,6 +71,8 @@ class _GoogleMapAddViewState extends ConsumerState<GoogleMapAddView> {
         child: GeneralMapWrapper(
           isEditMode: editItem != null,
           map: GoogleMap(
+            myLocationButtonEnabled: false,
+            myLocationEnabled: false,
             style: GoogleMapStyle.mapStyles[
                 ref.watch(mapSettingStyleNotifierProvider).value?.name],
             onCameraMove: (cameraPosition) {

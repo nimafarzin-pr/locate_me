@@ -636,7 +636,7 @@ class $MapSettingsTBTable extends MapSettingsTB
   }
 
   static TypeConverter<MapLayer, int> $convertermapLayer =
-      const MapLayerConverter();
+      const DBMapLayerConverter();
   static TypeConverter<MapLayer?, int?> $convertermapLayern =
       NullAwareTypeConverter.wrap($convertermapLayer);
   static TypeConverter<MapStyle, int> $convertermapStyle =
@@ -1010,18 +1010,263 @@ class AppSettingsTBCompanion extends UpdateCompanion<AppSettings> {
   }
 }
 
+class $CategoriesTBTable extends CategoriesTB
+    with TableInfo<$CategoriesTBTable, Categories> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $CategoriesTBTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'),
+      defaultValue: const Constant(0));
+  static const VerificationMeta _colorMeta = const VerificationMeta('color');
+  @override
+  late final GeneratedColumn<int> color = GeneratedColumn<int>(
+      'color', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(""));
+  static const VerificationMeta _emojiMeta = const VerificationMeta('emoji');
+  @override
+  late final GeneratedColumn<String> emoji = GeneratedColumn<String>(
+      'emoji', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(""));
+  @override
+  List<GeneratedColumn> get $columns => [id, color, name, emoji];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'categories_t_b';
+  @override
+  VerificationContext validateIntegrity(Insertable<Categories> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('color')) {
+      context.handle(
+          _colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    }
+    if (data.containsKey('emoji')) {
+      context.handle(
+          _emojiMeta, emoji.isAcceptableOrUnknown(data['emoji']!, _emojiMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Categories map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Categories(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      color: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}color'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      emoji: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}emoji'])!,
+    );
+  }
+
+  @override
+  $CategoriesTBTable createAlias(String alias) {
+    return $CategoriesTBTable(attachedDatabase, alias);
+  }
+}
+
+class Categories extends DataClass implements Insertable<Categories> {
+  final int id;
+  final int color;
+  final String name;
+  final String emoji;
+  const Categories(
+      {required this.id,
+      required this.color,
+      required this.name,
+      required this.emoji});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['color'] = Variable<int>(color);
+    map['name'] = Variable<String>(name);
+    map['emoji'] = Variable<String>(emoji);
+    return map;
+  }
+
+  CategoriesTBCompanion toCompanion(bool nullToAbsent) {
+    return CategoriesTBCompanion(
+      id: Value(id),
+      color: Value(color),
+      name: Value(name),
+      emoji: Value(emoji),
+    );
+  }
+
+  factory Categories.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Categories(
+      id: serializer.fromJson<int>(json['id']),
+      color: serializer.fromJson<int>(json['color']),
+      name: serializer.fromJson<String>(json['name']),
+      emoji: serializer.fromJson<String>(json['emoji']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'color': serializer.toJson<int>(color),
+      'name': serializer.toJson<String>(name),
+      'emoji': serializer.toJson<String>(emoji),
+    };
+  }
+
+  Categories copyWith({int? id, int? color, String? name, String? emoji}) =>
+      Categories(
+        id: id ?? this.id,
+        color: color ?? this.color,
+        name: name ?? this.name,
+        emoji: emoji ?? this.emoji,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Categories(')
+          ..write('id: $id, ')
+          ..write('color: $color, ')
+          ..write('name: $name, ')
+          ..write('emoji: $emoji')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, color, name, emoji);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Categories &&
+          other.id == this.id &&
+          other.color == this.color &&
+          other.name == this.name &&
+          other.emoji == this.emoji);
+}
+
+class CategoriesTBCompanion extends UpdateCompanion<Categories> {
+  final Value<int> id;
+  final Value<int> color;
+  final Value<String> name;
+  final Value<String> emoji;
+  const CategoriesTBCompanion({
+    this.id = const Value.absent(),
+    this.color = const Value.absent(),
+    this.name = const Value.absent(),
+    this.emoji = const Value.absent(),
+  });
+  CategoriesTBCompanion.insert({
+    this.id = const Value.absent(),
+    this.color = const Value.absent(),
+    this.name = const Value.absent(),
+    this.emoji = const Value.absent(),
+  });
+  static Insertable<Categories> custom({
+    Expression<int>? id,
+    Expression<int>? color,
+    Expression<String>? name,
+    Expression<String>? emoji,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (color != null) 'color': color,
+      if (name != null) 'name': name,
+      if (emoji != null) 'emoji': emoji,
+    });
+  }
+
+  CategoriesTBCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? color,
+      Value<String>? name,
+      Value<String>? emoji}) {
+    return CategoriesTBCompanion(
+      id: id ?? this.id,
+      color: color ?? this.color,
+      name: name ?? this.name,
+      emoji: emoji ?? this.emoji,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (color.present) {
+      map['color'] = Variable<int>(color.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (emoji.present) {
+      map['emoji'] = Variable<String>(emoji.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CategoriesTBCompanion(')
+          ..write('id: $id, ')
+          ..write('color: $color, ')
+          ..write('name: $name, ')
+          ..write('emoji: $emoji')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$DB extends GeneratedDatabase {
   _$DB(QueryExecutor e) : super(e);
   _$DBManager get managers => _$DBManager(this);
   late final $LocationTBTable locationTB = $LocationTBTable(this);
   late final $MapSettingsTBTable mapSettingsTB = $MapSettingsTBTable(this);
   late final $AppSettingsTBTable appSettingsTB = $AppSettingsTBTable(this);
+  late final $CategoriesTBTable categoriesTB = $CategoriesTBTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [locationTB, mapSettingsTB, appSettingsTB];
+      [locationTB, mapSettingsTB, appSettingsTB, categoriesTB];
 }
 
 typedef $$LocationTBTableInsertCompanionBuilder = LocationTBCompanion Function({
@@ -1485,6 +1730,127 @@ class $$AppSettingsTBTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
+typedef $$CategoriesTBTableInsertCompanionBuilder = CategoriesTBCompanion
+    Function({
+  Value<int> id,
+  Value<int> color,
+  Value<String> name,
+  Value<String> emoji,
+});
+typedef $$CategoriesTBTableUpdateCompanionBuilder = CategoriesTBCompanion
+    Function({
+  Value<int> id,
+  Value<int> color,
+  Value<String> name,
+  Value<String> emoji,
+});
+
+class $$CategoriesTBTableTableManager extends RootTableManager<
+    _$DB,
+    $CategoriesTBTable,
+    Categories,
+    $$CategoriesTBTableFilterComposer,
+    $$CategoriesTBTableOrderingComposer,
+    $$CategoriesTBTableProcessedTableManager,
+    $$CategoriesTBTableInsertCompanionBuilder,
+    $$CategoriesTBTableUpdateCompanionBuilder> {
+  $$CategoriesTBTableTableManager(_$DB db, $CategoriesTBTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$CategoriesTBTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$CategoriesTBTableOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$CategoriesTBTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<int> color = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String> emoji = const Value.absent(),
+          }) =>
+              CategoriesTBCompanion(
+            id: id,
+            color: color,
+            name: name,
+            emoji: emoji,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<int> color = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String> emoji = const Value.absent(),
+          }) =>
+              CategoriesTBCompanion.insert(
+            id: id,
+            color: color,
+            name: name,
+            emoji: emoji,
+          ),
+        ));
+}
+
+class $$CategoriesTBTableProcessedTableManager extends ProcessedTableManager<
+    _$DB,
+    $CategoriesTBTable,
+    Categories,
+    $$CategoriesTBTableFilterComposer,
+    $$CategoriesTBTableOrderingComposer,
+    $$CategoriesTBTableProcessedTableManager,
+    $$CategoriesTBTableInsertCompanionBuilder,
+    $$CategoriesTBTableUpdateCompanionBuilder> {
+  $$CategoriesTBTableProcessedTableManager(super.$state);
+}
+
+class $$CategoriesTBTableFilterComposer
+    extends FilterComposer<_$DB, $CategoriesTBTable> {
+  $$CategoriesTBTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get color => $state.composableBuilder(
+      column: $state.table.color,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get emoji => $state.composableBuilder(
+      column: $state.table.emoji,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$CategoriesTBTableOrderingComposer
+    extends OrderingComposer<_$DB, $CategoriesTBTable> {
+  $$CategoriesTBTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get color => $state.composableBuilder(
+      column: $state.table.color,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get emoji => $state.composableBuilder(
+      column: $state.table.emoji,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
 class _$DBManager {
   final _$DB _db;
   _$DBManager(this._db);
@@ -1494,4 +1860,6 @@ class _$DBManager {
       $$MapSettingsTBTableTableManager(_db, _db.mapSettingsTB);
   $$AppSettingsTBTableTableManager get appSettingsTB =>
       $$AppSettingsTBTableTableManager(_db, _db.appSettingsTB);
+  $$CategoriesTBTableTableManager get categoriesTB =>
+      $$CategoriesTBTableTableManager(_db, _db.categoriesTB);
 }

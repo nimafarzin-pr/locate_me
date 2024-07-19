@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:locate_me/core/common_features/map/core/google_map/provider/single_marker_provider.dart';
 import 'package:locate_me/features/add/provider/osm_location_provider.dart';
 
 import '../../../core/common_features/map/core/google_map/model/dto/single_marker_dto.dart';

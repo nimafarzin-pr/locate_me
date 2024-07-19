@@ -24,31 +24,42 @@ class CustomSegmentedButton extends StatefulWidget {
 class _CustomSegmentedButtonState extends State<CustomSegmentedButton> {
   @override
   Widget build(BuildContext context) {
-    return SegmentedButton<HomeViewMode>(
-      style: SegmentedButton.styleFrom(
-        alignment: Alignment.center,
-        // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        visualDensity: VisualDensity(horizontal: 0.w, vertical: 0.w),
-        elevation: 2,
+    return Material(
+      elevation: 1,
+      borderRadius: BorderRadius.circular(30),
+      child: SegmentedButton<HomeViewMode>(
+        style: SegmentedButton.styleFrom(
+          elevation: 0,
+          animationDuration: const Duration(milliseconds: 300),
+          padding: const EdgeInsets.all(0),
+          // fixedSize: const Size(40, 40),
+          side: BorderSide.none,
 
-        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-        foregroundColor: Theme.of(context).colorScheme.onSurface,
-        selectedForegroundColor: Theme.of(context).colorScheme.onPrimary,
-        selectedBackgroundColor: Theme.of(context).colorScheme.primary,
-      ),
-      segments: <ButtonSegment<HomeViewMode>>[
-        ButtonSegment<HomeViewMode>(
-          value: HomeViewMode.list,
-          label: CustomText.bodySmall(LocaleKeys.list.tr()),
-          icon: const Icon(Icons.list),
+          alignment: Alignment.center,
+
+          // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          visualDensity: VisualDensity(horizontal: 0.w, vertical: 0.w),
+          // elevation: 6,
+
+          backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+          foregroundColor: Theme.of(context).colorScheme.onSurface,
+          selectedForegroundColor: Theme.of(context).colorScheme.onPrimary,
+          selectedBackgroundColor: Theme.of(context).colorScheme.primary,
         ),
-        ButtonSegment<HomeViewMode>(
-            value: HomeViewMode.map,
-            label: CustomText.bodySmall(LocaleKeys.map.tr()),
-            icon: const Icon(Icons.map_outlined)),
-      ],
-      onSelectionChanged: widget.onSelectionChanged,
-      selected: <HomeViewMode>{widget.homeViewMode},
+        segments: <ButtonSegment<HomeViewMode>>[
+          ButtonSegment<HomeViewMode>(
+            value: HomeViewMode.list,
+            label: CustomText.bodySmall(LocaleKeys.list.tr()),
+            icon: const Icon(Icons.list),
+          ),
+          ButtonSegment<HomeViewMode>(
+              value: HomeViewMode.map,
+              label: CustomText.bodySmall(LocaleKeys.map.tr()),
+              icon: const Icon(Icons.map_outlined)),
+        ],
+        onSelectionChanged: widget.onSelectionChanged,
+        selected: <HomeViewMode>{widget.homeViewMode},
+      ),
     );
   }
 }

@@ -17,8 +17,7 @@ class CustomFavoriteIconButton extends StatelessWidget {
       child: Icon(
         size: 24,
         isFavorite ? Icons.favorite : Icons.favorite_border,
-        color:
-            isFavorite ? Theme.of(context).colorScheme.tertiary : Colors.grey,
+        color: isFavorite ? Theme.of(context).colorScheme.primary : Colors.grey,
       ),
     );
   }

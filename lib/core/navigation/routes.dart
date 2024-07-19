@@ -6,6 +6,7 @@ class Routes {
   static const String settings = '/setting';
   static const String search = '/search';
   static const String editLocation = 'editLocationItem';
+  static const String categoryList = 'categoryList';
 
   static List<String> routes = [
     root,
@@ -14,6 +15,7 @@ class Routes {
     add,
     settings,
     search,
-    editLocation
+    editLocation,
+    categoryList,
   ];
 }

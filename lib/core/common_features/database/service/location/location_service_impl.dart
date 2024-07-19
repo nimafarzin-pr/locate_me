@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:drift/drift.dart';
 import 'package:locate_me/core/common_features/database/db/db.dart';
-import 'package:locate_me/features/home/model/place_item_model.dart';
 
 import '../../../category/enums/category.dart';
 import 'location_service.dart';

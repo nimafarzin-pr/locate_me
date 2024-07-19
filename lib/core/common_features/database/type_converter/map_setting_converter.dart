@@ -4,8 +4,8 @@ import 'package:locate_me/core/common_features/database/db/db.dart';
 import '../../map/core/enums/map_enum.dart';
 import '../../map/model/map_settings_model.dart';
 
-class MapLayerConverter extends TypeConverter<MapLayer, int> {
-  const MapLayerConverter();
+class DBMapLayerConverter extends TypeConverter<MapLayer, int> {
+  const DBMapLayerConverter();
 
   @override
   MapLayer fromSql(int fromDb) {

@@ -6,7 +6,7 @@ import 'package:locate_me/core/widget/dialogs/diolog_wrapper.dart';
 import 'package:locate_me/core/widget/loading.dart';
 
 import '../../../../../core/widget/dialogs/status_widget.dart';
-import '../../../../../core/widget/fade_in_scale_animation.dart';
+import '../../../../../core/widget/animation/fade_in_scale_animation.dart';
 import '../../../../../generated/locale_keys.g.dart';
 import '../../../provider/export_import_notifier.dart';
 

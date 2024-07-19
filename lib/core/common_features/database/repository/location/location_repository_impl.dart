@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:locate_me/core/common_features/database/type_converter/place_model_converter.dart';
-import 'package:locate_me/core/enums/enums.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 import 'package:riverpod/riverpod.dart';
 

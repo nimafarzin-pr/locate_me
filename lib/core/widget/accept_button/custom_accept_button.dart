@@ -35,8 +35,9 @@ class AcceptButton extends ConsumerWidget {
           ),
           gradient: LinearGradient(
             colors: [
+              Theme.of(context).colorScheme.primary.withOpacity(0.4),
               Theme.of(context).colorScheme.primary.withOpacity(0.5),
-              Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+              Theme.of(context).colorScheme.primary.withOpacity(0.4),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
