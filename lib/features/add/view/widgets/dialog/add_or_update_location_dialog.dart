@@ -11,17 +11,20 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:locate_me/core/extension/screen_size.dart';
 import 'package:locate_me/core/resources/icons.dart';
+import 'package:locate_me/core/utils/icon_picker_utils.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
+import 'package:locate_me/core/widget/loading.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
+import 'package:locate_me/features/setting/model/category_model.dart';
 import 'package:locate_me/generated/locale_keys.g.dart';
 
-import '../../../../../core/common_features/category/constant/category.dart';
-import '../../../../../core/common_features/category/dto/category_dto.dart';
 import '../../../../../core/widget/accept_button/custom_accept_button.dart';
 import '../../../../../core/widget/custom_dropdwon_button.dart';
 import '../../../../../core/widget/custom_textfeild.dart';
-import '../../../../../core/widget/fade_in_scale_animation.dart';
+import '../../../../../core/widget/dialogs/status_widget.dart';
+import '../../../../../core/widget/animation/fade_in_scale_animation.dart';
+import '../../../../setting/provider/category_notifier_provider.dart';
 
 class AddOrUpdateLocationDialogView<T> extends ConsumerStatefulWidget {
   final LatLng latLng;
@@ -58,7 +61,7 @@ class _AddLocationViewState<T>
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  CategoryItem? selectedCategory;
+  CategoryModel? selectedCategory;
   double rate = 5;
   String? date;
   bool isFavorite = false;
@@ -69,13 +72,16 @@ class _AddLocationViewState<T>
 
     Future.delayed(Duration.zero).then(
       (value) async {
+        final categoryLists = await ref.read(categoryNotifierProvider.future);
+        log('%%%%%%$categoryLists');
         setState(() {
           if (widget.editItem != null) {
             _titleController.text = widget.editItem!.title;
             _addressController.text = widget.editItem!.address;
             _descriptionController.text = widget.editItem!.description;
             _categoryController.text = widget.editItem!.category;
-            selectedCategory = categoryMap[widget.editItem!.category];
+            selectedCategory = categoryLists.firstWhere((element) =>
+                element.emoji.trim() == widget.editItem?.category.trim());
             rate = widget.editItem!.rate;
             date = widget.editItem!.date;
             isFavorite = widget.editItem!.isFavorite;
@@ -191,31 +197,44 @@ class _AddLocationViewState<T>
                                     return null;
                                   },
                                 ),
-                                CustomDropdownField<CategoryItem>(
-                                  hintText: LocaleKeys.select_category.tr(),
-                                  items: category,
-                                  value: selectedCategory,
-                                  onChanged: (CategoryItem? newValue) {
-                                    setState(() {
-                                      selectedCategory = newValue;
-                                    });
+                                ref.watch(categoryNotifierProvider).when(
+                                  data: (category) {
+                                    log('++$selectedCategory');
+                                    return CustomDropdownField<CategoryModel>(
+                                        hintText:
+                                            LocaleKeys.select_category.tr(),
+                                        items: category,
+                                        value: selectedCategory,
+                                        onChanged: (CategoryModel? newValue) {
+                                          setState(() {
+                                            selectedCategory = newValue;
+                                          });
+                                        },
+                                        itemAsString: (CategoryModel item) =>
+                                            item.name,
+                                        itemAsWidget: (CategoryModel item) {
+                                          final icon = IconPickerUtils
+                                              .iconPickerDeserializer(
+                                                  item.emoji);
+                                          return Row(
+                                            children: [
+                                              Icon(icon),
+                                              const SizedBox(width: 8),
+                                              CustomText.bodyLarge(item.name),
+                                            ],
+                                          );
+                                        });
                                   },
-                                  itemAsString: (CategoryItem item) =>
-                                      item.name.tr(),
-                                  itemAsWidget: (CategoryItem item) => Row(
-                                    children: [
-                                      Image(
-                                        width: 30,
-                                        height: 30,
-                                        image: AssetImage(item.icon),
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      CustomText.bodyLarge(item.name.tr()),
-                                    ],
-                                  ),
+                                  error: (error, stackTrace) {
+                                    return StatusWidget(
+                                      title: 'Error',
+                                      content: '$error',
+                                      disableButtons: true,
+                                    );
+                                  },
+                                  loading: () {
+                                    return const Center(child: MyLoading());
+                                  },
                                 ),
                                 RatingBar.builder(
                                   initialRating: rate,
@@ -255,6 +274,9 @@ class _AddLocationViewState<T>
                                       double.parse(_latitudeController.text);
                                   final lng =
                                       double.parse(_longitudeController.text);
+                                  final iconData =
+                                      IconPickerUtils.iconPickerDeserializer(
+                                          selectedCategory!.emoji);
                                   final data = PlaceItemModel(
                                       icon: widget.editItem != null
                                           ? widget.editItem!.icon
@@ -266,7 +288,8 @@ class _AddLocationViewState<T>
                                       date: date ??
                                           DateTime.now().toIso8601String(),
                                       category: selectedCategory != null
-                                          ? selectedCategory!.name
+                                          ? IconPickerUtils
+                                              .iconPickerSerializer(iconData!)
                                           : "",
                                       latlng: LatLong(
                                           latitude: lat, longitude: lng),
@@ -275,9 +298,6 @@ class _AddLocationViewState<T>
                                   await widget.onAccept(data);
                                   Navigator.pop(context);
                                   if (widget.editItem != null) {
-                                    // ref
-                                    //     .read(editStateProvider.notifier)
-                                    //     .updatePlaceItem(null);
                                     context.pop();
                                   }
                                 },

@@ -17,7 +17,7 @@ import '../../common_features/map/core/enums/map_enum.dart';
 import '../../sizing/app_sizing.dart';
 import '../custom_dropdwon_button.dart';
 import '../custom_radio.dart';
-import '../fade_in_scale_animation.dart';
+import '../animation/fade_in_scale_animation.dart';
 import 'status_widget.dart';
 
 class CustomMapOptionsDialog extends StatefulWidget {
@@ -57,9 +57,6 @@ class _CustomMapOptionsDialogState extends State<CustomMapOptionsDialog> {
                     padding: const EdgeInsets.all(AppSizes.largePadding),
                     margin: const EdgeInsets.all(AppSizes.largePadding),
                     decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          width: 2),
                       color: Theme.of(context).colorScheme.surface,
                       borderRadius:
                           BorderRadius.circular(AppSizes.veryLargeBorderRadius),

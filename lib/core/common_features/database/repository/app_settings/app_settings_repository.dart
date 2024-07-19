@@ -1,3 +1,5 @@
+import 'package:locate_me/features/setting/model/category_model.dart';
+
 import '../../../../../features/home/model/place_item_model.dart';
 
 abstract class IAppSettingsRepository {
@@ -13,4 +15,8 @@ abstract class IAppSettingsRepository {
 
   Future<List<PlaceItemModel>> getLocations();
   Future<void> replaceOrUpdateData(List<PlaceItemModel> data);
+  Future<void> addCategory(String name, String emoji, int color);
+  Future<void> deleteCategory(int id);
+  Future<List<CategoryModel>> getAllCategories();
+  Stream<List<CategoryModel>> watchCategories();
 }

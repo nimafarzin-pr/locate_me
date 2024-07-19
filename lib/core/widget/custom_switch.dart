@@ -1,17 +1,16 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:locate_me/core/widget/animation/color_animation.dart';
 
-import 'package:locate_me/features/home/provider/favorite_filter_provider.dart';
-
-import '../common_features/map/core/enums/map_enum.dart';
-import 'custom_text.dart';
-
-class CustomSwitch extends ConsumerWidget {
+class CustomSwitch extends StatelessWidget {
   final String labelOne;
   final String labelTwo;
   final Function() onTapOne;
   final Function() onTapTwo;
+  final bool isActiveOne;
+  final bool isActiveTwo;
+  final IconData? iconOne;
+  final IconData? iconTwo;
 
   const CustomSwitch({
     super.key,
@@ -19,33 +18,44 @@ class CustomSwitch extends ConsumerWidget {
     required this.labelTwo,
     required this.onTapOne,
     required this.onTapTwo,
+    required this.isActiveOne,
+    required this.isActiveTwo,
+    this.iconOne,
+    this.iconTwo,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final itemViewState = ref.watch(favoriteFilterProvider);
-
+  Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(0.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30.0),
-        border: Border.all(color: Theme.of(context).colorScheme.onSurface),
-        color: Theme.of(context).colorScheme.surfaceContainer,
+        border: Border.all(color: Colors.transparent),
+        // color: Theme.of(context).colorScheme.surfaceContainer,
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildSwitchButton(
+      child: Material(
+        elevation: 1,
+        borderRadius: BorderRadius.circular(30),
+        color: Theme.of(context).colorScheme.surfaceContainer,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildSwitchButton(
               context: context,
               label: labelOne,
-              isActive: itemViewState == ItemViewState.all,
-              onTap: onTapOne),
-          _buildSwitchButton(
+              isActive: isActiveOne,
+              onTap: onTapOne,
+              icon: iconOne,
+            ),
+            _buildSwitchButton(
               context: context,
               label: labelTwo,
-              isActive: itemViewState == ItemViewState.favorites,
-              onTap: onTapTwo),
-        ],
+              isActive: isActiveTwo,
+              onTap: onTapTwo,
+              icon: iconTwo,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -55,25 +65,71 @@ class CustomSwitch extends ConsumerWidget {
     required String label,
     required bool isActive,
     required VoidCallback onTap,
+    IconData? icon,
   }) {
+    return SwitchItem(
+      label: label,
+      isActive: isActive,
+      onTap: onTap,
+      icon: icon,
+    );
+  }
+}
+
+class SwitchItem extends HookWidget {
+  final String label;
+  final bool isActive;
+  final VoidCallback onTap;
+  final IconData? icon;
+
+  const SwitchItem({
+    super.key,
+    required this.label,
+    required this.isActive,
+    required this.onTap,
+    this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
+      child: ColorAnimationWidget(
+        duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
-          color: isActive
-              ? Theme.of(context).colorScheme.primary
-              : Theme.of(context).colorScheme.surfaceContainer,
         ),
-        child: CustomText.bodySmall(
-          label,
-          customStyle: TextStyle(
-            color: isActive
-                ? Theme.of(context).colorScheme.onPrimary
-                : Theme.of(context).colorScheme.onSurface,
-            fontWeight: FontWeight.bold,
-          ),
+        trigger: isActive,
+        activeColor: Theme.of(context).colorScheme.primary,
+        inactiveColor: Theme.of(context).colorScheme.surfaceContainer,
+        child: Row(
+          children: [
+            if (icon != null)
+              Row(
+                children: [
+                  Icon(
+                    icon,
+                    color: isActive
+                        ? Theme.of(context).colorScheme.onPrimary
+                        : Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withOpacity(0.6),
+                    size: 16,
+                  ),
+                  const SizedBox(width: 4),
+                ],
+              ),
+            Text(
+              label,
+              style: TextStyle(
+                color: isActive
+                    ? Theme.of(context).colorScheme.onPrimary
+                    : Theme.of(context).colorScheme.onSurface,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
       ),
     );

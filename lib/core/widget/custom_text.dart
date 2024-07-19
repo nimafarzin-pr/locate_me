@@ -10,17 +10,6 @@ class CustomText extends StatelessWidget {
   final TextScaler? textScaler;
   final TextWidthBasis? textWidthBasis;
 
-  CustomText.headlineLarge(
-    this.text, {
-    super.key,
-    TextStyle? customStyle,
-    this.maxLines,
-    this.textAlign,
-    this.overflow,
-    this.textScaler,
-    this.textWidthBasis,
-  }) : style = AppTextFontsAndSizing.displayLarge.merge(customStyle);
-
   CustomText.headlineMedium(
     this.text, {
     super.key,
@@ -31,6 +20,17 @@ class CustomText extends StatelessWidget {
     this.textScaler,
     this.textWidthBasis,
   }) : style = AppTextFontsAndSizing.headlineMedium.merge(customStyle);
+
+  CustomText.headlineSmall(
+    this.text, {
+    super.key,
+    TextStyle? customStyle,
+    this.maxLines,
+    this.textAlign,
+    this.overflow,
+    this.textScaler,
+    this.textWidthBasis,
+  }) : style = AppTextFontsAndSizing.headlineSmall.merge(customStyle);
 
   CustomText.bodyLarge(
     this.text, {

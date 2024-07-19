@@ -24,7 +24,7 @@ class SettingItemTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: isSelect
-              ? Theme.of(context).colorScheme.tertiary
+              ? Theme.of(context).colorScheme.primary
               : Colors.transparent,
           borderRadius: const BorderRadius.all(
               Radius.circular(AppSizes.mediumBorderRadius))),
@@ -32,13 +32,13 @@ class SettingItemTile extends StatelessWidget {
         leading: Icon(icon,
             color: isSelect
                 ? Theme.of(context).colorScheme.onTertiary
-                : Theme.of(context).colorScheme.secondary),
+                : Theme.of(context).colorScheme.onSurface),
         title: CustomText.bodyLarge(
           title,
           customStyle: TextStyle(
               color: isSelect
                   ? Theme.of(context).colorScheme.onTertiary
-                  : Theme.of(context).colorScheme.secondary),
+                  : Theme.of(context).colorScheme.onSurface),
         ),
         onTap: onTap,
       ),

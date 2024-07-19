@@ -6,8 +6,4 @@ abstract class IInputValidator implements IValidator {
   String message(BuildContext context);
 }
 
-abstract class IResponseValidator implements IInputValidator, IValidator {
-  bool isCurrentResponse(BuildContext context, String? value);
-}
-
 abstract class IValidator {}

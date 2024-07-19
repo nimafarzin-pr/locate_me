@@ -8,7 +8,7 @@ import 'package:locate_me/features/setting/view/widgets/setting_item_tile.dart';
 
 import '../../../../../core/widget/custom_text.dart';
 import '../../../../../core/widget/dialogs/status_widget.dart';
-import '../../../../../core/widget/fade_in_scale_animation.dart';
+import '../../../../../core/widget/animation/fade_in_scale_animation.dart';
 import '../../../../../generated/locale_keys.g.dart';
 
 void showLanguageModal(BuildContext context) {
@@ -17,7 +17,7 @@ void showLanguageModal(BuildContext context) {
     builder: (context) {
       return FadeInScaleAnimation(
         child: AlertDialog(
-          title: CustomText.headlineMedium('Select Language'),
+          title: CustomText.headlineSmall(LocaleKeys.select_language.tr()),
           content: SizedBox(
             width: 400,
             height: 200,

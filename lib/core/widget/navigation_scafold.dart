@@ -59,19 +59,31 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
                   currentIndex: navigationShell.currentIndex,
                   items: [
                     BottomNavigationBarItem(
-                      icon: const FaIcon(FontAwesomeIcons.house),
+                      icon: const FaIcon(
+                        FontAwesomeIcons.listUl,
+                        size: 20,
+                      ),
                       label: LocaleKeys.home.tr(),
                     ),
                     BottomNavigationBarItem(
-                      icon: const FaIcon(FontAwesomeIcons.plus),
+                      icon: const Icon(
+                        Icons.add_location_alt_outlined,
+                        size: 20,
+                      ),
                       label: LocaleKeys.add.tr(),
                     ),
                     BottomNavigationBarItem(
-                      icon: const Icon(Icons.settings_suggest_outlined),
+                      icon: const Icon(
+                        Icons.settings_suggest_outlined,
+                        size: 20,
+                      ),
                       label: LocaleKeys.settings.tr(),
                     ),
                   ],
-                  onTap: _goBranch,
+                  onTap: (value) {
+                    FocusScope.of(context).unfocus();
+                    _goBranch(value);
+                  },
                 ),
               ),
       ),

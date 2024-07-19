@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:intl/intl.dart';
 import 'package:locate_me/core/utils/date_converter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:device_info_plus/device_info_plus.dart';

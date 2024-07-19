@@ -46,4 +46,27 @@ class AppSettingsServiceImpl implements IAppSettingsService {
         .watchSingle()
         .map((row) => row.language);
   }
+
+  @override
+  Future<void> addCategory(String name, String emoji, int color) async {
+    await _database.into(_database.categoriesTB).insert(CategoriesTBCompanion(
+        name: Value(name), emoji: Value(emoji), color: Value(color)));
+  }
+
+  @override
+  Future<void> deleteCategory(int id) async {
+    await (_database.delete(_database.categoriesTB)
+          ..where((tbl) => tbl.id.equals(id)))
+        .go();
+  }
+
+  @override
+  Future<List<Categories>> getAllCategories() async {
+    return await _database.select(_database.categoriesTB).get();
+  }
+
+  @override
+  Stream<List<Categories>> watchCategories() {
+    return _database.select(_database.categoriesTB).watch();
+  }
 }

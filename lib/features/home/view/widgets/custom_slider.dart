@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:locate_me/core/extension/screen_size.dart';
+import 'package:locate_me/core/widget/animation/fade_in_scale_animation.dart';
 import 'package:locate_me/features/home/view/widgets/location_item.dart';
 
 import '../../model/place_item_model.dart';
@@ -26,9 +27,12 @@ class CustomCarouselSlider extends StatelessWidget {
       items: data.map((place) {
         return Builder(
           builder: (BuildContext context) {
-            return LocationItem(
-              item: place,
-              isCarouselItem: true,
+            return FadeInScaleAnimation(
+              duration: const Duration(milliseconds: 600),
+              child: LocationItem(
+                item: place,
+                isCarouselItem: true,
+              ),
             );
           },
         );

@@ -7,7 +7,7 @@ import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../../../../../core/enums/enums.dart';
 import '../../../../../core/widget/custom_text.dart';
-import '../../../../../core/widget/fade_in_scale_animation.dart';
+import '../../../../../core/widget/animation/fade_in_scale_animation.dart';
 import '../../../provider/theme_notifier_provider.dart';
 import '../setting_item_tile.dart';
 
@@ -17,7 +17,7 @@ Future<void> showThemeModal(BuildContext context) async {
     builder: (context) {
       return FadeInScaleAnimation(
         child: AlertDialog(
-          title: CustomText.headlineMedium('Select Theme'),
+          title: CustomText.headlineSmall(LocaleKeys.select_theme.tr()),
           content: SizedBox(
             width: 400,
             height: 200,

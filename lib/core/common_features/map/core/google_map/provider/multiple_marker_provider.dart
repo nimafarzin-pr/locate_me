@@ -1,14 +1,9 @@
-import 'package:flutter/services.dart';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:locate_me/core/utils/assets_utils.dart';
-import 'package:locate_me/features/add/model/dto/google_map_dto.dart';
 import 'package:locate_me/core/common_features/map/core/google_map/model/dto/multiple_marker_dto.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../category/constant/category.dart';
-import '../../../../../utils/marker_utility.dart';
 import '../../../../../../features/home/model/place_item_model.dart';
 
 part 'multiple_marker_provider.g.dart';

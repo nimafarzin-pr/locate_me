@@ -3,8 +3,10 @@ import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:locate_me/core/common_features/database/service/app_settings/app_settings_service_impl.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
+import 'package:locate_me/features/setting/model/category_model.dart';
 
 import '../../provider/db_provider.dart';
+import '../../type_converter/category_converter.dart';
 import 'app_settings_repository.dart';
 
 class AppSettingsRepositoryImpl extends IAppSettingsRepository {
@@ -75,5 +77,54 @@ class AppSettingsRepositoryImpl extends IAppSettingsRepository {
     final riverpod = ProviderContainer();
     final repo = riverpod.read(locationDBRepositoryProvider);
     await repo.importLocations(data);
+  }
+
+  @override
+  Future<void> addCategory(String name, String emoji, int color) async {
+    await _appSettingsServiceImpl.addCategory(name, emoji, color);
+  }
+
+  @override
+  Future<void> deleteCategory(int id) async {
+    await _appSettingsServiceImpl.deleteCategory(id);
+  }
+
+  @override
+  Future<List<CategoryModel>> getAllCategories() async {
+    try {
+      final data = await _appSettingsServiceImpl.getAllCategories();
+      final toModel = data
+          .map(
+            (e) => const DBCategoryConverter().fromSql(e),
+          )
+          .toList();
+      return toModel;
+    } catch (e, stackTrace) {
+      // Handle or log the error
+      print(stackTrace);
+      return [];
+    }
+  }
+
+  @override
+  Stream<List<CategoryModel>> watchCategories() {
+    final data = _appSettingsServiceImpl.watchCategories();
+    return data.map<List<CategoryModel>>((dataList) {
+      try {
+        return dataList
+            .map((data) => const DBCategoryConverter().fromSql(data))
+            .toList();
+      } catch (e, stackTrace) {
+        // Handle or log the error
+        print('Error watching locations: $e');
+        print(stackTrace);
+        return [];
+      }
+    }).handleError((e, stackTrace) {
+      // Handle or log the error in the stream
+      print('Error in watchLocations stream: $e');
+      print(stackTrace);
+      return Exception("Error in watchLocations stream");
+    });
   }
 }

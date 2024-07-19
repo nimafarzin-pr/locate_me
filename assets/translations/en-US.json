@@ -10,7 +10,7 @@
     "dark": "Dark",
     "auto": "Auto",
     "google_map": "Google Map",
-    "search": "Search",
+    "search": "Search...",
     "add":"Add",
     "applyEdit":"Apply Changes",
     "edit":"Edit",
@@ -97,7 +97,18 @@
     "enable":"Enable",
     "refresh_accept":"Refresh / Accept",
     "accept":"Accept",
-    "refresh":"Refresh"
+    "refresh":"Refresh",
+    "select_language":"Select Language",
+    "select_theme":"Select Theme",
+    "categories":"Categories",
+    "category_list":"Category List",
+    "add_category":"Add Category",
+    "select_icon":"Select Icon",
+    "select_color":"Select Color",
+    "enter_category_name":"Category name..."
+
+
+
     
 
 

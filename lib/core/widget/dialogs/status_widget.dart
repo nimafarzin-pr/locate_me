@@ -2,12 +2,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import 'package:locate_me/core/extension/screen_size.dart';
 import 'package:locate_me/core/widget/accept_button/custom_accept_button.dart';
 import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../custom_text.dart';
-import '../fade_in_scale_animation.dart';
+import '../animation/fade_in_scale_animation.dart';
 
 class StatusWidget extends StatefulWidget {
   final String title;
@@ -15,6 +14,7 @@ class StatusWidget extends StatefulWidget {
   final Color? iconColor;
   final Future<void> Function()? onConfirm;
   final bool showCancelButton;
+  final bool disableButtons;
   final String? acceptButtonTitle;
 
   const StatusWidget({
@@ -24,6 +24,7 @@ class StatusWidget extends StatefulWidget {
     this.iconColor,
     this.onConfirm,
     this.showCancelButton = true,
+    this.disableButtons = false,
     this.acceptButtonTitle,
   });
 
@@ -76,52 +77,54 @@ class _StatusWidgetState extends State<StatusWidget> {
                       )
                     : const SizedBox(),
                 const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    widget.showCancelButton
-                        ? Row(
-                            children: [
-                              TextButton(
-                                style: TextButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                  side: BorderSide(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary),
-                                  borderRadius: BorderRadius.circular(10),
-                                )),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: CustomText.bodyLarge(
-                                  LocaleKeys.cancel.tr(),
-                                  customStyle: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface
-                                        .withOpacity(0.5),
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                            ],
-                          )
-                        : const SizedBox(),
-                    AcceptButton(
-                      buttonText:
-                          widget.acceptButtonTitle ?? LocaleKeys.ok.tr(),
-                      onPressed: () async {
-                        if (widget.onConfirm == null) {
-                          Navigator.of(context).pop();
-                        } else {
-                          await widget.onConfirm!();
-                        }
-                      },
-                    ),
-                  ],
-                ),
+                widget.disableButtons
+                    ? Container()
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          widget.showCancelButton
+                              ? Row(
+                                  children: [
+                                    TextButton(
+                                      style: TextButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary),
+                                        borderRadius: BorderRadius.circular(10),
+                                      )),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: CustomText.bodyLarge(
+                                        LocaleKeys.cancel.tr(),
+                                        customStyle: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface
+                                              .withOpacity(0.5),
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 16),
+                                  ],
+                                )
+                              : const SizedBox(),
+                          AcceptButton(
+                            buttonText:
+                                widget.acceptButtonTitle ?? LocaleKeys.ok.tr(),
+                            onPressed: () async {
+                              if (widget.onConfirm == null) {
+                                Navigator.of(context).pop();
+                              } else {
+                                await widget.onConfirm!();
+                              }
+                            },
+                          ),
+                        ],
+                      ),
               ],
             ),
           ),

@@ -1,10 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:locate_me/features/setting/model/category_model.dart';
 
-import '../../../core/common_features/category/enums/category.dart';
-
-class CategoryNotifier extends Notifier<CategoryEnums> {
+class HomeCategoryNotifier extends Notifier<CategoryModel> {
   @override
-  CategoryEnums build() => CategoryEnums.all;
+  CategoryModel build() => const CategoryModel(name: 'all');
 
-  void updateCategory(CategoryEnums newValue) => state = newValue;
+  void updateCategory(CategoryModel newValue) => state = newValue;
 }

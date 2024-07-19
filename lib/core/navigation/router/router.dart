@@ -6,6 +6,7 @@ import 'package:locate_me/core/widget/navigation_scafold.dart';
 import 'package:locate_me/features/add/view/add_tab.dart';
 import 'package:locate_me/features/home/view/home_tab.dart';
 import 'package:locate_me/features/setting/view/setting_tab.dart';
+import 'package:locate_me/features/setting/view/widgets/items/category/category_list.dart';
 
 // private navigators
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -80,6 +81,19 @@ final router = GoRouter(
                 key: state.pageKey,
                 child: const BackgroundWrapper(child: SettingsTab()),
               ),
+              routes: [
+                // child route
+                GoRoute(
+                  path: Routes.categoryList,
+                  name: Routes.categoryList,
+                  pageBuilder: (context, state) {
+                    return NoTransitionPage(
+                      key: state.pageKey,
+                      child: const BackgroundWrapper(child: CategoryList()),
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),

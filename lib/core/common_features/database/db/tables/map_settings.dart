@@ -8,7 +8,7 @@ class MapSettingsTB extends Table {
   IntColumn get id =>
       integer().autoIncrement().withDefault(const Constant(0))();
   IntColumn get mapLayer =>
-      integer().nullable().map(const MapLayerConverter())();
+      integer().nullable().map(const DBMapLayerConverter())();
   IntColumn get mapStyle =>
       integer().nullable().map(const MapStyleConverter())();
 }

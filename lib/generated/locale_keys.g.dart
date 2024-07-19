@@ -99,5 +99,13 @@ abstract class  LocaleKeys {
   static const refresh_accept = 'refresh_accept';
   static const accept = 'accept';
   static const refresh = 'refresh';
+  static const select_language = 'select_language';
+  static const select_theme = 'select_theme';
+  static const categories = 'categories';
+  static const category_list = 'category_list';
+  static const add_category = 'add_category';
+  static const select_icon = 'select_icon';
+  static const select_color = 'select_color';
+  static const enter_category_name = 'enter_category_name';
 
 }

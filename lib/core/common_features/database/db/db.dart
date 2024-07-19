@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:locate_me/core/common_features/database/db/tables/categories.dart';
 import 'package:locate_me/core/common_features/database/db/tables/map_settings.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -14,7 +15,7 @@ import 'package:path/path.dart' as p;
 
 part 'db.g.dart';
 
-@DriftDatabase(tables: [LocationTB, MapSettingsTB, AppSettingsTB])
+@DriftDatabase(tables: [LocationTB, MapSettingsTB, AppSettingsTB, CategoriesTB])
 class DB extends _$DB {
   // Make DB a singleton
   static final DB _instance = DB._internal();

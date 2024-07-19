@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 class EncryptUtils {
   static String jsonToBase64(String jsonData) {

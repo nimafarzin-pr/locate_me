@@ -1,5 +1,4 @@
 // Combined provider to filter items based on category and favorite
-import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:locate_me/core/common_features/map/core/enums/map_enum.dart';
@@ -7,7 +6,6 @@ import 'package:locate_me/features/home/provider/category_filter_provider.dart';
 import 'package:locate_me/features/home/provider/favorite_filter_provider.dart';
 import 'package:locate_me/features/home/provider/search_input_provider.dart';
 
-import '../../../core/common_features/category/enums/category.dart';
 import '../model/place_item_model.dart';
 import 'location_provider.dart';
 
@@ -16,11 +14,9 @@ final filteredItemsProvider = Provider<List<PlaceItemModel>>((ref) {
   final selectedCategory = ref.watch(categoryFilterProvider);
   final showFavorites = ref.watch(favoriteFilterProvider);
   final searchTerm = ref.watch(searchInputProvider);
-  log('?? $searchTerm');
-
   return allItems.where((item) {
-    final matchesCategory = selectedCategory == CategoryEnums.all ||
-        item.category.toLowerCase() == selectedCategory.name.toLowerCase();
+    final matchesCategory = selectedCategory.name == 'all' ||
+        item.category.trim() == selectedCategory.emoji.trim();
     final matchesFavorite =
         showFavorites != ItemViewState.favorites || item.isFavorite;
     final matchesSearchTerm = searchTerm.isEmpty ||

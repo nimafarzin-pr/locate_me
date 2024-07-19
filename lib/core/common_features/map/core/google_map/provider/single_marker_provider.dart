@@ -1,16 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:locate_me/core/widget/custom_marker_add_info_box.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:widget_to_marker/widget_to_marker.dart';
 
 import 'package:locate_me/core/common_features/map/core/google_map/model/dto/single_marker_dto.dart';
 import 'package:locate_me/features/add/model/dto/google_map_dto.dart';
-import 'package:latlong2/latlong.dart' as latLang2;
 
 final getMarker = FutureProvider.autoDispose
     .family<SingleMarkerDto, GoogleMapDto>((ref, data) async {
