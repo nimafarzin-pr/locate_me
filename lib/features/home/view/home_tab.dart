@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:locate_me/core/extension/screen_size.dart';
@@ -19,7 +18,6 @@ import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../../../core/common_features/map/core/enums/map_enum.dart';
 import '../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
-import '../../../core/utils/icon_picker_utils.dart';
 import '../../../core/widget/custom_switch.dart';
 import '../../../core/widget/dialogs/status_widget.dart';
 import '../../setting/provider/category_notifier_provider.dart';
@@ -73,41 +71,15 @@ class _HomeTabState extends State<HomeTab> {
                             hintText: LocaleKeys.search.tr(),
                             controller: _searchController,
                           ),
-                          category.isEmpty
-                              ? Container()
-                              : Container(
-                                  height: context.screenWidth * 0.18,
-                                  alignment: Alignment.bottomCenter,
-                                  // color: Colors.blue,
-                                  child: Center(
-                                    child: Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            vertical: 4.0,
-                                          ),
-                                          child: CategoryBox(
-                                              item: CategoryModel(
-                                                  name: 'all',
-                                                  color: Colors.grey.value,
-                                                  emoji: IconPickerUtils
-                                                      .iconPickerSerializer(
-                                                          Icons.place)),
-                                              onTap: () {
-                                                ref
-                                                    .read(categoryFilterProvider
-                                                        .notifier)
-                                                    .updateCategory(
-                                                        const CategoryModel(
-                                                            name: 'all'));
-                                              },
-                                              isSelected: ref
-                                                      .watch(
-                                                          categoryFilterProvider)
-                                                      .name ==
-                                                  'all'),
-                                        ),
-                                        Expanded(
+                          Container(
+                            height: context.screenWidth * 0.18,
+                            alignment: Alignment.bottomCenter,
+                            child: Center(
+                              child: Row(
+                                children: [
+                                  category.isEmpty
+                                      ? Container()
+                                      : Expanded(
                                           child: ListView.builder(
                                             itemBuilder: (context, index) {
                                               final item = category[index];
@@ -150,10 +122,10 @@ class _HomeTabState extends State<HomeTab> {
                                             scrollDirection: Axis.horizontal,
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                ],
+                              ),
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 8.0, top: 4),
                             child: Row(

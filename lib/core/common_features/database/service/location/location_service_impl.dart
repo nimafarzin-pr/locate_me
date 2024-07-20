@@ -88,7 +88,7 @@ class LocationServiceImpl
   Stream<List<Location>> watchLocationsByCategory(CategoryEnums category) {
     return _database.select(_database.locationTB).watch().map((locations) {
       return locations
-          .where((location) => location.category == category.name)
+          .where((location) => location.categoryIcon == category.name)
           .toList();
     });
   }

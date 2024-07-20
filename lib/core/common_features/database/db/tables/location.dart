@@ -5,12 +5,13 @@ class LocationTB extends Table {
   IntColumn get id => integer().autoIncrement().nullable()();
   TextColumn get title => text()();
   TextColumn get vicinity => text().nullable()();
-  TextColumn get icon => text()();
+  TextColumn get picture => text()();
   RealColumn get latitude => real()();
   RealColumn get rate => real()();
   RealColumn get longitude => real()();
   TextColumn get address => text().nullable()();
-  TextColumn get category => text()();
+  TextColumn get categoryIcon => text()();
+  TextColumn get categoryName => text()();
   TextColumn get description => text().nullable()();
   BoolColumn get isFavorite => boolean().withDefault(const Constant(false))();
   DateTimeColumn get timestamp => dateTime().withDefault(currentDateAndTime)();

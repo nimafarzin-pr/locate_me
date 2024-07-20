@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,6 +18,7 @@ import 'package:locate_me/core/widget/custom_rich_text.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/core/widget/dialogs/diolog_wrapper.dart';
 import 'package:locate_me/core/widget/dialogs/warning_dialog.dart';
+import 'package:locate_me/core/widget/loading.dart';
 import 'package:locate_me/core/widget/rate.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 import 'package:locate_me/features/home/provider/favorite_filter_provider.dart';
@@ -25,6 +28,7 @@ import 'package:locate_me/generated/locale_keys.g.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:map_launcher/map_launcher.dart';
 
+import '../../../../core/common_features/caching/image_caching.dart';
 import '../../../../core/utils/date_converter.dart';
 
 class LocationItem extends ConsumerWidget {
@@ -39,6 +43,15 @@ class LocationItem extends ConsumerWidget {
     required this.item,
   });
 
+  Future<Uint8List?> _getImageBytes(WidgetRef ref) async {
+    final imageCache = ref.read(imageCacheProvider);
+    final imageCacheN = ref.read(imageCacheProvider.notifier);
+    if (!imageCache.containsKey(item.id.toString())) {
+      imageCacheN.cacheImage(item.id.toString(), item.picture);
+    }
+    return imageCache[item.id.toString()];
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
@@ -47,7 +60,7 @@ class LocationItem extends ConsumerWidget {
           left: isCarouselItem ? AppSizes.smallMargin : 0,
           right: isCarouselItem ? AppSizes.smallMargin : 0),
       width: context.screenWidth,
-      height: context.screenWidth / 2.3,
+      height: context.screenWidth / 2.4,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(AppSizes.mediumBorderRadius),
@@ -57,253 +70,266 @@ class LocationItem extends ConsumerWidget {
         color: Theme.of(context).colorScheme.surfaceContainer,
         child: Padding(
           padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
             children: [
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    FutureBuilder(
+                      future: _getImageBytes(ref),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const MyLoading();
+                        } else if (snapshot.hasError) {
+                          return const Icon(Icons.error);
+                        } else {
+                          return Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              image: snapshot.data == null
+                                  ? null
+                                  : DecorationImage(
+                                      image: Image.memory(
+                                        snapshot.data!,
+                                        width: 50,
+                                        height: 50,
+                                      ).image,
+                                      fit: BoxFit.cover,
+                                    ),
+                            ),
+                            width: context.screenWidth / 5,
+                            height: 80,
+                          );
+                        }
+                      },
+                    ),
+                    const SizedBox(width: 6),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Flexible(
-                            flex: 1,
-                            child: Row(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color:
-                                        Theme.of(context).colorScheme.surface,
-                                    borderRadius: BorderRadius.circular(
-                                        AppSizes.mediumBorderRadius),
-                                    border: Border.all(
-                                      width: AppSizes.thinBorderWidth,
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4),
-                                    child: Icon(
-                                        IconPickerUtils.iconPickerDeserializer(
-                                            item.category)),
-                                  ),
-                                ),
-                                const SizedBox(
-                                    width: AppSizes.verySmallScreenGutter),
-                                Expanded(
-                                  child: CustomText.bodyLarge(
-                                    customStyle: TextStyle(
-                                        fontSize: AppTextFontsAndSizing
-                                            .bodyMediumFontSize),
-                                    item.title,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Flexible(
-                            flex: 2,
+                          Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                CustomRichText(
-                                    title: '${LocaleKeys.title.tr()}: ',
-                                    value: item.title),
-                                CustomRichText(
-                                    title: '${LocaleKeys.address.tr()}: ',
-                                    value: item.address),
-                                CustomRichText(
-                                    title: '${LocaleKeys.date.tr()}: ',
-                                    value:
-                                        DateConverter.autoConverter(item.date)),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CustomRichText(
+                                        title: '${LocaleKeys.title.tr()}: ',
+                                        value: item.title),
+                                    CustomRichText(
+                                        title: '${LocaleKeys.address.tr()}: ',
+                                        value: item.address),
+                                    CustomRichText(
+                                        title: '${LocaleKeys.date.tr()}: ',
+                                        value: DateConverter.autoConverter(
+                                            item.date)),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
-                          Container(
-                            height: 1,
-                            width: context.screenWidth,
-                            color: Colors.grey.withOpacity(0.2),
-                          ),
-                          Flexible(
-                            flex: 1,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                IconButton(
-                                    onPressed: () {
-                                      ref
-                                          .read(editStateProvider.notifier)
-                                          .state = item;
-                                      // context.go(Routes.editLocation);
-                                      context.goNamed(Routes.editLocation);
-                                    },
-                                    icon: FaIcon(
-                                      size: 20,
-                                      FontAwesomeIcons.penToSquare,
-                                      color: Colors.grey.withOpacity(0.7),
-                                    )),
-                                IconButton(
-                                    onPressed: () async {
-                                      String markerLabel = item.title;
-                                      try {
-                                        if (Platform.isAndroid) {
-                                          final url = Uri.parse(
-                                              'geo:${item.latlng.latitude},${item.latlng.longitude}?q=${item.latlng.latitude},${item.latlng.longitude}($markerLabel)');
-                                          await launchUrl(url);
-                                        } else {
-                                          final availableMaps =
-                                              await MapLauncher.installedMaps;
-                                          await showDialog(
-                                            context: context,
-                                            builder: (dContext) {
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.all(40),
-                                                child: DialogWrapper(
-                                                  height:
-                                                      context.screenWidth / 2,
-                                                  child: ListView.builder(
-                                                    shrinkWrap: true,
-                                                    itemCount:
-                                                        availableMaps.length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      final maps =
-                                                          availableMaps[index];
-
-                                                      return Column(
-                                                        children: [
-                                                          Column(
-                                                            children: [
-                                                              TextButton(
-                                                                onPressed:
-                                                                    () async {
-                                                                  await maps
-                                                                      .showMarker(
-                                                                    coords: Coords(
-                                                                        item.latlng
-                                                                            .latitude,
-                                                                        item.latlng
-                                                                            .longitude),
-                                                                    title: item
-                                                                        .title,
-                                                                  );
-
-                                                                  Navigator.pop(
-                                                                      dContext);
-                                                                },
-                                                                child: Text(maps
-                                                                    .mapName
-                                                                    .toString()),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        }
-                                      } catch (error) {
-                                        if (context.mounted) {
-                                          log('$error');
-                                        }
-                                      }
-                                    },
-                                    icon: FaIcon(
-                                      size: 20,
-                                      color: Colors.grey.withOpacity(0.7),
-                                      FontAwesomeIcons.shareAlt,
-                                    )),
-                                IconButton(
-                                    onPressed: () {
-                                      if (item.id == null) return;
-                                      showWarningDialog(
-                                        context: context,
-                                        content: LocaleKeys
-                                            .do_you_want_to_continue
-                                            .tr(),
-                                        iconColor:
-                                            Theme.of(context).colorScheme.error,
-                                        title:
-                                            '${LocaleKeys.delete.tr()} ${item.title}\n\n',
-                                        onConfirm: () async {
-                                          await ref
-                                              .read(
-                                                  homeScreenRepositoryProvider)
-                                              .deleteLocation(item.id!);
-                                          Navigator.of(context,
-                                                  rootNavigator: true)
-                                              .pop();
-                                        },
-                                      );
-                                    },
-                                    icon: FaIcon(
-                                      size: 20,
-                                      color: Colors.grey.withOpacity(0.7),
-                                      FontAwesomeIcons.trashCan,
-                                    )),
-                              ],
-                            ),
-                          )
                         ],
                       ),
                     ),
+                    favAndRateColumn(ref),
                   ],
                 ),
               ),
-              SizedBox(
-                width: 28,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    CustomFavoriteIconButton(
-                      isFavorite: item.isFavorite,
-                      onPressed: () {
-                        if (item.id == null) return;
-                        ref
-                            .read(favoriteFilterProvider.notifier)
-                            .updateFavoriteStatus(id: item.id!);
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Rate(
-                            direction: Axis.vertical,
-                            draggable: false,
-                            initialRating: item.rate,
-                          ),
-                          CustomText.bodyLarge(
-                            '${item.rate}',
-                            customStyle: TextStyle(
-                                fontSize:
-                                    AppTextFontsAndSizing.bodyMediumFontSize),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
+              Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: Container(
+                  height: 1,
+                  margin: const EdgeInsets.symmetric(horizontal: 2),
+                  width: context.screenWidth / 1.4,
+                  color: Colors.grey.withOpacity(0.2),
                 ),
-              )
+              ),
+              footerActions(ref, context)
             ],
           ),
         ),
       ),
+    );
+  }
+
+  SizedBox favAndRateColumn(WidgetRef ref) {
+    return SizedBox(
+      width: 28,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          CustomFavoriteIconButton(
+            isFavorite: item.isFavorite,
+            onPressed: () {
+              if (item.id == null) return;
+              ref
+                  .read(favoriteFilterProvider.notifier)
+                  .updateFavoriteStatus(id: item.id!);
+            },
+          ),
+          const SizedBox(height: 4),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 3.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Rate(
+                  direction: Axis.vertical,
+                  draggable: false,
+                  initialRating: item.rate,
+                ),
+                CustomText.bodyLarge(
+                  '${item.rate}',
+                  customStyle: TextStyle(
+                      fontSize: AppTextFontsAndSizing.bodyMediumFontSize),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget footerActions(WidgetRef ref, BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface.withOpacity(0.2),
+                borderRadius:
+                    BorderRadius.circular(AppSizes.mediumBorderRadius),
+                border: Border.all(
+                  width: AppSizes.thinBorderWidth,
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(4),
+                child: Icon(
+                  IconPickerUtils.iconPickerDeserializer(item.categoryIcon),
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+            ),
+            const SizedBox(width: 4),
+            CustomText.bodySmall(item.categoryName),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            IconButton(
+                onPressed: () {
+                  ref.read(editStateProvider.notifier).state = item;
+                  // context.go(Routes.editLocation);
+                  context.goNamed(Routes.editLocation);
+                },
+                icon: FaIcon(
+                  size: 20,
+                  FontAwesomeIcons.penToSquare,
+                  color: Colors.grey.withOpacity(0.7),
+                )),
+            IconButton(
+                onPressed: () async {
+                  String markerLabel = item.title;
+                  try {
+                    if (Platform.isAndroid) {
+                      final url = Uri.parse(
+                          'geo:${item.latlng.latitude},${item.latlng.longitude}?q=${item.latlng.latitude},${item.latlng.longitude}($markerLabel)');
+                      await launchUrl(url);
+                    } else {
+                      final availableMaps = await MapLauncher.installedMaps;
+                      await showDialog(
+                        context: context,
+                        builder: (dContext) {
+                          return Padding(
+                            padding: const EdgeInsets.all(40),
+                            child: DialogWrapper(
+                              height: context.screenWidth / 2,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: availableMaps.length,
+                                itemBuilder: (context, index) {
+                                  final maps = availableMaps[index];
+
+                                  return Column(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          TextButton(
+                                            onPressed: () async {
+                                              await maps.showMarker(
+                                                coords: Coords(
+                                                    item.latlng.latitude,
+                                                    item.latlng.longitude),
+                                                title: item.title,
+                                              );
+
+                                              Navigator.pop(dContext);
+                                            },
+                                            child:
+                                                Text(maps.mapName.toString()),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  } catch (error) {
+                    if (context.mounted) {
+                      log('$error');
+                    }
+                  }
+                },
+                icon: FaIcon(
+                  size: 20,
+                  color: Colors.grey.withOpacity(0.7),
+                  FontAwesomeIcons.shareNodes,
+                )),
+            IconButton(
+                onPressed: () {
+                  if (item.id == null) return;
+                  showWarningDialog(
+                    context: context,
+                    content: LocaleKeys.do_you_want_to_continue.tr(),
+                    iconColor: Theme.of(context).colorScheme.error,
+                    title: '${LocaleKeys.delete.tr()} ${item.title}\n\n',
+                    onConfirm: () async {
+                      await ref
+                          .read(homeScreenRepositoryProvider)
+                          .deleteLocation(item.id!);
+                      Navigator.of(context, rootNavigator: true).pop();
+                    },
+                  );
+                },
+                icon: FaIcon(
+                  size: 20,
+                  color: Colors.grey.withOpacity(0.7),
+                  FontAwesomeIcons.trashCan,
+                )),
+          ],
+        ),
+      ],
     );
   }
 }

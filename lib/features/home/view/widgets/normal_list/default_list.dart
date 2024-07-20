@@ -16,6 +16,7 @@ class DefaultList extends HookConsumerWidget {
           itemBuilder: (context, index) {
             final item = items[index];
             return FadeInScaleAnimation(
+                key: Key(item.id.toString()),
                 duration: const Duration(milliseconds: 600),
                 child: LocationItem(item: item, index: index));
           },

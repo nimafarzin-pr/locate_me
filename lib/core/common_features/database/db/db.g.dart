@@ -29,10 +29,11 @@ class $LocationTBTable extends LocationTB
   late final GeneratedColumn<String> vicinity = GeneratedColumn<String>(
       'vicinity', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _iconMeta = const VerificationMeta('icon');
+  static const VerificationMeta _pictureMeta =
+      const VerificationMeta('picture');
   @override
-  late final GeneratedColumn<String> icon = GeneratedColumn<String>(
-      'icon', aliasedName, false,
+  late final GeneratedColumn<String> picture = GeneratedColumn<String>(
+      'picture', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _latitudeMeta =
       const VerificationMeta('latitude');
@@ -57,11 +58,17 @@ class $LocationTBTable extends LocationTB
   late final GeneratedColumn<String> address = GeneratedColumn<String>(
       'address', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _categoryMeta =
-      const VerificationMeta('category');
+  static const VerificationMeta _categoryIconMeta =
+      const VerificationMeta('categoryIcon');
   @override
-  late final GeneratedColumn<String> category = GeneratedColumn<String>(
-      'category', aliasedName, false,
+  late final GeneratedColumn<String> categoryIcon = GeneratedColumn<String>(
+      'category_icon', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _categoryNameMeta =
+      const VerificationMeta('categoryName');
+  @override
+  late final GeneratedColumn<String> categoryName = GeneratedColumn<String>(
+      'category_name', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
@@ -92,12 +99,13 @@ class $LocationTBTable extends LocationTB
         id,
         title,
         vicinity,
-        icon,
+        picture,
         latitude,
         rate,
         longitude,
         address,
-        category,
+        categoryIcon,
+        categoryName,
         description,
         isFavorite,
         timestamp
@@ -125,11 +133,11 @@ class $LocationTBTable extends LocationTB
       context.handle(_vicinityMeta,
           vicinity.isAcceptableOrUnknown(data['vicinity']!, _vicinityMeta));
     }
-    if (data.containsKey('icon')) {
-      context.handle(
-          _iconMeta, icon.isAcceptableOrUnknown(data['icon']!, _iconMeta));
+    if (data.containsKey('picture')) {
+      context.handle(_pictureMeta,
+          picture.isAcceptableOrUnknown(data['picture']!, _pictureMeta));
     } else if (isInserting) {
-      context.missing(_iconMeta);
+      context.missing(_pictureMeta);
     }
     if (data.containsKey('latitude')) {
       context.handle(_latitudeMeta,
@@ -153,11 +161,21 @@ class $LocationTBTable extends LocationTB
       context.handle(_addressMeta,
           address.isAcceptableOrUnknown(data['address']!, _addressMeta));
     }
-    if (data.containsKey('category')) {
-      context.handle(_categoryMeta,
-          category.isAcceptableOrUnknown(data['category']!, _categoryMeta));
+    if (data.containsKey('category_icon')) {
+      context.handle(
+          _categoryIconMeta,
+          categoryIcon.isAcceptableOrUnknown(
+              data['category_icon']!, _categoryIconMeta));
     } else if (isInserting) {
-      context.missing(_categoryMeta);
+      context.missing(_categoryIconMeta);
+    }
+    if (data.containsKey('category_name')) {
+      context.handle(
+          _categoryNameMeta,
+          categoryName.isAcceptableOrUnknown(
+              data['category_name']!, _categoryNameMeta));
+    } else if (isInserting) {
+      context.missing(_categoryNameMeta);
     }
     if (data.containsKey('description')) {
       context.handle(
@@ -190,8 +208,8 @@ class $LocationTBTable extends LocationTB
           .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
       vicinity: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}vicinity']),
-      icon: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}icon'])!,
+      picture: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}picture'])!,
       latitude: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}latitude'])!,
       rate: attachedDatabase.typeMapping
@@ -200,8 +218,10 @@ class $LocationTBTable extends LocationTB
           .read(DriftSqlType.double, data['${effectivePrefix}longitude'])!,
       address: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}address']),
-      category: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}category'])!,
+      categoryIcon: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}category_icon'])!,
+      categoryName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}category_name'])!,
       description: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}description']),
       isFavorite: attachedDatabase.typeMapping
@@ -221,12 +241,13 @@ class Location extends DataClass implements Insertable<Location> {
   final int? id;
   final String title;
   final String? vicinity;
-  final String icon;
+  final String picture;
   final double latitude;
   final double rate;
   final double longitude;
   final String? address;
-  final String category;
+  final String categoryIcon;
+  final String categoryName;
   final String? description;
   final bool isFavorite;
   final DateTime timestamp;
@@ -234,12 +255,13 @@ class Location extends DataClass implements Insertable<Location> {
       {this.id,
       required this.title,
       this.vicinity,
-      required this.icon,
+      required this.picture,
       required this.latitude,
       required this.rate,
       required this.longitude,
       this.address,
-      required this.category,
+      required this.categoryIcon,
+      required this.categoryName,
       this.description,
       required this.isFavorite,
       required this.timestamp});
@@ -253,14 +275,15 @@ class Location extends DataClass implements Insertable<Location> {
     if (!nullToAbsent || vicinity != null) {
       map['vicinity'] = Variable<String>(vicinity);
     }
-    map['icon'] = Variable<String>(icon);
+    map['picture'] = Variable<String>(picture);
     map['latitude'] = Variable<double>(latitude);
     map['rate'] = Variable<double>(rate);
     map['longitude'] = Variable<double>(longitude);
     if (!nullToAbsent || address != null) {
       map['address'] = Variable<String>(address);
     }
-    map['category'] = Variable<String>(category);
+    map['category_icon'] = Variable<String>(categoryIcon);
+    map['category_name'] = Variable<String>(categoryName);
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
     }
@@ -276,14 +299,15 @@ class Location extends DataClass implements Insertable<Location> {
       vicinity: vicinity == null && nullToAbsent
           ? const Value.absent()
           : Value(vicinity),
-      icon: Value(icon),
+      picture: Value(picture),
       latitude: Value(latitude),
       rate: Value(rate),
       longitude: Value(longitude),
       address: address == null && nullToAbsent
           ? const Value.absent()
           : Value(address),
-      category: Value(category),
+      categoryIcon: Value(categoryIcon),
+      categoryName: Value(categoryName),
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
@@ -299,12 +323,13 @@ class Location extends DataClass implements Insertable<Location> {
       id: serializer.fromJson<int?>(json['id']),
       title: serializer.fromJson<String>(json['title']),
       vicinity: serializer.fromJson<String?>(json['vicinity']),
-      icon: serializer.fromJson<String>(json['icon']),
+      picture: serializer.fromJson<String>(json['picture']),
       latitude: serializer.fromJson<double>(json['latitude']),
       rate: serializer.fromJson<double>(json['rate']),
       longitude: serializer.fromJson<double>(json['longitude']),
       address: serializer.fromJson<String?>(json['address']),
-      category: serializer.fromJson<String>(json['category']),
+      categoryIcon: serializer.fromJson<String>(json['categoryIcon']),
+      categoryName: serializer.fromJson<String>(json['categoryName']),
       description: serializer.fromJson<String?>(json['description']),
       isFavorite: serializer.fromJson<bool>(json['isFavorite']),
       timestamp: serializer.fromJson<DateTime>(json['timestamp']),
@@ -317,12 +342,13 @@ class Location extends DataClass implements Insertable<Location> {
       'id': serializer.toJson<int?>(id),
       'title': serializer.toJson<String>(title),
       'vicinity': serializer.toJson<String?>(vicinity),
-      'icon': serializer.toJson<String>(icon),
+      'picture': serializer.toJson<String>(picture),
       'latitude': serializer.toJson<double>(latitude),
       'rate': serializer.toJson<double>(rate),
       'longitude': serializer.toJson<double>(longitude),
       'address': serializer.toJson<String?>(address),
-      'category': serializer.toJson<String>(category),
+      'categoryIcon': serializer.toJson<String>(categoryIcon),
+      'categoryName': serializer.toJson<String>(categoryName),
       'description': serializer.toJson<String?>(description),
       'isFavorite': serializer.toJson<bool>(isFavorite),
       'timestamp': serializer.toJson<DateTime>(timestamp),
@@ -333,12 +359,13 @@ class Location extends DataClass implements Insertable<Location> {
           {Value<int?> id = const Value.absent(),
           String? title,
           Value<String?> vicinity = const Value.absent(),
-          String? icon,
+          String? picture,
           double? latitude,
           double? rate,
           double? longitude,
           Value<String?> address = const Value.absent(),
-          String? category,
+          String? categoryIcon,
+          String? categoryName,
           Value<String?> description = const Value.absent(),
           bool? isFavorite,
           DateTime? timestamp}) =>
@@ -346,12 +373,13 @@ class Location extends DataClass implements Insertable<Location> {
         id: id.present ? id.value : this.id,
         title: title ?? this.title,
         vicinity: vicinity.present ? vicinity.value : this.vicinity,
-        icon: icon ?? this.icon,
+        picture: picture ?? this.picture,
         latitude: latitude ?? this.latitude,
         rate: rate ?? this.rate,
         longitude: longitude ?? this.longitude,
         address: address.present ? address.value : this.address,
-        category: category ?? this.category,
+        categoryIcon: categoryIcon ?? this.categoryIcon,
+        categoryName: categoryName ?? this.categoryName,
         description: description.present ? description.value : this.description,
         isFavorite: isFavorite ?? this.isFavorite,
         timestamp: timestamp ?? this.timestamp,
@@ -362,12 +390,13 @@ class Location extends DataClass implements Insertable<Location> {
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('vicinity: $vicinity, ')
-          ..write('icon: $icon, ')
+          ..write('picture: $picture, ')
           ..write('latitude: $latitude, ')
           ..write('rate: $rate, ')
           ..write('longitude: $longitude, ')
           ..write('address: $address, ')
-          ..write('category: $category, ')
+          ..write('categoryIcon: $categoryIcon, ')
+          ..write('categoryName: $categoryName, ')
           ..write('description: $description, ')
           ..write('isFavorite: $isFavorite, ')
           ..write('timestamp: $timestamp')
@@ -376,8 +405,20 @@ class Location extends DataClass implements Insertable<Location> {
   }
 
   @override
-  int get hashCode => Object.hash(id, title, vicinity, icon, latitude, rate,
-      longitude, address, category, description, isFavorite, timestamp);
+  int get hashCode => Object.hash(
+      id,
+      title,
+      vicinity,
+      picture,
+      latitude,
+      rate,
+      longitude,
+      address,
+      categoryIcon,
+      categoryName,
+      description,
+      isFavorite,
+      timestamp);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -385,12 +426,13 @@ class Location extends DataClass implements Insertable<Location> {
           other.id == this.id &&
           other.title == this.title &&
           other.vicinity == this.vicinity &&
-          other.icon == this.icon &&
+          other.picture == this.picture &&
           other.latitude == this.latitude &&
           other.rate == this.rate &&
           other.longitude == this.longitude &&
           other.address == this.address &&
-          other.category == this.category &&
+          other.categoryIcon == this.categoryIcon &&
+          other.categoryName == this.categoryName &&
           other.description == this.description &&
           other.isFavorite == this.isFavorite &&
           other.timestamp == this.timestamp);
@@ -400,12 +442,13 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
   final Value<int?> id;
   final Value<String> title;
   final Value<String?> vicinity;
-  final Value<String> icon;
+  final Value<String> picture;
   final Value<double> latitude;
   final Value<double> rate;
   final Value<double> longitude;
   final Value<String?> address;
-  final Value<String> category;
+  final Value<String> categoryIcon;
+  final Value<String> categoryName;
   final Value<String?> description;
   final Value<bool> isFavorite;
   final Value<DateTime> timestamp;
@@ -413,12 +456,13 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.vicinity = const Value.absent(),
-    this.icon = const Value.absent(),
+    this.picture = const Value.absent(),
     this.latitude = const Value.absent(),
     this.rate = const Value.absent(),
     this.longitude = const Value.absent(),
     this.address = const Value.absent(),
-    this.category = const Value.absent(),
+    this.categoryIcon = const Value.absent(),
+    this.categoryName = const Value.absent(),
     this.description = const Value.absent(),
     this.isFavorite = const Value.absent(),
     this.timestamp = const Value.absent(),
@@ -427,31 +471,34 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
     this.id = const Value.absent(),
     required String title,
     this.vicinity = const Value.absent(),
-    required String icon,
+    required String picture,
     required double latitude,
     required double rate,
     required double longitude,
     this.address = const Value.absent(),
-    required String category,
+    required String categoryIcon,
+    required String categoryName,
     this.description = const Value.absent(),
     this.isFavorite = const Value.absent(),
     this.timestamp = const Value.absent(),
   })  : title = Value(title),
-        icon = Value(icon),
+        picture = Value(picture),
         latitude = Value(latitude),
         rate = Value(rate),
         longitude = Value(longitude),
-        category = Value(category);
+        categoryIcon = Value(categoryIcon),
+        categoryName = Value(categoryName);
   static Insertable<Location> custom({
     Expression<int>? id,
     Expression<String>? title,
     Expression<String>? vicinity,
-    Expression<String>? icon,
+    Expression<String>? picture,
     Expression<double>? latitude,
     Expression<double>? rate,
     Expression<double>? longitude,
     Expression<String>? address,
-    Expression<String>? category,
+    Expression<String>? categoryIcon,
+    Expression<String>? categoryName,
     Expression<String>? description,
     Expression<bool>? isFavorite,
     Expression<DateTime>? timestamp,
@@ -460,12 +507,13 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
       if (id != null) 'id': id,
       if (title != null) 'title': title,
       if (vicinity != null) 'vicinity': vicinity,
-      if (icon != null) 'icon': icon,
+      if (picture != null) 'picture': picture,
       if (latitude != null) 'latitude': latitude,
       if (rate != null) 'rate': rate,
       if (longitude != null) 'longitude': longitude,
       if (address != null) 'address': address,
-      if (category != null) 'category': category,
+      if (categoryIcon != null) 'category_icon': categoryIcon,
+      if (categoryName != null) 'category_name': categoryName,
       if (description != null) 'description': description,
       if (isFavorite != null) 'is_favorite': isFavorite,
       if (timestamp != null) 'timestamp': timestamp,
@@ -476,12 +524,13 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
       {Value<int?>? id,
       Value<String>? title,
       Value<String?>? vicinity,
-      Value<String>? icon,
+      Value<String>? picture,
       Value<double>? latitude,
       Value<double>? rate,
       Value<double>? longitude,
       Value<String?>? address,
-      Value<String>? category,
+      Value<String>? categoryIcon,
+      Value<String>? categoryName,
       Value<String?>? description,
       Value<bool>? isFavorite,
       Value<DateTime>? timestamp}) {
@@ -489,12 +538,13 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
       id: id ?? this.id,
       title: title ?? this.title,
       vicinity: vicinity ?? this.vicinity,
-      icon: icon ?? this.icon,
+      picture: picture ?? this.picture,
       latitude: latitude ?? this.latitude,
       rate: rate ?? this.rate,
       longitude: longitude ?? this.longitude,
       address: address ?? this.address,
-      category: category ?? this.category,
+      categoryIcon: categoryIcon ?? this.categoryIcon,
+      categoryName: categoryName ?? this.categoryName,
       description: description ?? this.description,
       isFavorite: isFavorite ?? this.isFavorite,
       timestamp: timestamp ?? this.timestamp,
@@ -513,8 +563,8 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
     if (vicinity.present) {
       map['vicinity'] = Variable<String>(vicinity.value);
     }
-    if (icon.present) {
-      map['icon'] = Variable<String>(icon.value);
+    if (picture.present) {
+      map['picture'] = Variable<String>(picture.value);
     }
     if (latitude.present) {
       map['latitude'] = Variable<double>(latitude.value);
@@ -528,8 +578,11 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
     if (address.present) {
       map['address'] = Variable<String>(address.value);
     }
-    if (category.present) {
-      map['category'] = Variable<String>(category.value);
+    if (categoryIcon.present) {
+      map['category_icon'] = Variable<String>(categoryIcon.value);
+    }
+    if (categoryName.present) {
+      map['category_name'] = Variable<String>(categoryName.value);
     }
     if (description.present) {
       map['description'] = Variable<String>(description.value);
@@ -549,12 +602,13 @@ class LocationTBCompanion extends UpdateCompanion<Location> {
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('vicinity: $vicinity, ')
-          ..write('icon: $icon, ')
+          ..write('picture: $picture, ')
           ..write('latitude: $latitude, ')
           ..write('rate: $rate, ')
           ..write('longitude: $longitude, ')
           ..write('address: $address, ')
-          ..write('category: $category, ')
+          ..write('categoryIcon: $categoryIcon, ')
+          ..write('categoryName: $categoryName, ')
           ..write('description: $description, ')
           ..write('isFavorite: $isFavorite, ')
           ..write('timestamp: $timestamp')
@@ -1032,7 +1086,7 @@ class $CategoriesTBTable extends CategoriesTB
       'color', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
-      defaultValue: const Constant(0));
+      defaultValue: const Constant(0000000));
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -1273,12 +1327,13 @@ typedef $$LocationTBTableInsertCompanionBuilder = LocationTBCompanion Function({
   Value<int?> id,
   required String title,
   Value<String?> vicinity,
-  required String icon,
+  required String picture,
   required double latitude,
   required double rate,
   required double longitude,
   Value<String?> address,
-  required String category,
+  required String categoryIcon,
+  required String categoryName,
   Value<String?> description,
   Value<bool> isFavorite,
   Value<DateTime> timestamp,
@@ -1287,12 +1342,13 @@ typedef $$LocationTBTableUpdateCompanionBuilder = LocationTBCompanion Function({
   Value<int?> id,
   Value<String> title,
   Value<String?> vicinity,
-  Value<String> icon,
+  Value<String> picture,
   Value<double> latitude,
   Value<double> rate,
   Value<double> longitude,
   Value<String?> address,
-  Value<String> category,
+  Value<String> categoryIcon,
+  Value<String> categoryName,
   Value<String?> description,
   Value<bool> isFavorite,
   Value<DateTime> timestamp,
@@ -1321,12 +1377,13 @@ class $$LocationTBTableTableManager extends RootTableManager<
             Value<int?> id = const Value.absent(),
             Value<String> title = const Value.absent(),
             Value<String?> vicinity = const Value.absent(),
-            Value<String> icon = const Value.absent(),
+            Value<String> picture = const Value.absent(),
             Value<double> latitude = const Value.absent(),
             Value<double> rate = const Value.absent(),
             Value<double> longitude = const Value.absent(),
             Value<String?> address = const Value.absent(),
-            Value<String> category = const Value.absent(),
+            Value<String> categoryIcon = const Value.absent(),
+            Value<String> categoryName = const Value.absent(),
             Value<String?> description = const Value.absent(),
             Value<bool> isFavorite = const Value.absent(),
             Value<DateTime> timestamp = const Value.absent(),
@@ -1335,12 +1392,13 @@ class $$LocationTBTableTableManager extends RootTableManager<
             id: id,
             title: title,
             vicinity: vicinity,
-            icon: icon,
+            picture: picture,
             latitude: latitude,
             rate: rate,
             longitude: longitude,
             address: address,
-            category: category,
+            categoryIcon: categoryIcon,
+            categoryName: categoryName,
             description: description,
             isFavorite: isFavorite,
             timestamp: timestamp,
@@ -1349,12 +1407,13 @@ class $$LocationTBTableTableManager extends RootTableManager<
             Value<int?> id = const Value.absent(),
             required String title,
             Value<String?> vicinity = const Value.absent(),
-            required String icon,
+            required String picture,
             required double latitude,
             required double rate,
             required double longitude,
             Value<String?> address = const Value.absent(),
-            required String category,
+            required String categoryIcon,
+            required String categoryName,
             Value<String?> description = const Value.absent(),
             Value<bool> isFavorite = const Value.absent(),
             Value<DateTime> timestamp = const Value.absent(),
@@ -1363,12 +1422,13 @@ class $$LocationTBTableTableManager extends RootTableManager<
             id: id,
             title: title,
             vicinity: vicinity,
-            icon: icon,
+            picture: picture,
             latitude: latitude,
             rate: rate,
             longitude: longitude,
             address: address,
-            category: category,
+            categoryIcon: categoryIcon,
+            categoryName: categoryName,
             description: description,
             isFavorite: isFavorite,
             timestamp: timestamp,
@@ -1406,8 +1466,8 @@ class $$LocationTBTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<String> get icon => $state.composableBuilder(
-      column: $state.table.icon,
+  ColumnFilters<String> get picture => $state.composableBuilder(
+      column: $state.table.picture,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
@@ -1431,8 +1491,13 @@ class $$LocationTBTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<String> get category => $state.composableBuilder(
-      column: $state.table.category,
+  ColumnFilters<String> get categoryIcon => $state.composableBuilder(
+      column: $state.table.categoryIcon,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get categoryName => $state.composableBuilder(
+      column: $state.table.categoryName,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
@@ -1470,8 +1535,8 @@ class $$LocationTBTableOrderingComposer
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<String> get icon => $state.composableBuilder(
-      column: $state.table.icon,
+  ColumnOrderings<String> get picture => $state.composableBuilder(
+      column: $state.table.picture,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
@@ -1495,8 +1560,13 @@ class $$LocationTBTableOrderingComposer
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<String> get category => $state.composableBuilder(
-      column: $state.table.category,
+  ColumnOrderings<String> get categoryIcon => $state.composableBuilder(
+      column: $state.table.categoryIcon,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get categoryName => $state.composableBuilder(
+      column: $state.table.categoryName,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 

@@ -19,7 +19,7 @@ class CategoryBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final icon = IconPickerUtils.iconPickerDeserializer(item.emoji);
+    final icon = IconPickerUtils.iconPickerDeserializer(item.iconString);
     return Container(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(

@@ -57,7 +57,7 @@ class CategoryList extends StatelessWidget {
                           log('$data');
                           final item = data[index];
                           final icon = IconPickerUtils.iconPickerDeserializer(
-                              item.emoji);
+                              item.iconString);
 
                           return FadeInScaleAnimation(
                             child: ListTile(
@@ -109,7 +109,7 @@ class CategoryList extends StatelessWidget {
                                           //     'Database Entry:\n${serializeIcon(icon, iconPack: IconPack.allMaterial).toString()}',
                                           //   )
                                           : CustomText.headlineSmall(
-                                              item.emoji),
+                                              item.iconString),
                                     )),
                               ),
                             ),
