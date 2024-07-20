@@ -7,7 +7,7 @@ part 'category_model.g.dart';
 class CategoryModel with _$CategoryModel {
   const factory CategoryModel({
     @Default("") String name,
-    @Default("") String emoji,
+    @Default("") String iconString,
     @Default(0) int color,
     int? id,
   }) = _Category;

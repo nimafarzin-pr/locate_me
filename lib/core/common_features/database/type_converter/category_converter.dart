@@ -8,7 +8,7 @@ class DBCategoryConverter extends TypeConverter<CategoryModel, Categories> {
   @override
   CategoryModel fromSql(Categories fromDb) {
     return CategoryModel(
-        emoji: fromDb.emoji,
+        iconString: fromDb.emoji,
         name: fromDb.name,
         id: fromDb.id,
         color: fromDb.color);
@@ -19,7 +19,7 @@ class DBCategoryConverter extends TypeConverter<CategoryModel, Categories> {
     return Categories(
         id: value.id ?? 0,
         name: value.name,
-        emoji: value.emoji,
+        emoji: value.iconString,
         color: value.color);
   }
 }

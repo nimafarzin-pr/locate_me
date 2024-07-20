@@ -34,7 +34,6 @@ class SelectCategory extends StatefulWidget {
 }
 
 class _SelectCategoryState extends State<SelectCategory> {
-  late TextEditingController _categoryController;
   late TextEditingController _nameController;
   final formKey = GlobalKey<FormState>();
   IconData? _icon;
@@ -42,7 +41,6 @@ class _SelectCategoryState extends State<SelectCategory> {
 
   @override
   void initState() {
-    _categoryController = TextEditingController();
     _nameController = TextEditingController();
     super.initState();
   }

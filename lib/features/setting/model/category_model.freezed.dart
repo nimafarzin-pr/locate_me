@@ -21,7 +21,7 @@ CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$CategoryModel {
   String get name => throw _privateConstructorUsedError;
-  String get emoji => throw _privateConstructorUsedError;
+  String get iconString => throw _privateConstructorUsedError;
   int get color => throw _privateConstructorUsedError;
   int? get id => throw _privateConstructorUsedError;
 
@@ -37,7 +37,7 @@ abstract class $CategoryModelCopyWith<$Res> {
           CategoryModel value, $Res Function(CategoryModel) then) =
       _$CategoryModelCopyWithImpl<$Res, CategoryModel>;
   @useResult
-  $Res call({String name, String emoji, int color, int? id});
+  $Res call({String name, String iconString, int color, int? id});
 }
 
 /// @nodoc
@@ -54,7 +54,7 @@ class _$CategoryModelCopyWithImpl<$Res, $Val extends CategoryModel>
   @override
   $Res call({
     Object? name = null,
-    Object? emoji = null,
+    Object? iconString = null,
     Object? color = null,
     Object? id = freezed,
   }) {
@@ -63,9 +63,9 @@ class _$CategoryModelCopyWithImpl<$Res, $Val extends CategoryModel>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      emoji: null == emoji
-          ? _value.emoji
-          : emoji // ignore: cast_nullable_to_non_nullable
+      iconString: null == iconString
+          ? _value.iconString
+          : iconString // ignore: cast_nullable_to_non_nullable
               as String,
       color: null == color
           ? _value.color
@@ -87,7 +87,7 @@ abstract class _$$CategoryImplCopyWith<$Res>
       __$$CategoryImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String emoji, int color, int? id});
+  $Res call({String name, String iconString, int color, int? id});
 }
 
 /// @nodoc
@@ -102,7 +102,7 @@ class __$$CategoryImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = null,
-    Object? emoji = null,
+    Object? iconString = null,
     Object? color = null,
     Object? id = freezed,
   }) {
@@ -111,9 +111,9 @@ class __$$CategoryImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      emoji: null == emoji
-          ? _value.emoji
-          : emoji // ignore: cast_nullable_to_non_nullable
+      iconString: null == iconString
+          ? _value.iconString
+          : iconString // ignore: cast_nullable_to_non_nullable
               as String,
       color: null == color
           ? _value.color
@@ -131,7 +131,7 @@ class __$$CategoryImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CategoryImpl implements _Category {
   const _$CategoryImpl(
-      {this.name = "", this.emoji = "", this.color = 0, this.id});
+      {this.name = "", this.iconString = "", this.color = 0, this.id});
 
   factory _$CategoryImpl.fromJson(Map<String, dynamic> json) =>
       _$$CategoryImplFromJson(json);
@@ -141,7 +141,7 @@ class _$CategoryImpl implements _Category {
   final String name;
   @override
   @JsonKey()
-  final String emoji;
+  final String iconString;
   @override
   @JsonKey()
   final int color;
@@ -150,7 +150,7 @@ class _$CategoryImpl implements _Category {
 
   @override
   String toString() {
-    return 'CategoryModel(name: $name, emoji: $emoji, color: $color, id: $id)';
+    return 'CategoryModel(name: $name, iconString: $iconString, color: $color, id: $id)';
   }
 
   @override
@@ -159,14 +159,15 @@ class _$CategoryImpl implements _Category {
         (other.runtimeType == runtimeType &&
             other is _$CategoryImpl &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.emoji, emoji) || other.emoji == emoji) &&
+            (identical(other.iconString, iconString) ||
+                other.iconString == iconString) &&
             (identical(other.color, color) || other.color == color) &&
             (identical(other.id, id) || other.id == id));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, emoji, color, id);
+  int get hashCode => Object.hash(runtimeType, name, iconString, color, id);
 
   @JsonKey(ignore: true)
   @override
@@ -185,7 +186,7 @@ class _$CategoryImpl implements _Category {
 abstract class _Category implements CategoryModel {
   const factory _Category(
       {final String name,
-      final String emoji,
+      final String iconString,
       final int color,
       final int? id}) = _$CategoryImpl;
 
@@ -195,7 +196,7 @@ abstract class _Category implements CategoryModel {
   @override
   String get name;
   @override
-  String get emoji;
+  String get iconString;
   @override
   int get color;
   @override

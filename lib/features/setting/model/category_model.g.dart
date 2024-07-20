@@ -9,7 +9,7 @@ part of 'category_model.dart';
 _$CategoryImpl _$$CategoryImplFromJson(Map<String, dynamic> json) =>
     _$CategoryImpl(
       name: json['name'] as String? ?? "",
-      emoji: json['emoji'] as String? ?? "",
+      iconString: json['iconString'] as String? ?? "",
       color: (json['color'] as num?)?.toInt() ?? 0,
       id: (json['id'] as num?)?.toInt(),
     );
@@ -17,7 +17,7 @@ _$CategoryImpl _$$CategoryImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$CategoryImplToJson(_$CategoryImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'emoji': instance.emoji,
+      'iconString': instance.iconString,
       'color': instance.color,
       'id': instance.id,
     };

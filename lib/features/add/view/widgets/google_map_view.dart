@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -13,6 +14,7 @@ import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/features/add/provider/osm_location_provider.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
+import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../../../../core/widget/general_map_wrapper.dart';
 import '../../../../core/widget/loading.dart';
@@ -42,7 +44,7 @@ class _GoogleMapAddViewState extends ConsumerState<GoogleMapAddView> {
     final pos = ref.watch(googleMapCurrentPositionProvider);
     if (pos.hasError) {
       return Center(
-        child: CustomText.bodyLarge('Some error occurred!'),
+        child: CustomText.bodyLarge(LocaleKeys.error_occurred.tr()),
       );
     }
 

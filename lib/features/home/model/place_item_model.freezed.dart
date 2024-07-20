@@ -26,9 +26,10 @@ mixin _$PlaceItemModel {
   String get distance => throw _privateConstructorUsedError;
   String get date => throw _privateConstructorUsedError;
   int? get id => throw _privateConstructorUsedError;
-  String get category => throw _privateConstructorUsedError;
+  String get categoryIcon => throw _privateConstructorUsedError;
+  String get categoryName => throw _privateConstructorUsedError;
   LatLong get latlng => throw _privateConstructorUsedError;
-  String get icon => throw _privateConstructorUsedError;
+  String get picture => throw _privateConstructorUsedError;
   double get rate => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
 
@@ -51,9 +52,10 @@ abstract class $PlaceItemModelCopyWith<$Res> {
       String distance,
       String date,
       int? id,
-      String category,
+      String categoryIcon,
+      String categoryName,
       LatLong latlng,
-      String icon,
+      String picture,
       double rate,
       bool isFavorite});
 
@@ -79,9 +81,10 @@ class _$PlaceItemModelCopyWithImpl<$Res, $Val extends PlaceItemModel>
     Object? distance = null,
     Object? date = null,
     Object? id = freezed,
-    Object? category = null,
+    Object? categoryIcon = null,
+    Object? categoryName = null,
     Object? latlng = null,
-    Object? icon = null,
+    Object? picture = null,
     Object? rate = null,
     Object? isFavorite = null,
   }) {
@@ -110,17 +113,21 @@ class _$PlaceItemModelCopyWithImpl<$Res, $Val extends PlaceItemModel>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      category: null == category
-          ? _value.category
-          : category // ignore: cast_nullable_to_non_nullable
+      categoryIcon: null == categoryIcon
+          ? _value.categoryIcon
+          : categoryIcon // ignore: cast_nullable_to_non_nullable
+              as String,
+      categoryName: null == categoryName
+          ? _value.categoryName
+          : categoryName // ignore: cast_nullable_to_non_nullable
               as String,
       latlng: null == latlng
           ? _value.latlng
           : latlng // ignore: cast_nullable_to_non_nullable
               as LatLong,
-      icon: null == icon
-          ? _value.icon
-          : icon // ignore: cast_nullable_to_non_nullable
+      picture: null == picture
+          ? _value.picture
+          : picture // ignore: cast_nullable_to_non_nullable
               as String,
       rate: null == rate
           ? _value.rate
@@ -157,9 +164,10 @@ abstract class _$$PlaceImplCopyWith<$Res>
       String distance,
       String date,
       int? id,
-      String category,
+      String categoryIcon,
+      String categoryName,
       LatLong latlng,
-      String icon,
+      String picture,
       double rate,
       bool isFavorite});
 
@@ -184,9 +192,10 @@ class __$$PlaceImplCopyWithImpl<$Res>
     Object? distance = null,
     Object? date = null,
     Object? id = freezed,
-    Object? category = null,
+    Object? categoryIcon = null,
+    Object? categoryName = null,
     Object? latlng = null,
-    Object? icon = null,
+    Object? picture = null,
     Object? rate = null,
     Object? isFavorite = null,
   }) {
@@ -215,17 +224,21 @@ class __$$PlaceImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      category: null == category
-          ? _value.category
-          : category // ignore: cast_nullable_to_non_nullable
+      categoryIcon: null == categoryIcon
+          ? _value.categoryIcon
+          : categoryIcon // ignore: cast_nullable_to_non_nullable
+              as String,
+      categoryName: null == categoryName
+          ? _value.categoryName
+          : categoryName // ignore: cast_nullable_to_non_nullable
               as String,
       latlng: null == latlng
           ? _value.latlng
           : latlng // ignore: cast_nullable_to_non_nullable
               as LatLong,
-      icon: null == icon
-          ? _value.icon
-          : icon // ignore: cast_nullable_to_non_nullable
+      picture: null == picture
+          ? _value.picture
+          : picture // ignore: cast_nullable_to_non_nullable
               as String,
       rate: null == rate
           ? _value.rate
@@ -249,9 +262,10 @@ class _$PlaceImpl implements _Place {
       this.distance = "",
       this.date = "",
       this.id,
-      required this.category,
+      required this.categoryIcon,
+      required this.categoryName,
       required this.latlng,
-      required this.icon,
+      required this.picture,
       this.rate = 0,
       this.isFavorite = false});
 
@@ -274,11 +288,13 @@ class _$PlaceImpl implements _Place {
   @override
   final int? id;
   @override
-  final String category;
+  final String categoryIcon;
+  @override
+  final String categoryName;
   @override
   final LatLong latlng;
   @override
-  final String icon;
+  final String picture;
   @override
   @JsonKey()
   final double rate;
@@ -288,7 +304,7 @@ class _$PlaceImpl implements _Place {
 
   @override
   String toString() {
-    return 'PlaceItemModel(title: $title, address: $address, description: $description, distance: $distance, date: $date, id: $id, category: $category, latlng: $latlng, icon: $icon, rate: $rate, isFavorite: $isFavorite)';
+    return 'PlaceItemModel(title: $title, address: $address, description: $description, distance: $distance, date: $date, id: $id, categoryIcon: $categoryIcon, categoryName: $categoryName, latlng: $latlng, picture: $picture, rate: $rate, isFavorite: $isFavorite)';
   }
 
   @override
@@ -304,10 +320,12 @@ class _$PlaceImpl implements _Place {
                 other.distance == distance) &&
             (identical(other.date, date) || other.date == date) &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.category, category) ||
-                other.category == category) &&
+            (identical(other.categoryIcon, categoryIcon) ||
+                other.categoryIcon == categoryIcon) &&
+            (identical(other.categoryName, categoryName) ||
+                other.categoryName == categoryName) &&
             (identical(other.latlng, latlng) || other.latlng == latlng) &&
-            (identical(other.icon, icon) || other.icon == icon) &&
+            (identical(other.picture, picture) || other.picture == picture) &&
             (identical(other.rate, rate) || other.rate == rate) &&
             (identical(other.isFavorite, isFavorite) ||
                 other.isFavorite == isFavorite));
@@ -315,8 +333,20 @@ class _$PlaceImpl implements _Place {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, title, address, description,
-      distance, date, id, category, latlng, icon, rate, isFavorite);
+  int get hashCode => Object.hash(
+      runtimeType,
+      title,
+      address,
+      description,
+      distance,
+      date,
+      id,
+      categoryIcon,
+      categoryName,
+      latlng,
+      picture,
+      rate,
+      isFavorite);
 
   @JsonKey(ignore: true)
   @override
@@ -340,9 +370,10 @@ abstract class _Place implements PlaceItemModel {
       final String distance,
       final String date,
       final int? id,
-      required final String category,
+      required final String categoryIcon,
+      required final String categoryName,
       required final LatLong latlng,
-      required final String icon,
+      required final String picture,
       final double rate,
       final bool isFavorite}) = _$PlaceImpl;
 
@@ -361,11 +392,13 @@ abstract class _Place implements PlaceItemModel {
   @override
   int? get id;
   @override
-  String get category;
+  String get categoryIcon;
+  @override
+  String get categoryName;
   @override
   LatLong get latlng;
   @override
-  String get icon;
+  String get picture;
   @override
   double get rate;
   @override

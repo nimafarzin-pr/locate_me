@@ -98,7 +98,7 @@ class _OsmViewState extends State<OsmView> with TickerProviderStateMixin {
                                   LatLng(e.latlng.latitude, e.latlng.longitude),
                               child: CustomMarkerAddInfoBox(
                                   markerColor: dex == carouselIndex
-                                      ? Theme.of(context).colorScheme.secondary
+                                      ? Theme.of(context).colorScheme.primary
                                       : null,
                                   placeItemModel: e,
                                   showCard: dex == carouselIndex,

@@ -14,9 +14,10 @@ class PlaceItemModel with _$PlaceItemModel {
     @Default("") String distance,
     @Default("") String date,
     int? id,
-    required String category,
+    required String categoryIcon,
+    required String categoryName,
     required LatLong latlng,
-    required String icon,
+    required String picture,
     @Default(0) double rate,
     @Default(false) bool isFavorite,
   }) = _Place;

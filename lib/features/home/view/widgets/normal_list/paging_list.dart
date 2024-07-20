@@ -1,5 +1,6 @@
 // PagingList.dart
 
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -52,7 +53,10 @@ class PagingList extends HookConsumerWidget {
           key: ValueKey(item.id),
           beginScale: 0.5,
           duration: const Duration(milliseconds: 300),
-          child: LocationItem(item: item, index: index),
+          child: LocationItem(
+            item: item,
+            index: index,
+          ),
         );
       },
     );

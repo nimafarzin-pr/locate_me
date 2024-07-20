@@ -69,7 +69,7 @@ class _CustomMarkerAddInfoBoxState extends State<CustomMarkerAddInfoBox> {
               Icon(Icons.location_on,
                   size: 50,
                   color: widget.markerColor ??
-                      Theme.of(context).colorScheme.primary)
+                      Theme.of(context).colorScheme.secondary)
             ],
           );
         },
