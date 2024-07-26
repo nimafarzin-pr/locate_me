@@ -13,7 +13,7 @@ import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
 import '../../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
 import '../../../../core/widget/custom_marker_add_info_box.dart';
 import '../../../../core/widget/dialogs/status_widget.dart';
-import '../../../../core/widget/general_map_wrapper.dart';
+import '../../../../core/widget/general_map_wrapper/general_map_wrapper.dart';
 import '../../../../generated/locale_keys.g.dart';
 import '../../../home/model/place_item_model.dart';
 import '../../provider/osm_location_provider.dart';
@@ -83,12 +83,10 @@ class _HomePageState extends ConsumerState<OsmMapView>
                     ),
                     children: [
                       TileLayer(
-                          urlTemplate: OsmMapStyle.mapStyles[data.name],
-                          subdomains: const ['a', 'b', 'c'],
-                          retinaMode: true
-
-                          // userAgentPackageName: 'com.example.app',
-                          ),
+                        urlTemplate: OsmMapStyle.mapStyles[data.name],
+                        // subdomains: const ['a', 'b', 'c'],
+                        // userAgentPackageName: 'com.example.locate_me',
+                      ),
                       // RichAttributionWidget(
                       //   attributions: [
                       //     TextSourceAttribution(
@@ -114,8 +112,8 @@ class _HomePageState extends ConsumerState<OsmMapView>
                       ),
                     ],
                   ),
-                  myLocationOnTab: () {
-                    ref
+                  myLocationOnTab: () async {
+                    await ref
                         .read(currentPositionProvider.notifier)
                         .animateToMyLocationOnOsm(
                             destZoom: 20,

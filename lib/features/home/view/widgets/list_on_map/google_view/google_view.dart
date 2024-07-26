@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:locate_me/core/widget/animation/fade_in_scale_animation.dart';
-import 'package:locate_me/core/widget/general_map_wrapper.dart';
+import 'package:locate_me/core/widget/general_map_wrapper/general_map_wrapper.dart';
 
 import '../../../../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
 import '../../../../../../core/common_features/map/core/theme/google_map_style.dart';

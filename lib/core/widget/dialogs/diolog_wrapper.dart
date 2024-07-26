@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:locate_me/core/extension/screen_size.dart';
+import 'package:locate_me/core/extension/screen_size_extension.dart';
 
 class DialogWrapper extends StatelessWidget {
   final Widget child;

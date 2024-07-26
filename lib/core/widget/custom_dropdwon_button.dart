@@ -2,7 +2,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import 'package:locate_me/core/extension/screen_size.dart';
+import 'package:locate_me/core/extension/screen_size_extension.dart';
 import 'package:locate_me/core/sizing/my_text_size.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/generated/locale_keys.g.dart';

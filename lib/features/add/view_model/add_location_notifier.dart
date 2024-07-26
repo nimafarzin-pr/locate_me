@@ -55,7 +55,7 @@ class AddLocationNotifier extends AsyncNotifier<latLang2.LatLng> {
     state = AsyncData(position);
   }
 
-  void animateToMyLocationOnOsm(
+  Future<void> animateToMyLocationOnOsm(
       {required double destZoom,
       required flMap.MapController mapController,
       required TickerProvider vsync}) async {
@@ -102,7 +102,7 @@ class AddLocationNotifier extends AsyncNotifier<latLang2.LatLng> {
     controller.forward();
   }
 
-  void animateToMyLocationOnGoogleMap({
+  Future<void> animateToMyLocationOnGoogleMap({
     required Completer mapController,
   }) async {
     final currentLocation = await _getCurrentLocation();

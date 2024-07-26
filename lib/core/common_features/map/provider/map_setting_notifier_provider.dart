@@ -9,14 +9,13 @@ final mapSettingNotifierProvider =
         MapSettingNotifier.new);
 
 final mapSettingLayerNotifierProvider =
-    StreamProvider.autoDispose<MapLayer>((ref) async* {
-  final data = await ref
-      .watch(mapSettingNotifierProvider.selectAsync((data) => data.mapLayer));
-  yield data ?? MapLayer.osm;
+    FutureProvider.autoDispose<MapLayer>((ref) async {
+  final data = await ref.watch(mapSettingNotifierProvider.future);
+  return data.mapLayer ?? MapLayer.osm;
 });
+
 final mapSettingStyleNotifierProvider =
-    StreamProvider.autoDispose<MapStyle>((ref) async* {
-  final data = await ref
-      .watch(mapSettingNotifierProvider.selectAsync((data) => data.mapStyle));
-  yield data ?? MapStyle.standard;
+    FutureProvider.autoDispose<MapStyle>((ref) async {
+  final data = await ref.watch(mapSettingNotifierProvider.future);
+  return data.mapStyle ?? MapStyle.standard;
 });

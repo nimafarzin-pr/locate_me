@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:locate_me/core/extension/screen_size.dart';
+import 'package:locate_me/core/extension/screen_size_extension.dart';
 import 'package:locate_me/core/utils/icon_picker_utils.dart';
 import 'package:locate_me/core/widget/accept_button/custom_accept_button.dart';
 import 'package:locate_me/core/widget/custom_textfeild.dart';
