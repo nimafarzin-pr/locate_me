@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as googleLatLng;
 import 'package:latlong2/latlong.dart';
@@ -18,6 +20,7 @@ class PlaceItemModel with _$PlaceItemModel {
     required String categoryName,
     required LatLong latlng,
     required String picture,
+    List<int>? imageByte,
     @Default(0) double rate,
     @Default(false) bool isFavorite,
   }) = _Place;

@@ -2,17 +2,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:locate_me/core/extension/screen_size.dart';
+import 'package:locate_me/core/extension/screen_size_extension.dart';
+import 'package:locate_me/core/widget/general_map_wrapper/my_location_button_notifier.dart';
+import 'package:locate_me/core/widget/loading.dart';
 import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
 
-import 'custom_location_button.dart';
-import 'dialogs/custom_map_options.dart';
+import '../accept_button/provider.dart';
+import '../custom_location_button.dart';
+import '../dialogs/custom_map_options.dart';
 
 class GeneralMapWrapper extends ConsumerWidget {
   final Widget map;
   final Function()? mapSettingOnTab;
   final bool isEditMode;
-  final Function()? myLocationOnTab;
+  final Future Function()? myLocationOnTab;
   final Function()? onBack;
   final Function()? addOrUpdateLocationOnTab;
 
@@ -29,6 +32,8 @@ class GeneralMapWrapper extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final editItem = ref.watch(editStateProvider);
+    final isLoading = ref.watch(myLocationButtonNotifierProvider);
+
     return Stack(
       children: [
         map,
@@ -39,8 +44,39 @@ class GeneralMapWrapper extends ConsumerWidget {
                 child: SizedBox(
                     width: context.screenWidth / 8,
                     height: context.screenWidth / 8,
-                    child: CustomLocationButton(
-                        onPressed: myLocationOnTab ?? () {})),
+                    child: Center(
+                        child: isLoading
+                            ? CustomLocationButton(
+                                onPressed: () {},
+                                child: MyLoading(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  size: 16,
+                                ))
+                            : CustomLocationButton(onPressed: () async {
+                                if (myLocationOnTab == null) return;
+                                if (isLoading) return;
+                                ref
+                                    .read(myLocationButtonNotifierProvider
+                                        .notifier)
+                                    .updateLoadingState(true);
+                                try {
+                                  await myLocationOnTab!();
+                                  ref
+                                      .read(myLocationButtonNotifierProvider
+                                          .notifier)
+                                      .updateLoadingState(false);
+                                } catch (e) {
+                                  ref
+                                      .read(myLocationButtonNotifierProvider
+                                          .notifier)
+                                      .updateLoadingState(false);
+                                } finally {
+                                  ref
+                                      .read(myLocationButtonNotifierProvider
+                                          .notifier)
+                                      .updateLoadingState(false);
+                                }
+                              }))),
               )
             : Container(),
         Positioned(
@@ -110,7 +146,7 @@ class GeneralMapWrapper extends ConsumerWidget {
                     onPressed: addOrUpdateLocationOnTab ?? () {},
                     child: FaIcon(
                       isEditMode
-                          ? FontAwesomeIcons.edit
+                          ? FontAwesomeIcons.penToSquare
                           : FontAwesomeIcons.plus,
                       color: Theme.of(context).colorScheme.onSurface,
                     ),

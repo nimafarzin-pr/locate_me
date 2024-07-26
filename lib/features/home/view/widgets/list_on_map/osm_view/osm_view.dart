@@ -6,7 +6,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:latlong2/latlong.dart';
-import 'package:locate_me/core/extension/screen_size.dart';
+import 'package:locate_me/core/extension/screen_size_extension.dart';
 import 'package:locate_me/core/widget/animation/fade_in_scale_animation.dart';
 import 'package:locate_me/core/widget/loading.dart';
 
@@ -14,7 +14,7 @@ import '../../../../../../core/common_features/map/provider/map_setting_notifier
 import '../../../../../../core/common_features/map/core/theme/osm_map_style.dart';
 import '../../../../../../core/widget/custom_marker_add_info_box.dart';
 import '../../../../../../core/widget/dialogs/status_widget.dart';
-import '../../../../../../core/widget/general_map_wrapper.dart';
+import '../../../../../../core/widget/general_map_wrapper/general_map_wrapper.dart';
 import '../../../../../../generated/locale_keys.g.dart';
 import '../../../../model/dto/slider_notifier_dto.dart';
 import '../../../../provider/filter_provider.dart';

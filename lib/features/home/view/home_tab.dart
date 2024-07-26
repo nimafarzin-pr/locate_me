@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:locate_me/core/extension/screen_size.dart';
+import 'package:locate_me/core/extension/screen_size_extension.dart';
 import 'package:locate_me/core/widget/category_item.dart';
 import 'package:locate_me/core/widget/custom_textfeild.dart';
 import 'package:locate_me/core/widget/empty_box.dart';
@@ -16,6 +16,7 @@ import 'package:locate_me/features/setting/model/category_model.dart';
 
 import 'package:locate_me/generated/locale_keys.g.dart';
 
+import '../../../core/common_features/caching/image_caching_notifier.dart';
 import '../../../core/common_features/map/core/enums/map_enum.dart';
 import '../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
 import '../../../core/widget/custom_switch.dart';
@@ -26,14 +27,15 @@ import '../provider/location_provider.dart';
 import 'widgets/list_on_map/google_view/google_view.dart';
 import 'widgets/normal_list/default_list.dart';
 
-class HomeTab extends StatefulWidget {
+class HomeTab extends ConsumerStatefulWidget {
   const HomeTab({super.key});
 
   @override
-  State<HomeTab> createState() => _HomeTabState();
+  ConsumerState<HomeTab> createState() => _HomeTabState();
 }
 
-class _HomeTabState extends State<HomeTab> {
+class _HomeTabState extends ConsumerState<HomeTab>
+    with AutomaticKeepAliveClientMixin {
   int categoryIndex = 0;
 
   late TextEditingController _searchController;
@@ -41,11 +43,13 @@ class _HomeTabState extends State<HomeTab> {
   @override
   void initState() {
     _searchController = TextEditingController();
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Consumer(
       builder: (context, ref, child) {
         final locations = ref.watch(locationProvider);
@@ -65,8 +69,9 @@ class _HomeTabState extends State<HomeTab> {
                           CustomTextField(
                             suffixIcon: const Icon(Icons.manage_search_sharp),
                             onChanged: (value) {
-                              ref.read(searchInputProvider.notifier).state =
-                                  value;
+                              ref
+                                  .read(searchInputProvider.notifier)
+                                  .setSearchQuery(value);
                             },
                             hintText: LocaleKeys.search.tr(),
                             controller: _searchController,
@@ -249,4 +254,8 @@ class _HomeTabState extends State<HomeTab> {
       },
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

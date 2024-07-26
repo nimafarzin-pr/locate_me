@@ -1,13 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:latlong2/latlong.dart' as latLngTwo;
-
 import 'package:locate_me/core/common_features/map/provider/map_setting_notifier_provider.dart';
 import 'package:locate_me/core/common_features/map/core/theme/google_map_style.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
@@ -16,7 +12,7 @@ import 'package:locate_me/features/home/model/place_item_model.dart';
 import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
 import 'package:locate_me/generated/locale_keys.g.dart';
 
-import '../../../../core/widget/general_map_wrapper.dart';
+import '../../../../core/widget/general_map_wrapper/general_map_wrapper.dart';
 import '../../../../core/widget/loading.dart';
 import '../../provider/google_map_location_provider.dart';
 import 'dialog/add_or_update_location_dialog.dart';
@@ -32,6 +28,8 @@ class GoogleMapAddView extends ConsumerStatefulWidget {
 
 class _GoogleMapAddViewState extends ConsumerState<GoogleMapAddView> {
   late Completer<GoogleMapController> _mapController;
+  Timer? _debounce;
+
   @override
   void initState() {
     _mapController = Completer();
@@ -42,6 +40,7 @@ class _GoogleMapAddViewState extends ConsumerState<GoogleMapAddView> {
   Widget build(BuildContext context) {
     final editItem = ref.watch(editStateProvider);
     final pos = ref.watch(googleMapCurrentPositionProvider);
+
     if (pos.hasError) {
       return Center(
         child: CustomText.bodyLarge(LocaleKeys.error_occurred.tr()),
@@ -56,12 +55,12 @@ class _GoogleMapAddViewState extends ConsumerState<GoogleMapAddView> {
     final position = LatLng(result.lat, result.lng);
     final marker = {
       Marker(
-          icon:
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-          markerId: const MarkerId('newMarker'),
-          position: editItem != null
-              ? LatLng(editItem.latlng.latitude, editItem.latlng.longitude)
-              : position)
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+        markerId: const MarkerId('newMarker'),
+        position: editItem != null
+            ? LatLng(editItem.latlng.latitude, editItem.latlng.longitude)
+            : position,
+      ),
     };
 
     return SafeArea(
@@ -78,23 +77,27 @@ class _GoogleMapAddViewState extends ConsumerState<GoogleMapAddView> {
             style: GoogleMapStyle.mapStyles[
                 ref.watch(mapSettingStyleNotifierProvider).value?.name],
             onCameraMove: (cameraPosition) {
-              if (editItem != null) {
-                ref.read(editStateProvider.notifier).state = editItem.copyWith(
-                    latlng: LatLong(
-                        latitude: cameraPosition.target.latitude,
-                        longitude: cameraPosition.target.longitude));
-              } else {
-                final latlng2 = latLngTwo.LatLng(cameraPosition.target.latitude,
-                    cameraPosition.target.longitude);
-                ref
-                    .read(currentPositionProvider.notifier)
-                    .updateLocation(latlng2);
-              }
+              if (_debounce?.isActive ?? false) _debounce!.cancel();
+              _debounce = Timer(const Duration(milliseconds: 500), () {
+                if (editItem != null) {
+                  ref.read(editStateProvider.notifier).state =
+                      editItem.copyWith(
+                          latlng: LatLong(
+                              latitude: cameraPosition.target.latitude,
+                              longitude: cameraPosition.target.longitude));
+                } else {
+                  final latlng2 = latLngTwo.LatLng(
+                      cameraPosition.target.latitude,
+                      cameraPosition.target.longitude);
+                  ref
+                      .read(currentPositionProvider.notifier)
+                      .updateLocation(latlng2);
+                }
+              });
             },
             markers: marker,
             zoomControlsEnabled: false,
             onMapCreated: (controller) {
-              _mapController = Completer();
               _mapController.complete(controller);
             },
             compassEnabled: false,
@@ -103,8 +106,8 @@ class _GoogleMapAddViewState extends ConsumerState<GoogleMapAddView> {
               zoom: 20.4746,
             ),
           ),
-          myLocationOnTab: () {
-            ref
+          myLocationOnTab: () async {
+            await ref
                 .read(currentPositionProvider.notifier)
                 .animateToMyLocationOnGoogleMap(mapController: _mapController);
           },
@@ -117,7 +120,6 @@ class _GoogleMapAddViewState extends ConsumerState<GoogleMapAddView> {
                   latLng: marker.first.position,
                   editItem: editItem,
                   onAccept: (PlaceItemModel location) async {
-                    log('>>|| $location');
                     if (editItem == null) {
                       await ref
                           .read(currentPositionProvider.notifier)

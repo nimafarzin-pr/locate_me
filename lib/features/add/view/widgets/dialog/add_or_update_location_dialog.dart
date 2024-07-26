@@ -13,7 +13,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:locate_me/core/extension/screen_size.dart';
+import 'package:locate_me/core/extension/screen_size_extension.dart';
 import 'package:locate_me/core/utils/icon_picker_utils.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/core/widget/loading.dart';

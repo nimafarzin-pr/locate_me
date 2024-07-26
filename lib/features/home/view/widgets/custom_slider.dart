@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:locate_me/core/extension/screen_size.dart';
+import 'package:locate_me/core/extension/screen_size_extension.dart';
 import 'package:locate_me/core/widget/animation/fade_in_scale_animation.dart';
 import 'package:locate_me/features/home/view/widgets/location_item.dart';
 

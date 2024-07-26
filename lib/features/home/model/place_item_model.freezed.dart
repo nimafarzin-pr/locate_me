@@ -30,6 +30,7 @@ mixin _$PlaceItemModel {
   String get categoryName => throw _privateConstructorUsedError;
   LatLong get latlng => throw _privateConstructorUsedError;
   String get picture => throw _privateConstructorUsedError;
+  List<int>? get imageByte => throw _privateConstructorUsedError;
   double get rate => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
 
@@ -56,6 +57,7 @@ abstract class $PlaceItemModelCopyWith<$Res> {
       String categoryName,
       LatLong latlng,
       String picture,
+      List<int>? imageByte,
       double rate,
       bool isFavorite});
 
@@ -85,6 +87,7 @@ class _$PlaceItemModelCopyWithImpl<$Res, $Val extends PlaceItemModel>
     Object? categoryName = null,
     Object? latlng = null,
     Object? picture = null,
+    Object? imageByte = freezed,
     Object? rate = null,
     Object? isFavorite = null,
   }) {
@@ -129,6 +132,10 @@ class _$PlaceItemModelCopyWithImpl<$Res, $Val extends PlaceItemModel>
           ? _value.picture
           : picture // ignore: cast_nullable_to_non_nullable
               as String,
+      imageByte: freezed == imageByte
+          ? _value.imageByte
+          : imageByte // ignore: cast_nullable_to_non_nullable
+              as List<int>?,
       rate: null == rate
           ? _value.rate
           : rate // ignore: cast_nullable_to_non_nullable
@@ -168,6 +175,7 @@ abstract class _$$PlaceImplCopyWith<$Res>
       String categoryName,
       LatLong latlng,
       String picture,
+      List<int>? imageByte,
       double rate,
       bool isFavorite});
 
@@ -196,6 +204,7 @@ class __$$PlaceImplCopyWithImpl<$Res>
     Object? categoryName = null,
     Object? latlng = null,
     Object? picture = null,
+    Object? imageByte = freezed,
     Object? rate = null,
     Object? isFavorite = null,
   }) {
@@ -240,6 +249,10 @@ class __$$PlaceImplCopyWithImpl<$Res>
           ? _value.picture
           : picture // ignore: cast_nullable_to_non_nullable
               as String,
+      imageByte: freezed == imageByte
+          ? _value._imageByte
+          : imageByte // ignore: cast_nullable_to_non_nullable
+              as List<int>?,
       rate: null == rate
           ? _value.rate
           : rate // ignore: cast_nullable_to_non_nullable
@@ -266,8 +279,10 @@ class _$PlaceImpl implements _Place {
       required this.categoryName,
       required this.latlng,
       required this.picture,
+      final List<int>? imageByte,
       this.rate = 0,
-      this.isFavorite = false});
+      this.isFavorite = false})
+      : _imageByte = imageByte;
 
   factory _$PlaceImpl.fromJson(Map<String, dynamic> json) =>
       _$$PlaceImplFromJson(json);
@@ -295,6 +310,16 @@ class _$PlaceImpl implements _Place {
   final LatLong latlng;
   @override
   final String picture;
+  final List<int>? _imageByte;
+  @override
+  List<int>? get imageByte {
+    final value = _imageByte;
+    if (value == null) return null;
+    if (_imageByte is EqualUnmodifiableListView) return _imageByte;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   @JsonKey()
   final double rate;
@@ -304,7 +329,7 @@ class _$PlaceImpl implements _Place {
 
   @override
   String toString() {
-    return 'PlaceItemModel(title: $title, address: $address, description: $description, distance: $distance, date: $date, id: $id, categoryIcon: $categoryIcon, categoryName: $categoryName, latlng: $latlng, picture: $picture, rate: $rate, isFavorite: $isFavorite)';
+    return 'PlaceItemModel(title: $title, address: $address, description: $description, distance: $distance, date: $date, id: $id, categoryIcon: $categoryIcon, categoryName: $categoryName, latlng: $latlng, picture: $picture, imageByte: $imageByte, rate: $rate, isFavorite: $isFavorite)';
   }
 
   @override
@@ -326,6 +351,8 @@ class _$PlaceImpl implements _Place {
                 other.categoryName == categoryName) &&
             (identical(other.latlng, latlng) || other.latlng == latlng) &&
             (identical(other.picture, picture) || other.picture == picture) &&
+            const DeepCollectionEquality()
+                .equals(other._imageByte, _imageByte) &&
             (identical(other.rate, rate) || other.rate == rate) &&
             (identical(other.isFavorite, isFavorite) ||
                 other.isFavorite == isFavorite));
@@ -345,6 +372,7 @@ class _$PlaceImpl implements _Place {
       categoryName,
       latlng,
       picture,
+      const DeepCollectionEquality().hash(_imageByte),
       rate,
       isFavorite);
 
@@ -374,6 +402,7 @@ abstract class _Place implements PlaceItemModel {
       required final String categoryName,
       required final LatLong latlng,
       required final String picture,
+      final List<int>? imageByte,
       final double rate,
       final bool isFavorite}) = _$PlaceImpl;
 
@@ -399,6 +428,8 @@ abstract class _Place implements PlaceItemModel {
   LatLong get latlng;
   @override
   String get picture;
+  @override
+  List<int>? get imageByte;
   @override
   double get rate;
   @override
