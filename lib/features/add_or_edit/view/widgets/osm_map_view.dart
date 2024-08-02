@@ -45,7 +45,7 @@ class _HomePageState extends ConsumerState<OsmMapView>
 
   @override
   Widget build(BuildContext context) {
-    final editItem = ref.watch(editStateProvider);
+    final editItem = ref.watch(selectedEditStateProviderForEditAndView);
     return ref.watch(currentPositionProvider).when(
       data: (position) {
         final currentPositions = editItem != null
@@ -56,7 +56,9 @@ class _HomePageState extends ConsumerState<OsmMapView>
             return SafeArea(
               child: BackButtonListener(
                 onBackButtonPressed: () async {
-                  ref.read(editStateProvider.notifier).state = null;
+                  ref
+                      .read(selectedEditStateProviderForEditAndView.notifier)
+                      .state = null;
                   return false;
                 },
                 child: GeneralMapWrapper(
@@ -66,12 +68,18 @@ class _HomePageState extends ConsumerState<OsmMapView>
                     options: MapOptions(
                       onPositionChanged: (position, hasGesture) {
                         if (editItem != null) {
-                          ref.read(editStateProvider.notifier).state = ref
-                              .watch(editStateProvider)
-                              ?.copyWith(
-                                  latlng: LatLong(
-                                      latitude: position.center!.latitude,
-                                      longitude: position.center!.longitude));
+                          ref
+                                  .read(selectedEditStateProviderForEditAndView
+                                      .notifier)
+                                  .state =
+                              ref
+                                  .watch(
+                                      selectedEditStateProviderForEditAndView)
+                                  ?.copyWith(
+                                      latlng: LatLong(
+                                          latitude: position.center!.latitude,
+                                          longitude:
+                                              position.center!.longitude));
                         } else {
                           ref
                               .read(currentPositionProvider.notifier)
@@ -84,6 +92,7 @@ class _HomePageState extends ConsumerState<OsmMapView>
                     children: [
                       TileLayer(
                         urlTemplate: OsmMapStyle.mapStyles[data.name],
+                        tileProvider: AssetTileProvider(),
                         // subdomains: const ['a', 'b', 'c'],
                         // userAgentPackageName: 'com.example.locate_me',
                       ),
@@ -139,8 +148,12 @@ class _HomePageState extends ConsumerState<OsmMapView>
                                   .read(currentPositionProvider.notifier)
                                   .updateLocationItem(location);
 
-                              ref.read(editStateProvider.notifier).state = null;
-                              ref.invalidate(editStateProvider);
+                              ref
+                                  .read(selectedEditStateProviderForEditAndView
+                                      .notifier)
+                                  .state = null;
+                              ref.invalidate(
+                                  selectedEditStateProviderForEditAndView);
                             }
                           },
                         );

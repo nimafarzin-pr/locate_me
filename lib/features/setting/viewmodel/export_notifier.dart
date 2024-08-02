@@ -22,7 +22,6 @@ class ExportNotifier extends AutoDisposeNotifier<RiverpodActionsCommonState> {
         errorMessage: null,
         isCancel: null);
     try {
-      final ref = ProviderContainer();
       final languageLocale = ref.read(languageNotifierProvider).value ?? "fa";
       final date =
           DateConverter.autoConverter(DateTime.now().toIso8601String());

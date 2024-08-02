@@ -18,7 +18,6 @@ import '../../sizing/app_sizing.dart';
 import '../custom_dropdwon_button.dart';
 import '../custom_radio.dart';
 import '../animation/fade_in_scale_animation.dart';
-import 'status_widget.dart';
 
 class CustomMapOptionsDialog extends ConsumerStatefulWidget {
   final void Function(String) onOptionSelected;

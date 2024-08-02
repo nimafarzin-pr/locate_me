@@ -7,7 +7,6 @@ import 'package:locate_me/core/widget/general_map_wrapper/my_location_button_not
 import 'package:locate_me/core/widget/loading.dart';
 import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
 
-import '../accept_button/provider.dart';
 import '../custom_location_button.dart';
 import '../dialogs/custom_map_options.dart';
 
@@ -31,7 +30,7 @@ class GeneralMapWrapper extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final editItem = ref.watch(editStateProvider);
+    final editItem = ref.watch(selectedEditStateProviderForEditAndView);
     final isLoading = ref.watch(myLocationButtonNotifierProvider);
 
     return Stack(
@@ -108,7 +107,7 @@ class GeneralMapWrapper extends ConsumerWidget {
             ),
           ),
         ),
-        editItem != null || onBack != null
+        isEditMode || onBack != null
             ? Positioned(
                 top: 20,
                 left: 20,
@@ -119,7 +118,10 @@ class GeneralMapWrapper extends ConsumerWidget {
                     backgroundColor: Theme.of(context).colorScheme.surface,
                     onPressed: () {
                       if (editItem != null) {
-                        ref.read(editStateProvider.notifier).state = null;
+                        ref
+                            .read(selectedEditStateProviderForEditAndView
+                                .notifier)
+                            .state = null;
                         Navigator.of(context).pop();
                       }
                       if (onBack != null) {

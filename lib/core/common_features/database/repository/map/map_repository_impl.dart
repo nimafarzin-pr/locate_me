@@ -6,7 +6,7 @@ import 'package:locate_me/core/common_features/database/type_converter/map_setti
 import 'package:locate_me/core/common_features/map/core/enums/map_enum.dart';
 import 'package:locate_me/core/common_features/map/model/map_settings_model.dart';
 
-class MapRepositoryImpl extends IMapRepository {
+class MapRepositoryImpl implements IMapRepository {
   final MapServiceImpl _mapServiceImpl;
 
   MapRepositoryImpl(this._mapServiceImpl);

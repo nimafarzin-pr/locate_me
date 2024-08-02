@@ -117,11 +117,16 @@ class CodegenLoader extends AssetLoader{
   "select_language": "انتخاب زبان",
   "select_theme": "انتخاب تم",
   "categories": "دسته بندی ها",
+  "category": "دسته بندی",
   "category_list": "لیست دسته بندی ها",
   "add_category": "اضافه کردن دسته بندی",
   "select_icon": "انتخاب آیکون",
-  "select_color": "'انتخاب رنگ'",
-  "enter_category_name": "نام دسته بندی..."
+  "select_color": "انتخاب رنگ",
+  "enter_category_name": "نام دسته بندی...",
+  "location_information": "مشخصات مکان",
+  "rate": "امتیاز",
+  "latitude": "عرض جغرافیایی",
+  "longitude": "طول جغرافیایی"
 };
 static const Map<String,dynamic> en_US = {
   "settings": "Settings",
@@ -226,11 +231,16 @@ static const Map<String,dynamic> en_US = {
   "select_language": "Select Language",
   "select_theme": "Select Theme",
   "categories": "Categories",
+  "category": "Category",
   "category_list": "Category List",
   "add_category": "Add Category",
   "select_icon": "Select Icon",
-  "select_color": "'Select Color'",
-  "enter_category_name": "Category name..."
+  "select_color": "Select Color",
+  "enter_category_name": "Category name...",
+  "location_information": "Location information",
+  "rate": "Rate",
+  "latitude": "Latitude",
+  "longitude": "Longitude"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"fa_IR": fa_IR, "en_US": en_US};
 }

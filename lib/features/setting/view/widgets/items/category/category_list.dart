@@ -87,7 +87,11 @@ class CategoryList extends StatelessWidget {
                                   color: Theme.of(context).colorScheme.error,
                                 ),
                               ),
-                              title: Text(item.name),
+                              title: Text(
+                                item.name == 'all'
+                                    ? LocaleKeys.all.tr()
+                                    : item.name,
+                              ),
                               leading: CircleAvatar(
                                 radius: 27,
                                 backgroundColor: Theme.of(context)

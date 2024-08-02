@@ -68,7 +68,6 @@ class LocationServiceImpl
   @override
   Future<void> updateFavoriteStatus(int id) async {
     final location = await getById(id);
-    log('***** >>> ${location?.toJson()}');
     if (location != null) {
       final updatedLocation = location
           .copyWith(isFavorite: !(location.isFavorite))

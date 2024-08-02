@@ -102,10 +102,15 @@ abstract class  LocaleKeys {
   static const select_language = 'select_language';
   static const select_theme = 'select_theme';
   static const categories = 'categories';
+  static const category = 'category';
   static const category_list = 'category_list';
   static const add_category = 'add_category';
   static const select_icon = 'select_icon';
   static const select_color = 'select_color';
   static const enter_category_name = 'enter_category_name';
+  static const location_information = 'location_information';
+  static const rate = 'rate';
+  static const latitude = 'latitude';
+  static const longitude = 'longitude';
 
 }

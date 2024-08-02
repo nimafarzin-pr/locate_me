@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:locate_me/core/utils/icon_picker_utils.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/features/setting/model/category_model.dart';
+import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../sizing/app_sizing.dart';
 
@@ -74,7 +76,7 @@ class CategoryBox extends StatelessWidget {
                       ),
                     ),
                     CustomText.bodySmall(
-                      item.name,
+                      item.name == 'all' ? LocaleKeys.all.tr() : item.name,
                       maxLines: 1,
                       customStyle: TextStyle(
                           color: Theme.of(context).colorScheme.onSurface),

@@ -58,7 +58,7 @@ class PermissionsUtils {
   // create file path for read or write
   static Future<File> createFilePath({required String fileName}) async {
     DateTime today = DateTime.now();
-    final dateFormat = DateConverter.autoConverter(today.toIso8601String());
+    final dateFormat = DateConverter.toGregorian(today.toIso8601String());
     final root = await _getBackupPath();
     return File("/$root/$fileName.txt");
   }
