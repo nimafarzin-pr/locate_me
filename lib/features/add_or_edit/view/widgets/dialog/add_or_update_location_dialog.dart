@@ -89,10 +89,16 @@ class _AddLocationViewState<T>
             rate = widget.editItem!.rate;
             date = widget.editItem!.date;
             isFavorite = widget.editItem!.isFavorite;
-            _latitudeController.text =
-                ref.read(editStateProvider)!.latlng.latitude.toString();
-            _longitudeController.text =
-                ref.read(editStateProvider)!.latlng.longitude.toString();
+            _latitudeController.text = ref
+                .read(selectedEditStateProviderForEditAndView)!
+                .latlng
+                .latitude
+                .toString();
+            _longitudeController.text = ref
+                .read(selectedEditStateProviderForEditAndView)!
+                .latlng
+                .longitude
+                .toString();
           } else {
             _latitudeController.text = widget.latLng.latitude.toString();
             _longitudeController.text = widget.latLng.longitude.toString();
@@ -123,7 +129,8 @@ class _AddLocationViewState<T>
           backgroundColor: Colors.transparent,
           body: BackButtonListener(
             onBackButtonPressed: () async {
-              ref.read(editStateProvider.notifier).state = null;
+              ref.read(selectedEditStateProviderForEditAndView.notifier).state =
+                  null;
               Navigator.of(context, rootNavigator: true).pop();
               return true;
             },
@@ -158,7 +165,8 @@ class _AddLocationViewState<T>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             CustomText.bodyLarge(
-                              ref.watch(editStateProvider) != null
+                              ref.watch(selectedEditStateProviderForEditAndView) !=
+                                      null
                                   ? LocaleKeys.edit_your_location.tr()
                                   : LocaleKeys.add_new_location.tr(),
                               customStyle: const TextStyle(
@@ -366,7 +374,10 @@ class _AddLocationViewState<T>
                                           picture: selectedImage != null
                                               ? base64Encode(selectedImage!)
                                               : "",
-                                          id: ref.watch(editStateProvider)?.id,
+                                          id: ref
+                                              .watch(
+                                                  selectedEditStateProviderForEditAndView)
+                                              ?.id,
                                           title: _titleController.text,
                                           address: _addressController.text,
                                           description:

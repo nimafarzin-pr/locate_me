@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,10 +9,10 @@ import 'package:locate_me/core/navigation/routes.dart';
 import 'package:locate_me/core/sizing/app_sizing.dart';
 import 'package:locate_me/core/sizing/my_text_size.dart';
 import 'package:locate_me/core/utils/icon_picker_utils.dart';
+import 'package:locate_me/core/utils/share_utils.dart';
 import 'package:locate_me/core/widget/custom_favorite_icon_button.dart';
 import 'package:locate_me/core/widget/custom_rich_text.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
-import 'package:locate_me/core/widget/dialogs/diolog_wrapper.dart';
 import 'package:locate_me/core/widget/dialogs/warning_dialog.dart';
 import 'package:locate_me/core/widget/rate.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
@@ -23,8 +20,6 @@ import 'package:locate_me/features/home/provider/favorite_filter_provider.dart';
 import 'package:locate_me/features/home/provider/home_screen_repository_provider.dart';
 import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
 import 'package:locate_me/generated/locale_keys.g.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:map_launcher/map_launcher.dart';
 
 import '../../../../core/common_features/caching/image_byte_provider.dart';
 import '../../../../core/utils/date_converter.dart';
@@ -76,27 +71,64 @@ class LocationItem extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          imageBytes == null
-                              ? Container()
-                              : Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: Image.memory(
-                                        imageBytes,
-                                        cacheWidth: 50.cachedSize(context),
-                                        cacheHeight: 66.cachedSize(context),
-                                        gaplessPlayback: true,
-                                        fit: BoxFit.cover,
-                                      ).image,
-                                      // fit: BoxFit.contain,
-                                    ),
-                                  ),
+                          Stack(
+                            children: [
+                              Positioned(
+                                child: SizedBox(
                                   width: 30.cachedSize(context).toDouble(),
                                   height: 30.cachedSize(context).toDouble(),
+                                  child: Icon(
+                                    Icons.local_see_outlined,
+                                    size: 26,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withOpacity(0.4),
+                                  ),
                                 ),
+                              ),
+                              imageBytes == null
+                                  ? Container()
+                                  : DecoratedBox(
+                                      position: DecorationPosition.foreground,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        gradient: LinearGradient(
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                            colors: [
+                                              Colors.black.withOpacity(0.4),
+                                              Colors.transparent
+                                            ]),
+                                      ),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+
+                                            image: Image.memory(
+                                              imageBytes,
+                                              cacheWidth:
+                                                  50.cachedSize(context),
+                                              cacheHeight:
+                                                  66.cachedSize(context),
+                                              gaplessPlayback: true,
+                                              fit: BoxFit.cover,
+                                            ).image,
+                                            // fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                        width:
+                                            30.cachedSize(context).toDouble(),
+                                        height:
+                                            30.cachedSize(context).toDouble(),
+                                      ),
+                                    ),
+                            ],
+                          ),
                           const SizedBox(width: 6),
                           Expanded(
                             child: Column(
@@ -128,7 +160,8 @@ class LocationItem extends ConsumerWidget {
                                                   '${LocaleKeys.date.tr()}: ',
                                               value:
                                                   DateConverter.autoConverter(
-                                                      item.date)),
+                                                      item.date,
+                                                      ref: ref)),
                                         ],
                                       ),
                                     ],
@@ -168,24 +201,22 @@ class LocationItem extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          CustomFavoriteIconButton(
-            isFavorite: item.isFavorite,
-            onPressed: () {
-              if (item.id == null) return;
-              ref
-                  .read(favoriteFilterProvider.notifier)
-                  .updateFavoriteStatus(id: item.id!);
-            },
-          ),
           const SizedBox(height: 4),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 3.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Icon(
+                  IconPickerUtils.iconPickerDeserializer(item.categoryIcon),
+                  color: Colors.grey.withOpacity(0.7),
+                  size: 20,
+                ),
+                const SizedBox(height: 4),
                 Rate(
                   direction: Axis.vertical,
                   draggable: false,
+                  // itemSize: 14,
                   initialRating: item.rate,
                 ),
                 CustomText.bodyLarge(
@@ -207,28 +238,14 @@ class LocationItem extends ConsumerWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface.withOpacity(0.2),
-                  borderRadius:
-                      BorderRadius.circular(AppSizes.mediumBorderRadius),
-                  border: Border.all(
-                    width: AppSizes.thinBorderWidth,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(4),
-                  child: Icon(
-                    IconPickerUtils.iconPickerDeserializer(item.categoryIcon),
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 4),
-              CustomText.bodySmall(item.categoryName),
-            ],
+          child: CustomFavoriteIconButton(
+            isFavorite: item.isFavorite,
+            onPressed: () {
+              if (item.id == null) return;
+              ref
+                  .read(favoriteFilterProvider.notifier)
+                  .updateFavoriteStatus(id: item.id!);
+            },
           ),
         ),
         Expanded(
@@ -236,19 +253,23 @@ class LocationItem extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              isCarouselItem
-                  ? Container()
-                  : IconButton(
-                      onPressed: () {},
-                      icon: FaIcon(
-                        size: 20,
-                        color: Colors.grey.withOpacity(0.7),
-                        FontAwesomeIcons.eye,
-                      )),
               IconButton(
                   onPressed: () {
-                    ref.read(editStateProvider.notifier).state = item;
-                    // context.go(Routes.editLocation);
+                    ref
+                        .read(selectedEditStateProviderForEditAndView.notifier)
+                        .state = item;
+                    context.goNamed(Routes.locationDetail);
+                  },
+                  icon: FaIcon(
+                    size: 20,
+                    color: Colors.grey.withOpacity(0.7),
+                    FontAwesomeIcons.eye,
+                  )),
+              IconButton(
+                  onPressed: () {
+                    ref
+                        .read(selectedEditStateProviderForEditAndView.notifier)
+                        .state = item;
                     context.goNamed(Routes.editLocation);
                   },
                   icon: FaIcon(
@@ -258,61 +279,11 @@ class LocationItem extends ConsumerWidget {
                   )),
               IconButton(
                   onPressed: () async {
-                    String markerLabel = item.title;
-                    try {
-                      if (Platform.isAndroid) {
-                        final url = Uri.parse(
-                            'geo:${item.latlng.latitude},${item.latlng.longitude}?q=${item.latlng.latitude},${item.latlng.longitude}($markerLabel)');
-                        await launchUrl(url);
-                      } else {
-                        final availableMaps = await MapLauncher.installedMaps;
-                        await showDialog(
-                          context: context,
-                          builder: (dContext) {
-                            return Padding(
-                              padding: const EdgeInsets.all(40),
-                              child: DialogWrapper(
-                                height: context.screenWidth / 2,
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: availableMaps.length,
-                                  itemBuilder: (context, index) {
-                                    final maps = availableMaps[index];
-
-                                    return Column(
-                                      children: [
-                                        Column(
-                                          children: [
-                                            TextButton(
-                                              onPressed: () async {
-                                                await maps.showMarker(
-                                                  coords: Coords(
-                                                      item.latlng.latitude,
-                                                      item.latlng.longitude),
-                                                  title: item.title,
-                                                );
-
-                                                Navigator.pop(dContext);
-                                              },
-                                              child:
-                                                  Text(maps.mapName.toString()),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      }
-                    } catch (error) {
-                      if (context.mounted) {
-                        log('$error');
-                      }
-                    }
+                    await ShareUtils.shareLocation(
+                        markerLabel: item.title,
+                        context: context,
+                        lat: item.latlng.latitude,
+                        lng: item.latlng.longitude);
                   },
                   icon: FaIcon(
                     size: 20,

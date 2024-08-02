@@ -15,7 +15,12 @@ import 'package:path/path.dart' as p;
 
 part 'db.g.dart';
 
-@DriftDatabase(tables: [LocationTB, MapSettingsTB, AppSettingsTB, CategoriesTB])
+@DriftDatabase(tables: [
+  LocationTB,
+  MapSettingsTB,
+  AppSettingsTB,
+  CategoriesTB,
+])
 class DB extends _$DB {
   // Make DB a singleton
   static final DB _instance = DB._internal();

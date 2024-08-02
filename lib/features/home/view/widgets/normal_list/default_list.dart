@@ -12,15 +12,23 @@ class DefaultList extends HookConsumerWidget {
     final items = ref.watch(filteredItemsProvider);
     return CustomScrollView(
       slivers: [
-        SliverList.builder(
-          itemBuilder: (context, index) {
+        SliverList(
+          delegate: SliverChildBuilderDelegate(childCount: items.length,
+              (context, index) {
             final item = items[index];
             return FadeInScaleAnimation(
                 key: Key(item.id.toString()),
                 duration: const Duration(milliseconds: 600),
                 child: LocationItem(item: item, index: index));
-          },
-          itemCount: items.length,
+          }),
+          // itemBuilder: (context, index) {
+          //   final item = items[index];
+          //   return FadeInScaleAnimation(
+          //       key: Key(item.id.toString()),
+          //       duration: const Duration(milliseconds: 600),
+          //       child: LocationItem(item: item, index: index));
+          // },
+          // itemCount: items.length,
         )
       ],
     );

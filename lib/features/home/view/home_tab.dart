@@ -192,7 +192,6 @@ class _HomeTabState extends ConsumerState<HomeTab>
                                 ? const EmptyBox()
                                 : ref.watch(homeViewModeProvider) ==
                                         HomeViewMode.list
-                                    // ? const PagingList()
                                     ? const DefaultList()
                                     : ref
                                         .watch(mapSettingLayerNotifierProvider)

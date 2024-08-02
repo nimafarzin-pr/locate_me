@@ -1,18 +1,10 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-// Combined provider to filter items based on category and favorite
-
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:locate_me/core/common_features/caching/image_caching_notifier.dart';
 import 'package:locate_me/core/common_features/map/core/enums/map_enum.dart';
 import 'package:locate_me/features/home/provider/category_filter_provider.dart';
 import 'package:locate_me/features/home/provider/favorite_filter_provider.dart';
 import 'package:locate_me/features/home/provider/search_input_provider.dart';
 
-import '../../../core/common_features/caching/base64_dto.dart';
 import '../model/place_item_model.dart';
 import 'location_provider.dart';
 

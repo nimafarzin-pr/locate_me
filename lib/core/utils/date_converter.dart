@@ -18,11 +18,14 @@ class DateConverter {
   }
 
 // Convert ISO8601 string to Gregorian date string
-  static String autoConverter(String iso8601String) {
-    final ref = ProviderContainer();
-    final languageLocale = ref.read(languageNotifierProvider).value ?? "fa";
+  static String autoConverter(String iso8601String, {WidgetRef? ref}) {
+    final readRef = ProviderContainer();
+    final language = ref != null
+        ? ref.watch(languageNotifierProvider).value
+        : readRef.read(languageNotifierProvider).value;
+    final languageLocale = language ?? "fa";
     if (languageLocale == 'fa') {
-      return toGregorian(iso8601String);
+      return toShamsi(iso8601String);
     } else {
       return toGregorian(iso8601String);
     }

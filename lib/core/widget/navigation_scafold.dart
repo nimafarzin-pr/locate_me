@@ -41,8 +41,10 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
         resizeToAvoidBottomInset: true,
         body: navigationShell,
         bottomNavigationBar: router.routerDelegate.currentConfiguration.uri
-                    .toString() ==
-                '/${Routes.editLocation}'
+                        .toString() ==
+                    '/${Routes.editLocation}' ||
+                router.routerDelegate.currentConfiguration.uri.toString() ==
+                    '/${Routes.locationDetail}'
             ? null
             : Directionality(
                 textDirection: TextDirection.ltr,

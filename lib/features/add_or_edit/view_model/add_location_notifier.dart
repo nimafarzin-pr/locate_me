@@ -7,8 +7,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:latlong2/latlong.dart' as latLang2;
-import 'package:locate_me/features/add/provider/add_repository_provider.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
+
+import '../provider/add_repository_provider.dart';
 
 class AddLocationNotifier extends AsyncNotifier<latLang2.LatLng> {
   @override

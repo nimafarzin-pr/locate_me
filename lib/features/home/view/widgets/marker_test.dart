@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 import 'package:flutter/material.dart';
-import 'package:locate_me/features/add/model/dto/google_map_dto.dart';
 import 'dart:ui' as ui;
+
+import '../../../add_or_edit/model/dto/google_map_dto.dart';
 
 class MyCustomMarker extends CustomPainter {
   final GoogleMapDto place;

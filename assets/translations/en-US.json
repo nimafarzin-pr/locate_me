@@ -101,17 +101,15 @@
     "select_language":"Select Language",
     "select_theme":"Select Theme",
     "categories":"Categories",
+    "category":"Category",
     "category_list":"Category List",
     "add_category":"Add Category",
     "select_icon":"Select Icon",
     "select_color":"Select Color",
-    "enter_category_name":"Category name..."
-
-
-
-    
-
-
-    
+    "enter_category_name":"Category name...",
+    "location_information":"Location information",
+    "rate":"Rate",
+    "latitude":"Latitude",
+    "longitude":"Longitude"
   }
   

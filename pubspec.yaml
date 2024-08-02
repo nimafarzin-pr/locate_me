@@ -64,7 +64,7 @@ dependencies:
   drift: ^2.18.0
   sqlite3_flutter_libs: ^0.5.21
   path: ^1.9.0
-  flutter_map: ^6.1.0
+  flutter_map: ^7.0.2
   latlong2: ^0.9.1
   url_launcher: ^6.2.6
   widget_to_marker: ^1.0.5

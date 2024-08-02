@@ -6,6 +6,7 @@ class Routes {
   static const String settings = '/setting';
   static const String search = '/search';
   static const String editLocation = 'editLocationItem';
+  static const String locationDetail = 'locationDetail';
   static const String categoryList = 'categoryList';
 
   static List<String> routes = [
@@ -17,5 +18,6 @@ class Routes {
     search,
     editLocation,
     categoryList,
+    locationDetail
   ];
 }

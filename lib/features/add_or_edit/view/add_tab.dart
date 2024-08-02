@@ -1,4 +1,3 @@
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,8 +7,7 @@ import 'package:locate_me/core/common_features/map/core/enums/map_enum.dart';
 import 'package:locate_me/core/navigation/router/router.dart';
 import 'package:locate_me/core/navigation/routes.dart';
 import 'package:locate_me/core/widget/loading.dart';
-import 'package:locate_me/features/add/view/widgets/google_map_view.dart';
-import 'package:locate_me/features/add/view/widgets/osm_map_view.dart';
+
 import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
 import 'package:locate_me/generated/locale_keys.g.dart';
 
@@ -21,6 +19,9 @@ import '../../home/model/place_item_model.dart';
 import '../provider/osm_location_provider.dart';
 import 'widgets/dialog/add_or_update_location_dialog.dart';
 import 'package:app_settings/app_settings.dart';
+
+import 'widgets/google_map_view.dart';
+import 'widgets/osm_map_view.dart';
 
 class AddTab extends ConsumerStatefulWidget {
   const AddTab({super.key});
@@ -34,7 +35,7 @@ class _AddTabState extends ConsumerState<AddTab> {
   void initState() {
     Future.delayed(Duration.zero).then(
       (value) async {
-        final edit = ref.watch(editStateProvider);
+        final edit = ref.watch(selectedEditStateProviderForEditAndView);
         if (edit != null &&
             (router.routerDelegate.currentConfiguration.fullPath
                 .contains(Routes.editLocation))) {
@@ -49,8 +50,10 @@ class _AddTabState extends ConsumerState<AddTab> {
                   await ref
                       .read(currentPositionProvider.notifier)
                       .updateLocationItem(location);
-                  ref.read(editStateProvider.notifier).state = null;
-                  ref.invalidate(editStateProvider);
+                  ref
+                      .read(selectedEditStateProviderForEditAndView.notifier)
+                      .state = null;
+                  ref.invalidate(selectedEditStateProviderForEditAndView);
                 },
               );
             },

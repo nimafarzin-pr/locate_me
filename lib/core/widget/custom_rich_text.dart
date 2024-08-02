@@ -1,18 +1,26 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:locate_me/core/constant/constant_names.dart';
 import 'package:locate_me/core/sizing/my_text_size.dart';
 
 class CustomRichText extends StatelessWidget {
   final String title;
   final String value;
-  const CustomRichText({super.key, required this.title, required this.value});
+  final int? maxLines;
+  const CustomRichText({
+    super.key,
+    required this.title,
+    required this.value,
+    this.maxLines = 1,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2.0),
       child: RichText(
-        maxLines: 1,
+        maxLines: maxLines,
         overflow: TextOverflow.ellipsis,
         // textAlign: TextAlign.left,
         text: TextSpan(

@@ -101,11 +101,17 @@
     "select_language":"انتخاب زبان",
     "select_theme":"انتخاب تم",
     "categories":"دسته بندی ها",
+    "category":"دسته بندی",
     "category_list":"لیست دسته بندی ها",
     "add_category":"اضافه کردن دسته بندی",
     "select_icon":"انتخاب آیکون",
     "select_color":"انتخاب رنگ",
-    "enter_category_name":"نام دسته بندی..."
+    "enter_category_name":"نام دسته بندی...",
+    "location_information":"مشخصات مکان",
+    "rate":"امتیاز",
+    "latitude":"عرض جغرافیایی",
+    "longitude":"طول جغرافیایی"
+
 
 
 }
