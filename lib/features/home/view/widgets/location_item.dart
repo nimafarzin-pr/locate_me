@@ -236,6 +236,73 @@ class LocationItem extends ConsumerWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            IconButton(
+                onPressed: () {
+                  ref
+                      .read(selectedEditStateProviderForEditAndView.notifier)
+                      .state = item;
+                  context.goNamed(Routes.locationDetail);
+                },
+                icon: FaIcon(
+                  size: 20,
+                  color: Colors.grey.withOpacity(0.7),
+                  FontAwesomeIcons.eye,
+                )),
+            IconButton(
+                onPressed: () {
+                  ref
+                      .read(selectedEditStateProviderForEditAndView.notifier)
+                      .state = item;
+                  context.goNamed(Routes.editLocation);
+                },
+                icon: FaIcon(
+                  size: 20,
+                  FontAwesomeIcons.penToSquare,
+                  color: Colors.grey.withOpacity(0.7),
+                )),
+            IconButton(
+                onPressed: () async {
+                  await ShareUtils.shareLocation(
+                      markerLabel: item.title,
+                      context: context,
+                      lat: item.latlng.latitude,
+                      lng: item.latlng.longitude);
+                },
+                icon: FaIcon(
+                  size: 20,
+                  color: Colors.grey.withOpacity(0.7),
+                  FontAwesomeIcons.shareNodes,
+                )),
+            IconButton(
+              padding: EdgeInsets.zero, // Remove all padding
+              visualDensity: VisualDensity.compact,
+              onPressed: () {
+                if (item.id == null) return;
+                showWarningDialog(
+                  context: context,
+                  content: LocaleKeys.do_you_want_to_continue.tr(),
+                  iconColor: Theme.of(context).colorScheme.error,
+                  title: '${LocaleKeys.delete.tr()} ${item.title}\n\n',
+                  onConfirm: () async {
+                    await ref
+                        .read(homeScreenRepositoryProvider)
+                        .deleteLocation(item.id!);
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                );
+              },
+              icon: FaIcon(
+                size: 20,
+                color: Colors.grey.withOpacity(0.7),
+                FontAwesomeIcons.trashCan,
+              ),
+            ),
+          ],
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: CustomFavoriteIconButton(
@@ -246,75 +313,6 @@ class LocationItem extends ConsumerWidget {
                   .read(favoriteFilterProvider.notifier)
                   .updateFavoriteStatus(id: item.id!);
             },
-          ),
-        ),
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    ref
-                        .read(selectedEditStateProviderForEditAndView.notifier)
-                        .state = item;
-                    context.goNamed(Routes.locationDetail);
-                  },
-                  icon: FaIcon(
-                    size: 20,
-                    color: Colors.grey.withOpacity(0.7),
-                    FontAwesomeIcons.eye,
-                  )),
-              IconButton(
-                  onPressed: () {
-                    ref
-                        .read(selectedEditStateProviderForEditAndView.notifier)
-                        .state = item;
-                    context.goNamed(Routes.editLocation);
-                  },
-                  icon: FaIcon(
-                    size: 20,
-                    FontAwesomeIcons.penToSquare,
-                    color: Colors.grey.withOpacity(0.7),
-                  )),
-              IconButton(
-                  onPressed: () async {
-                    await ShareUtils.shareLocation(
-                        markerLabel: item.title,
-                        context: context,
-                        lat: item.latlng.latitude,
-                        lng: item.latlng.longitude);
-                  },
-                  icon: FaIcon(
-                    size: 20,
-                    color: Colors.grey.withOpacity(0.7),
-                    FontAwesomeIcons.shareNodes,
-                  )),
-              IconButton(
-                padding: EdgeInsets.zero, // Remove all padding
-                visualDensity: VisualDensity.compact,
-                onPressed: () {
-                  if (item.id == null) return;
-                  showWarningDialog(
-                    context: context,
-                    content: LocaleKeys.do_you_want_to_continue.tr(),
-                    iconColor: Theme.of(context).colorScheme.error,
-                    title: '${LocaleKeys.delete.tr()} ${item.title}\n\n',
-                    onConfirm: () async {
-                      await ref
-                          .read(homeScreenRepositoryProvider)
-                          .deleteLocation(item.id!);
-                      Navigator.of(context, rootNavigator: true).pop();
-                    },
-                  );
-                },
-                icon: FaIcon(
-                  size: 20,
-                  color: Colors.grey.withOpacity(0.7),
-                  FontAwesomeIcons.trashCan,
-                ),
-              ),
-            ],
           ),
         ),
       ],

@@ -76,6 +76,7 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
   Widget build(BuildContext rootContext) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Colors.transparent,
         // elevation: 4,
         toolbarHeight: 60,

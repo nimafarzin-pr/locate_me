@@ -34,8 +34,12 @@ mixin _$PlaceItemModel {
   double get rate => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
 
+  /// Serializes this PlaceItemModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PlaceItemModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PlaceItemModelCopyWith<PlaceItemModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -74,6 +78,8 @@ class _$PlaceItemModelCopyWithImpl<$Res, $Val extends PlaceItemModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PlaceItemModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -147,6 +153,8 @@ class _$PlaceItemModelCopyWithImpl<$Res, $Val extends PlaceItemModel>
     ) as $Val);
   }
 
+  /// Create a copy of PlaceItemModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $LatLongCopyWith<$Res> get latlng {
@@ -191,6 +199,8 @@ class __$$PlaceImplCopyWithImpl<$Res>
       _$PlaceImpl _value, $Res Function(_$PlaceImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PlaceItemModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -358,7 +368,7 @@ class _$PlaceImpl implements _Place {
                 other.isFavorite == isFavorite));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -376,7 +386,9 @@ class _$PlaceImpl implements _Place {
       rate,
       isFavorite);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PlaceItemModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PlaceImplCopyWith<_$PlaceImpl> get copyWith =>
@@ -434,8 +446,11 @@ abstract class _Place implements PlaceItemModel {
   double get rate;
   @override
   bool get isFavorite;
+
+  /// Create a copy of PlaceItemModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PlaceImplCopyWith<_$PlaceImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -449,8 +464,12 @@ mixin _$LatLong {
   double get latitude => throw _privateConstructorUsedError;
   double get longitude => throw _privateConstructorUsedError;
 
+  /// Serializes this LatLong to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of LatLong
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $LatLongCopyWith<LatLong> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -472,6 +491,8 @@ class _$LatLongCopyWithImpl<$Res, $Val extends LatLong>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of LatLong
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -509,6 +530,8 @@ class __$$LatLongImplCopyWithImpl<$Res>
       _$LatLongImpl _value, $Res Function(_$LatLongImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of LatLong
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -557,11 +580,13 @@ class _$LatLongImpl implements _LatLong {
                 other.longitude == longitude));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, latitude, longitude);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LatLong
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$LatLongImplCopyWith<_$LatLongImpl> get copyWith =>
@@ -586,8 +611,11 @@ abstract class _LatLong implements LatLong {
   double get latitude;
   @override
   double get longitude;
+
+  /// Create a copy of LatLong
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LatLongImplCopyWith<_$LatLongImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

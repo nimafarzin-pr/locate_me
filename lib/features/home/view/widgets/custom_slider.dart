@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+// import 'package:carousel_slider/carousel_slider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:locate_me/core/extension/screen_size_extension.dart';
@@ -16,15 +15,21 @@ class CustomCarouselSlider extends StatelessWidget {
   });
 
   final List<PlaceItemModel> data;
-  final dynamic Function(int, CarouselPageChangedReason)? onPageChanged;
+  final dynamic Function(int)? onPageChanged;
 
   @override
   Widget build(BuildContext context) {
     return CarouselSlider(
       options: CarouselOptions(
         enableInfiniteScroll: false,
+        disableCenter: true,
+        enlargeCenterPage: true,
         height: context.screenWidth / 2.2,
-        onPageChanged: onPageChanged,
+        onPageChanged: (index, reason) {
+          if (onPageChanged != null) {
+            onPageChanged!(index);
+          }
+        },
       ),
       items: data.map((place) {
         return Builder(

@@ -23,8 +23,12 @@ mixin _$MapSettingsModel {
   MapLayer? get mapLayer => throw _privateConstructorUsedError;
   MapStyle? get mapStyle => throw _privateConstructorUsedError;
 
+  /// Serializes this MapSettingsModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of MapSettingsModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $MapSettingsModelCopyWith<MapSettingsModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -48,6 +52,8 @@ class _$MapSettingsModelCopyWithImpl<$Res, $Val extends MapSettingsModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of MapSettingsModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -86,6 +92,8 @@ class __$$MapSettingsModelImplCopyWithImpl<$Res>
       $Res Function(_$MapSettingsModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MapSettingsModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -134,11 +142,13 @@ class _$MapSettingsModelImpl implements _MapSettingsModel {
                 other.mapStyle == mapStyle));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, mapLayer, mapStyle);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MapSettingsModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MapSettingsModelImplCopyWith<_$MapSettingsModelImpl> get copyWith =>
@@ -165,8 +175,11 @@ abstract class _MapSettingsModel implements MapSettingsModel {
   MapLayer? get mapLayer;
   @override
   MapStyle? get mapStyle;
+
+  /// Create a copy of MapSettingsModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MapSettingsModelImplCopyWith<_$MapSettingsModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

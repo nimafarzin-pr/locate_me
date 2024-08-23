@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:locate_me/core/common_features/map/core/enums/map_enum.dart';
 
 import 'package:locate_me/core/widget/animation/fade_in_scale_animation.dart';
 import 'package:locate_me/core/widget/general_map_wrapper/general_map_wrapper.dart';
@@ -45,19 +46,28 @@ class _MapListState extends State<GoogleView> with TickerProviderStateMixin {
             ? [ref.watch(selectedEditStateProviderForEditAndView)]
             : ref.watch(filteredItemsProvider);
 
+        final currentColorStyle =
+            ref.watch(mapSettingStyleNotifierProvider).value?.name;
+        log(currentColorStyle.toString());
         return GeneralMapWrapper(
             map: Stack(
           children: [
             GoogleMap(
+              zoomControlsEnabled: false,
+              myLocationButtonEnabled: false,
+              myLocationEnabled: false,
+              buildingsEnabled: false,
+              trafficEnabled: true,
+              indoorViewEnabled: true,
               gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
                 Factory<OneSequenceGestureRecognizer>(
                     () => EagerGestureRecognizer())
               }.toSet(),
-              style: GoogleMapStyle.mapStyles[
-                  ref.watch(mapSettingStyleNotifierProvider).value?.name],
-              zoomControlsEnabled: false,
-              myLocationButtonEnabled: false,
-              myLocationEnabled: false,
+              style: currentColorStyle == MapStyle.standard.name
+                  ? GoogleMapStyle.standardStyle
+                  : currentColorStyle == MapStyle.dark.name
+                      ? GoogleMapStyle.darkStyle
+                      : GoogleMapStyle.silverStyle,
               polylines: widget.polyLineFromPoint
                   ? {
                       Polyline(
@@ -112,7 +122,7 @@ class _MapListState extends State<GoogleView> with TickerProviderStateMixin {
                         duration: const Duration(milliseconds: 800),
                         child: CustomCarouselSlider(
                           data: data as List<PlaceItemModel>,
-                          onPageChanged: (index, reason) async {
+                          onPageChanged: (index) async {
                             setState(() {
                               carouselIndex = index;
                             });

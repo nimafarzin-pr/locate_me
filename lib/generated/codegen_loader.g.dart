@@ -126,7 +126,9 @@ class CodegenLoader extends AssetLoader{
   "location_information": "مشخصات مکان",
   "rate": "امتیاز",
   "latitude": "عرض جغرافیایی",
-  "longitude": "طول جغرافیایی"
+  "longitude": "طول جغرافیایی",
+  "warning": "اخطار",
+  "exist_dialog_message": "آیا میخواهید از برنامه خارج شوید؟"
 };
 static const Map<String,dynamic> en_US = {
   "settings": "Settings",
@@ -240,7 +242,9 @@ static const Map<String,dynamic> en_US = {
   "location_information": "Location information",
   "rate": "Rate",
   "latitude": "Latitude",
-  "longitude": "Longitude"
+  "longitude": "Longitude",
+  "warning": "warning",
+  "exist_dialog_message": "do you wanna exist from app?"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"fa_IR": fa_IR, "en_US": en_US};
 }

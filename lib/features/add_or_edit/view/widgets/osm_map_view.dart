@@ -9,6 +9,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:locate_me/core/common_features/map/core/theme/osm_map_style.dart';
 import 'package:locate_me/core/widget/loading.dart';
 import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
 import '../../../../core/widget/custom_marker_add_info_box.dart';
@@ -77,9 +78,9 @@ class _HomePageState extends ConsumerState<OsmMapView>
                                       selectedEditStateProviderForEditAndView)
                                   ?.copyWith(
                                       latlng: LatLong(
-                                          latitude: position.center!.latitude,
+                                          latitude: position.center.latitude,
                                           longitude:
-                                              position.center!.longitude));
+                                              position.center.longitude));
                         } else {
                           ref
                               .read(currentPositionProvider.notifier)
@@ -91,20 +92,22 @@ class _HomePageState extends ConsumerState<OsmMapView>
                     ),
                     children: [
                       TileLayer(
+                        tileProvider: NetworkTileProvider(),
                         urlTemplate: OsmMapStyle.mapStyles[data.name],
-                        tileProvider: AssetTileProvider(),
-                        // subdomains: const ['a', 'b', 'c'],
-                        // userAgentPackageName: 'com.example.locate_me',
+                        fallbackUrl: OsmMapStyle.mapStyles[data.name],
+                        subdomains: const ['a', 'b', 'c'],
+                        userAgentPackageName: 'com.example.locate_me',
+                        // tileProvider: AssetTileProvider(),
                       ),
-                      // RichAttributionWidget(
-                      //   attributions: [
-                      //     TextSourceAttribution(
-                      //       'OpenStreetMap contributors',
-                      //       onTap: () => launchUrl(
-                      //           Uri.parse('https://openstreetmap.org/copyright')),
-                      //     ),
-                      //   ],
-                      // ),
+                      RichAttributionWidget(
+                        attributions: [
+                          TextSourceAttribution(
+                            'OpenStreetMap contributors',
+                            onTap: () => launchUrl(Uri.parse(
+                                'https://openstreetmap.org/copyright')),
+                          ),
+                        ],
+                      ),
                       MarkerLayer(
                         rotate: true,
                         markers: [

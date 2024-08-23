@@ -103,28 +103,32 @@ class SwitchItem extends HookWidget {
         activeColor: Theme.of(context).colorScheme.primary,
         inactiveColor: Theme.of(context).colorScheme.surfaceContainer,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (icon != null)
-              Row(
-                children: [
-                  Icon(
-                    icon,
-                    color: isActive
-                        ? Theme.of(context).colorScheme.onPrimary
-                        : Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withOpacity(0.6),
-                    size: 16,
-                  ),
-                  const SizedBox(width: 4),
-                ],
-              ),
+            icon != null
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        icon,
+                        color: isActive
+                            ? Theme.of(context).colorScheme.surface
+                            : Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withOpacity(0.6),
+                        size: 16,
+                      ),
+                      const SizedBox(width: 4),
+                    ],
+                  )
+                : const SizedBox(),
             Text(
               label,
               style: TextStyle(
                 color: isActive
-                    ? Theme.of(context).colorScheme.onPrimary
+                    ? Theme.of(context).colorScheme.surface
                     : Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.bold,
               ),

@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +10,7 @@ import 'package:locate_me/core/extension/screen_size_extension.dart';
 import 'package:locate_me/core/widget/animation/fade_in_scale_animation.dart';
 import 'package:locate_me/core/widget/loading.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../../core/common_features/map/core/theme/osm_map_style.dart';
 import '../../../../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
@@ -86,13 +86,25 @@ class _OsmViewState extends State<OsmView> with TickerProviderStateMixin {
                       //     ),
                       //   ],
                       // ),
-                      TileLayer(
-                          urlTemplate: OsmMapStyle.mapStyles[style.name],
-                          subdomains: const ['a', 'b', 'c'],
-                          retinaMode: true
-
-                          // userAgentPackageName: 'com.example.app',
+                      RichAttributionWidget(
+                        attributions: [
+                          TextSourceAttribution(
+                            'OpenStreetMap contributors',
+                            onTap: () => launchUrl(Uri.parse(
+                                'https://openstreetmap.org/copyright')),
                           ),
+                        ],
+                      ),
+
+                      TileLayer(
+                        tileProvider: NetworkTileProvider(),
+                        urlTemplate: OsmMapStyle.mapStyles[style.name],
+                        fallbackUrl: OsmMapStyle.mapStyles[style.name],
+                        subdomains: const ['a', 'b', 'c'],
+                        userAgentPackageName: 'com.example.locate_me',
+
+                        // userAgentPackageName: 'com.example.app',
+                      ),
                       MarkerLayer(
                           rotate: true,
                           alignment: Alignment.topCenter,
@@ -140,9 +152,7 @@ class _OsmViewState extends State<OsmView> with TickerProviderStateMixin {
                         child: FadeInScaleAnimation(
                           child: CustomCarouselSlider(
                             data: data as List<PlaceItemModel>,
-                            onPageChanged: (index, reason) async {
-                              log('$reason');
-
+                            onPageChanged: (index) async {
                               setState(() {
                                 carouselIndex = index;
                               });

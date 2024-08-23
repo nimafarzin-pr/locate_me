@@ -384,6 +384,30 @@ class Location extends DataClass implements Insertable<Location> {
         isFavorite: isFavorite ?? this.isFavorite,
         timestamp: timestamp ?? this.timestamp,
       );
+  Location copyWithCompanion(LocationTBCompanion data) {
+    return Location(
+      id: data.id.present ? data.id.value : this.id,
+      title: data.title.present ? data.title.value : this.title,
+      vicinity: data.vicinity.present ? data.vicinity.value : this.vicinity,
+      picture: data.picture.present ? data.picture.value : this.picture,
+      latitude: data.latitude.present ? data.latitude.value : this.latitude,
+      rate: data.rate.present ? data.rate.value : this.rate,
+      longitude: data.longitude.present ? data.longitude.value : this.longitude,
+      address: data.address.present ? data.address.value : this.address,
+      categoryIcon: data.categoryIcon.present
+          ? data.categoryIcon.value
+          : this.categoryIcon,
+      categoryName: data.categoryName.present
+          ? data.categoryName.value
+          : this.categoryName,
+      description:
+          data.description.present ? data.description.value : this.description,
+      isFavorite:
+          data.isFavorite.present ? data.isFavorite.value : this.isFavorite,
+      timestamp: data.timestamp.present ? data.timestamp.value : this.timestamp,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Location(')
@@ -759,6 +783,14 @@ class MapSettings extends DataClass implements Insertable<MapSettings> {
         mapLayer: mapLayer.present ? mapLayer.value : this.mapLayer,
         mapStyle: mapStyle.present ? mapStyle.value : this.mapStyle,
       );
+  MapSettings copyWithCompanion(MapSettingsTBCompanion data) {
+    return MapSettings(
+      id: data.id.present ? data.id.value : this.id,
+      mapLayer: data.mapLayer.present ? data.mapLayer.value : this.mapLayer,
+      mapStyle: data.mapStyle.present ? data.mapStyle.value : this.mapStyle,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('MapSettings(')
@@ -982,6 +1014,14 @@ class AppSettings extends DataClass implements Insertable<AppSettings> {
         language: language.present ? language.value : this.language,
         themeMode: themeMode.present ? themeMode.value : this.themeMode,
       );
+  AppSettings copyWithCompanion(AppSettingsTBCompanion data) {
+    return AppSettings(
+      id: data.id.present ? data.id.value : this.id,
+      language: data.language.present ? data.language.value : this.language,
+      themeMode: data.themeMode.present ? data.themeMode.value : this.themeMode,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('AppSettings(')
@@ -1211,6 +1251,15 @@ class Categories extends DataClass implements Insertable<Categories> {
         name: name ?? this.name,
         emoji: emoji ?? this.emoji,
       );
+  Categories copyWithCompanion(CategoriesTBCompanion data) {
+    return Categories(
+      id: data.id.present ? data.id.value : this.id,
+      color: data.color.present ? data.color.value : this.color,
+      name: data.name.present ? data.name.value : this.name,
+      emoji: data.emoji.present ? data.emoji.value : this.emoji,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Categories(')
@@ -1310,7 +1359,7 @@ class CategoriesTBCompanion extends UpdateCompanion<Categories> {
 
 abstract class _$DB extends GeneratedDatabase {
   _$DB(QueryExecutor e) : super(e);
-  _$DBManager get managers => _$DBManager(this);
+  $DBManager get managers => $DBManager(this);
   late final $LocationTBTable locationTB = $LocationTBTable(this);
   late final $MapSettingsTBTable mapSettingsTB = $MapSettingsTBTable(this);
   late final $AppSettingsTBTable appSettingsTB = $AppSettingsTBTable(this);
@@ -1323,7 +1372,7 @@ abstract class _$DB extends GeneratedDatabase {
       [locationTB, mapSettingsTB, appSettingsTB, categoriesTB];
 }
 
-typedef $$LocationTBTableInsertCompanionBuilder = LocationTBCompanion Function({
+typedef $$LocationTBTableCreateCompanionBuilder = LocationTBCompanion Function({
   Value<int?> id,
   required String title,
   Value<String?> vicinity,
@@ -1360,8 +1409,7 @@ class $$LocationTBTableTableManager extends RootTableManager<
     Location,
     $$LocationTBTableFilterComposer,
     $$LocationTBTableOrderingComposer,
-    $$LocationTBTableProcessedTableManager,
-    $$LocationTBTableInsertCompanionBuilder,
+    $$LocationTBTableCreateCompanionBuilder,
     $$LocationTBTableUpdateCompanionBuilder> {
   $$LocationTBTableTableManager(_$DB db, $LocationTBTable table)
       : super(TableManagerState(
@@ -1371,9 +1419,7 @@ class $$LocationTBTableTableManager extends RootTableManager<
               $$LocationTBTableFilterComposer(ComposerState(db, table)),
           orderingComposer:
               $$LocationTBTableOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) =>
-              $$LocationTBTableProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
+          updateCompanionCallback: ({
             Value<int?> id = const Value.absent(),
             Value<String> title = const Value.absent(),
             Value<String?> vicinity = const Value.absent(),
@@ -1403,7 +1449,7 @@ class $$LocationTBTableTableManager extends RootTableManager<
             isFavorite: isFavorite,
             timestamp: timestamp,
           ),
-          getInsertCompanionBuilder: ({
+          createCompanionCallback: ({
             Value<int?> id = const Value.absent(),
             required String title,
             Value<String?> vicinity = const Value.absent(),
@@ -1434,18 +1480,6 @@ class $$LocationTBTableTableManager extends RootTableManager<
             timestamp: timestamp,
           ),
         ));
-}
-
-class $$LocationTBTableProcessedTableManager extends ProcessedTableManager<
-    _$DB,
-    $LocationTBTable,
-    Location,
-    $$LocationTBTableFilterComposer,
-    $$LocationTBTableOrderingComposer,
-    $$LocationTBTableProcessedTableManager,
-    $$LocationTBTableInsertCompanionBuilder,
-    $$LocationTBTableUpdateCompanionBuilder> {
-  $$LocationTBTableProcessedTableManager(super.$state);
 }
 
 class $$LocationTBTableFilterComposer
@@ -1586,7 +1620,7 @@ class $$LocationTBTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $$MapSettingsTBTableInsertCompanionBuilder = MapSettingsTBCompanion
+typedef $$MapSettingsTBTableCreateCompanionBuilder = MapSettingsTBCompanion
     Function({
   Value<int> id,
   Value<MapLayer?> mapLayer,
@@ -1605,8 +1639,7 @@ class $$MapSettingsTBTableTableManager extends RootTableManager<
     MapSettings,
     $$MapSettingsTBTableFilterComposer,
     $$MapSettingsTBTableOrderingComposer,
-    $$MapSettingsTBTableProcessedTableManager,
-    $$MapSettingsTBTableInsertCompanionBuilder,
+    $$MapSettingsTBTableCreateCompanionBuilder,
     $$MapSettingsTBTableUpdateCompanionBuilder> {
   $$MapSettingsTBTableTableManager(_$DB db, $MapSettingsTBTable table)
       : super(TableManagerState(
@@ -1616,9 +1649,7 @@ class $$MapSettingsTBTableTableManager extends RootTableManager<
               $$MapSettingsTBTableFilterComposer(ComposerState(db, table)),
           orderingComposer:
               $$MapSettingsTBTableOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) =>
-              $$MapSettingsTBTableProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
+          updateCompanionCallback: ({
             Value<int> id = const Value.absent(),
             Value<MapLayer?> mapLayer = const Value.absent(),
             Value<MapStyle?> mapStyle = const Value.absent(),
@@ -1628,7 +1659,7 @@ class $$MapSettingsTBTableTableManager extends RootTableManager<
             mapLayer: mapLayer,
             mapStyle: mapStyle,
           ),
-          getInsertCompanionBuilder: ({
+          createCompanionCallback: ({
             Value<int> id = const Value.absent(),
             Value<MapLayer?> mapLayer = const Value.absent(),
             Value<MapStyle?> mapStyle = const Value.absent(),
@@ -1639,18 +1670,6 @@ class $$MapSettingsTBTableTableManager extends RootTableManager<
             mapStyle: mapStyle,
           ),
         ));
-}
-
-class $$MapSettingsTBTableProcessedTableManager extends ProcessedTableManager<
-    _$DB,
-    $MapSettingsTBTable,
-    MapSettings,
-    $$MapSettingsTBTableFilterComposer,
-    $$MapSettingsTBTableOrderingComposer,
-    $$MapSettingsTBTableProcessedTableManager,
-    $$MapSettingsTBTableInsertCompanionBuilder,
-    $$MapSettingsTBTableUpdateCompanionBuilder> {
-  $$MapSettingsTBTableProcessedTableManager(super.$state);
 }
 
 class $$MapSettingsTBTableFilterComposer
@@ -1695,7 +1714,7 @@ class $$MapSettingsTBTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $$AppSettingsTBTableInsertCompanionBuilder = AppSettingsTBCompanion
+typedef $$AppSettingsTBTableCreateCompanionBuilder = AppSettingsTBCompanion
     Function({
   Value<int> id,
   Value<String?> language,
@@ -1714,8 +1733,7 @@ class $$AppSettingsTBTableTableManager extends RootTableManager<
     AppSettings,
     $$AppSettingsTBTableFilterComposer,
     $$AppSettingsTBTableOrderingComposer,
-    $$AppSettingsTBTableProcessedTableManager,
-    $$AppSettingsTBTableInsertCompanionBuilder,
+    $$AppSettingsTBTableCreateCompanionBuilder,
     $$AppSettingsTBTableUpdateCompanionBuilder> {
   $$AppSettingsTBTableTableManager(_$DB db, $AppSettingsTBTable table)
       : super(TableManagerState(
@@ -1725,9 +1743,7 @@ class $$AppSettingsTBTableTableManager extends RootTableManager<
               $$AppSettingsTBTableFilterComposer(ComposerState(db, table)),
           orderingComposer:
               $$AppSettingsTBTableOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) =>
-              $$AppSettingsTBTableProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
+          updateCompanionCallback: ({
             Value<int> id = const Value.absent(),
             Value<String?> language = const Value.absent(),
             Value<int?> themeMode = const Value.absent(),
@@ -1737,7 +1753,7 @@ class $$AppSettingsTBTableTableManager extends RootTableManager<
             language: language,
             themeMode: themeMode,
           ),
-          getInsertCompanionBuilder: ({
+          createCompanionCallback: ({
             Value<int> id = const Value.absent(),
             Value<String?> language = const Value.absent(),
             Value<int?> themeMode = const Value.absent(),
@@ -1748,18 +1764,6 @@ class $$AppSettingsTBTableTableManager extends RootTableManager<
             themeMode: themeMode,
           ),
         ));
-}
-
-class $$AppSettingsTBTableProcessedTableManager extends ProcessedTableManager<
-    _$DB,
-    $AppSettingsTBTable,
-    AppSettings,
-    $$AppSettingsTBTableFilterComposer,
-    $$AppSettingsTBTableOrderingComposer,
-    $$AppSettingsTBTableProcessedTableManager,
-    $$AppSettingsTBTableInsertCompanionBuilder,
-    $$AppSettingsTBTableUpdateCompanionBuilder> {
-  $$AppSettingsTBTableProcessedTableManager(super.$state);
 }
 
 class $$AppSettingsTBTableFilterComposer
@@ -1800,7 +1804,7 @@ class $$AppSettingsTBTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-typedef $$CategoriesTBTableInsertCompanionBuilder = CategoriesTBCompanion
+typedef $$CategoriesTBTableCreateCompanionBuilder = CategoriesTBCompanion
     Function({
   Value<int> id,
   Value<int> color,
@@ -1821,8 +1825,7 @@ class $$CategoriesTBTableTableManager extends RootTableManager<
     Categories,
     $$CategoriesTBTableFilterComposer,
     $$CategoriesTBTableOrderingComposer,
-    $$CategoriesTBTableProcessedTableManager,
-    $$CategoriesTBTableInsertCompanionBuilder,
+    $$CategoriesTBTableCreateCompanionBuilder,
     $$CategoriesTBTableUpdateCompanionBuilder> {
   $$CategoriesTBTableTableManager(_$DB db, $CategoriesTBTable table)
       : super(TableManagerState(
@@ -1832,9 +1835,7 @@ class $$CategoriesTBTableTableManager extends RootTableManager<
               $$CategoriesTBTableFilterComposer(ComposerState(db, table)),
           orderingComposer:
               $$CategoriesTBTableOrderingComposer(ComposerState(db, table)),
-          getChildManagerBuilder: (p) =>
-              $$CategoriesTBTableProcessedTableManager(p),
-          getUpdateCompanionBuilder: ({
+          updateCompanionCallback: ({
             Value<int> id = const Value.absent(),
             Value<int> color = const Value.absent(),
             Value<String> name = const Value.absent(),
@@ -1846,7 +1847,7 @@ class $$CategoriesTBTableTableManager extends RootTableManager<
             name: name,
             emoji: emoji,
           ),
-          getInsertCompanionBuilder: ({
+          createCompanionCallback: ({
             Value<int> id = const Value.absent(),
             Value<int> color = const Value.absent(),
             Value<String> name = const Value.absent(),
@@ -1859,18 +1860,6 @@ class $$CategoriesTBTableTableManager extends RootTableManager<
             emoji: emoji,
           ),
         ));
-}
-
-class $$CategoriesTBTableProcessedTableManager extends ProcessedTableManager<
-    _$DB,
-    $CategoriesTBTable,
-    Categories,
-    $$CategoriesTBTableFilterComposer,
-    $$CategoriesTBTableOrderingComposer,
-    $$CategoriesTBTableProcessedTableManager,
-    $$CategoriesTBTableInsertCompanionBuilder,
-    $$CategoriesTBTableUpdateCompanionBuilder> {
-  $$CategoriesTBTableProcessedTableManager(super.$state);
 }
 
 class $$CategoriesTBTableFilterComposer
@@ -1921,9 +1910,9 @@ class $$CategoriesTBTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-class _$DBManager {
+class $DBManager {
   final _$DB _db;
-  _$DBManager(this._db);
+  $DBManager(this._db);
   $$LocationTBTableTableManager get locationTB =>
       $$LocationTBTableTableManager(_db, _db.locationTB);
   $$MapSettingsTBTableTableManager get mapSettingsTB =>

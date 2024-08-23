@@ -110,7 +110,11 @@
     "location_information":"مشخصات مکان",
     "rate":"امتیاز",
     "latitude":"عرض جغرافیایی",
-    "longitude":"طول جغرافیایی"
+    "longitude":"طول جغرافیایی",
+    "warning":"اخطار",
+    "exist_dialog_message":"آیا میخواهید از برنامه خارج شوید؟"
+
+
 
 
 

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:locate_me/core/utils/icon_picker_utils.dart';
+import 'package:locate_me/core/widget/custom_back_icon.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/core/widget/dialogs/status_widget.dart';
 import 'package:locate_me/core/widget/empty_box.dart';
@@ -24,6 +25,14 @@ class CategoryList extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
+        centerTitle: true,
+        leading: FloatingActionButton(
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            elevation: 0,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const CustomBackIcon()),
         actions: [
           IconButton(
               iconSize: 20,
