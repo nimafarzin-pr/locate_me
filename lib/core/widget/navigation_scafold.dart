@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:locate_me/core/extension/screen_size_extension.dart';
 import 'package:locate_me/core/navigation/router/router.dart';
 import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../navigation/routes.dart';
+import 'dialogs/status_widget.dart';
 
 // Stateful nested navigation based on:
 // https://github.com/flutter/packages/blob/main/packages/go_router/example/lib/stateful_shell_route.dart

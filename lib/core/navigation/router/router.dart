@@ -50,7 +50,7 @@ final router = GoRouter(
                   pageBuilder: (context, state) {
                     return NoTransitionPage(
                       key: state.pageKey,
-                      child: const AddTab(),
+                      child: const BackgroundWrapper(child: AddTab()),
                     );
                   },
                 ),
@@ -62,7 +62,8 @@ final router = GoRouter(
                       key: state.pageKey,
                       child: Consumer(
                         builder: (context, ref, child) {
-                          return const ShowDetailsScreen();
+                          return const BackgroundWrapper(
+                              child: ShowDetailsScreen());
                         },
                       ),
                     );
@@ -82,7 +83,7 @@ final router = GoRouter(
               name: Routes.add,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
-                child: const AddTab(),
+                child: const BackgroundWrapper(child: AddTab()),
               ),
             ),
           ],

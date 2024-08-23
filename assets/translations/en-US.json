@@ -110,6 +110,8 @@
     "location_information":"Location information",
     "rate":"Rate",
     "latitude":"Latitude",
-    "longitude":"Longitude"
+    "longitude":"Longitude",
+    "warning":"warning",
+    "exist_dialog_message":"do you wanna exist from app?"
   }
   

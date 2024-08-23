@@ -112,5 +112,7 @@ abstract class  LocaleKeys {
   static const rate = 'rate';
   static const latitude = 'latitude';
   static const longitude = 'longitude';
+  static const warning = 'warning';
+  static const exist_dialog_message = 'exist_dialog_message';
 
 }

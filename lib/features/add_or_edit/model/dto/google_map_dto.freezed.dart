@@ -25,8 +25,12 @@ mixin _$GoogleMapDto {
   String? get placeMark => throw _privateConstructorUsedError;
   String get customIcon => throw _privateConstructorUsedError;
 
+  /// Serializes this GoogleMapDto to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of GoogleMapDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $GoogleMapDtoCopyWith<GoogleMapDto> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -50,6 +54,8 @@ class _$GoogleMapDtoCopyWithImpl<$Res, $Val extends GoogleMapDto>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of GoogleMapDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -98,6 +104,8 @@ class __$$GoogleMapDtoImplCopyWithImpl<$Res>
       _$GoogleMapDtoImpl _value, $Res Function(_$GoogleMapDtoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GoogleMapDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -166,11 +174,13 @@ class _$GoogleMapDtoImpl implements _GoogleMapDto {
                 other.customIcon == customIcon));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, lat, lng, placeMark, customIcon);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GoogleMapDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GoogleMapDtoImplCopyWith<_$GoogleMapDtoImpl> get copyWith =>
@@ -202,8 +212,11 @@ abstract class _GoogleMapDto implements GoogleMapDto {
   String? get placeMark;
   @override
   String get customIcon;
+
+  /// Create a copy of GoogleMapDto
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GoogleMapDtoImplCopyWith<_$GoogleMapDtoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

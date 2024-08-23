@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:locate_me/core/extension/screen_size_extension.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
@@ -18,9 +19,11 @@ import '../../../../core/common_features/map/provider/map_setting_notifier_provi
 import '../../../../core/sizing/my_text_size.dart';
 import '../../../../core/utils/date_converter.dart';
 import '../../../../core/utils/share_utils.dart';
+import '../../../../core/widget/custom_back_icon.dart';
 import '../../../../core/widget/custom_favorite_icon_button.dart';
 import '../../../../core/widget/custom_rich_text.dart';
 import '../../../../core/widget/rate.dart';
+import '../../../setting/provider/language_notifier_provider.dart';
 import '../../provider/favorite_filter_provider.dart';
 import 'list_on_map/google_view/google_view.dart';
 import 'list_on_map/osm_view/osm_view.dart';
@@ -72,19 +75,18 @@ class _AddLocationViewState<T> extends ConsumerState<ShowDetailsScreen> {
                     child: SizedBox(
                       width: 40,
                       height: 40,
-                      child: FloatingActionButton(
-                        backgroundColor: Theme.of(context).colorScheme.surface,
-                        onPressed: () {
-                          ref
-                              .read(selectedEditStateProviderForEditAndView
-                                  .notifier)
-                              .state = null;
-                          Navigator.of(context).pop();
-                        },
-                        child: const Icon(
-                          Icons.arrow_back,
-                          size: 20,
-                          color: Colors.grey,
+                      child: Center(
+                        child: FloatingActionButton(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.surface,
+                          onPressed: () {
+                            ref
+                                .read(selectedEditStateProviderForEditAndView
+                                    .notifier)
+                                .state = null;
+                            Navigator.of(context).pop();
+                          },
+                          child: const CustomBackIcon(),
                         ),
                       ),
                     ),
@@ -96,6 +98,8 @@ class _AddLocationViewState<T> extends ConsumerState<ShowDetailsScreen> {
                   floating: true,
                   // elevation: 4,
                   // excludeHeaderSemantics: true,
+                  // leadingWidth: 60,
+
                   title: CustomText.bodyLarge(selectedItem!.title,
                       customStyle: TextStyle(
                           color: Theme.of(context).colorScheme.surface)),

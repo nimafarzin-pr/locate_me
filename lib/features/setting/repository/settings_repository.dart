@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:locate_me/core/common_features/database/repository/app_settings/app_settings_repository_impl.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 import 'package:locate_me/features/setting/model/category_model.dart';
@@ -47,6 +49,11 @@ class SettingsRepository {
   }
 
   Stream<List<CategoryModel>> watchCategories() async* {
-    yield* _appSettingsRepositoryImpl.watchCategories();
+    try {
+      yield* _appSettingsRepositoryImpl.watchCategories();
+    } catch (e) {
+      log('IN REPO ERR : $e');
+      rethrow;
+    }
   }
 }

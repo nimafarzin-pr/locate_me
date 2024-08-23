@@ -49,7 +49,7 @@ class _ExportModalState extends State<ExportModal> {
           builder: (context, ref, child) {
             final state = ref.watch(exportNotifierProvider);
             if (state.isLoading) {
-              return MyLoading(color: Theme.of(context).colorScheme.onPrimary);
+              return MyLoading(color: Theme.of(context).colorScheme.primary);
             } else if (state.successMessage != null) {
               return StatusWidget(
                 title: LocaleKeys.export.tr(),

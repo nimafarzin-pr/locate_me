@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:drift/drift.dart';
 import 'package:locate_me/core/common_features/database/service/app_settings/app_settings_service.dart';
 
@@ -67,6 +69,14 @@ class AppSettingsServiceImpl implements IAppSettingsService {
 
   @override
   Stream<List<Categories>> watchCategories() {
-    return _database.select(_database.categoriesTB).watch();
+    try {
+      return _database
+          .select(_database.categoriesTB)
+          .watch()
+          .asBroadcastStream();
+    } catch (e) {
+      log("::: $e");
+      rethrow;
+    }
   }
 }

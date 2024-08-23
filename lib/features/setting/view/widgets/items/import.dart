@@ -47,7 +47,7 @@ Future<void> showImportModal(BuildContext context) async {
                 }
                 return Center(
                     child: MyLoading(
-                  color: Theme.of(context).colorScheme.onPrimary,
+                  color: Theme.of(context).colorScheme.primary,
                 ));
               }
             },

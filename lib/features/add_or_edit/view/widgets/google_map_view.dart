@@ -13,6 +13,7 @@ import 'package:locate_me/features/home/model/place_item_model.dart';
 import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
 import 'package:locate_me/generated/locale_keys.g.dart';
 
+import '../../../../core/common_features/map/core/enums/map_enum.dart';
 import '../../../../core/widget/general_map_wrapper/general_map_wrapper.dart';
 import '../../../../core/widget/loading.dart';
 import '../../provider/google_map_location_provider.dart';
@@ -64,7 +65,8 @@ class _GoogleMapAddViewState extends ConsumerState<GoogleMapAddView> {
             : position,
       ),
     };
-
+    final currentColorStyle =
+        ref.watch(mapSettingStyleNotifierProvider).value?.name;
     return SafeArea(
       child: BackButtonListener(
         onBackButtonPressed: () async {
@@ -75,14 +77,21 @@ class _GoogleMapAddViewState extends ConsumerState<GoogleMapAddView> {
         child: GeneralMapWrapper(
           isEditMode: editItem != null,
           map: GoogleMap(
+            zoomControlsEnabled: false,
+            myLocationButtonEnabled: false,
+            myLocationEnabled: false,
+            buildingsEnabled: false,
+            trafficEnabled: true,
+            indoorViewEnabled: true,
             gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
               Factory<OneSequenceGestureRecognizer>(
                   () => EagerGestureRecognizer())
             }.toSet(),
-            myLocationButtonEnabled: false,
-            myLocationEnabled: false,
-            style: GoogleMapStyle.mapStyles[
-                ref.watch(mapSettingStyleNotifierProvider).value?.name],
+            style: currentColorStyle == MapStyle.standard.name
+                ? GoogleMapStyle.standardStyle
+                : currentColorStyle == MapStyle.dark.name
+                    ? GoogleMapStyle.darkStyle
+                    : GoogleMapStyle.silverStyle,
             onCameraMove: (cameraPosition) {
               if (_debounce?.isActive ?? false) _debounce!.cancel();
               _debounce = Timer(const Duration(milliseconds: 500), () {
@@ -105,7 +114,6 @@ class _GoogleMapAddViewState extends ConsumerState<GoogleMapAddView> {
               });
             },
             markers: marker,
-            zoomControlsEnabled: false,
             onMapCreated: (controller) {
               _mapController.complete(controller);
             },
