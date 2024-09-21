@@ -16,14 +16,13 @@ import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/core/widget/dialogs/warning_dialog.dart';
 import 'package:locate_me/core/widget/rate.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
-import 'package:locate_me/features/home/provider/favorite_filter_provider.dart';
-import 'package:locate_me/features/home/provider/home_screen_repository_provider.dart';
-import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
+
 import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../../../../core/common_features/caching/image_byte_provider.dart';
 import '../../../../core/utils/date_converter.dart';
 import '../../../../core/common_features/caching/base64_dto.dart';
+import '../../provider/home_screen_provider.dart';
 
 class LocationItem extends ConsumerWidget {
   final int index;
@@ -216,10 +215,10 @@ class LocationItem extends ConsumerWidget {
                 Rate(
                   direction: Axis.vertical,
                   draggable: false,
-                  // itemSize: 14,
+                  itemSize: 7,
                   initialRating: item.rate,
                 ),
-                CustomText.bodyLarge(
+                CustomText.bodySmall(
                   '${item.rate}',
                   customStyle: TextStyle(
                       fontSize: AppTextFontsAndSizing.bodyMediumFontSize),
@@ -243,9 +242,9 @@ class LocationItem extends ConsumerWidget {
             IconButton(
                 onPressed: () {
                   ref
-                      .read(selectedEditStateProviderForEditAndView.notifier)
-                      .state = item;
-                  context.goNamed(Routes.locationDetail);
+                      .read(selectedEditStateProviderForEditView.notifier)
+                      .setEditItem(item);
+                  context.go(Routes.locationDetailRouteForNavigator);
                 },
                 icon: FaIcon(
                   size: 20,
@@ -255,9 +254,9 @@ class LocationItem extends ConsumerWidget {
             IconButton(
                 onPressed: () {
                   ref
-                      .read(selectedEditStateProviderForEditAndView.notifier)
-                      .state = item;
-                  context.goNamed(Routes.editLocation);
+                      .read(selectedEditStateProviderForEditView.notifier)
+                      .setEditItem(item);
+                  context.go(Routes.editLocationRouteForNavigator);
                 },
                 icon: FaIcon(
                   size: 20,
@@ -291,7 +290,7 @@ class LocationItem extends ConsumerWidget {
                     await ref
                         .read(homeScreenRepositoryProvider)
                         .deleteLocation(item.id!);
-                    Navigator.of(context, rootNavigator: true).pop();
+                    Navigator.pop(context);
                   },
                 );
               },

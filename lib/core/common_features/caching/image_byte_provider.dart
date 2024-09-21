@@ -10,9 +10,7 @@ final imageByteProvider =
   final imageCacheNotifierN = ref.read(imageCacheProvider.notifier);
   final imageCacheNotifier = ref.read(imageCacheProvider);
 
-  if (!imageCacheNotifier.containsKey(params.id)) {
-    await imageCacheNotifierN.cacheImage(params.id, params.source);
-  }
+  await imageCacheNotifierN.cacheImage(params.id, params.source);
 
   return imageCacheNotifierN.getImage(params.id);
 });

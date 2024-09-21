@@ -18,8 +18,8 @@ class CustomBackIcon extends StatelessWidget {
             ref.watch(languageNotifierProvider).asData?.value == 'fa'
                 ? FontAwesomeIcons.chevronRight
                 : FontAwesomeIcons.chevronLeft,
-            size: 20,
-            color: Theme.of(context).colorScheme.onPrimary,
+            size: 18,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         );
       },

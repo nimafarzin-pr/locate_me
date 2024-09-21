@@ -67,9 +67,9 @@ class CustomTextField extends StatelessWidget {
                 : null),
         readOnly: readOnly,
         onChanged: onChanged,
-        focusNode: focusNode,
+        focusNode: null,
         controller: controller,
-        autofocus: autofocus,
+        autofocus: false,
         validator: validator ??
             (value) {
               return ValidateInput.schema(

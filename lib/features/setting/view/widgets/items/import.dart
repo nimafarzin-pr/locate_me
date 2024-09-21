@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/extension/theme_extension.dart';
 import 'package:locate_me/core/widget/dialogs/diolog_wrapper.dart';
 import 'package:locate_me/core/widget/loading.dart';
@@ -28,7 +29,7 @@ Future<void> showImportModal(BuildContext context) async {
                   content: state.successMessage,
                   showCancelButton: false,
                   onConfirm: () async {
-                    Navigator.of(context, rootNavigator: true).pop();
+                    Navigator.pop(context);
                   },
                 );
               } else if (state.errorMessage != null) {
@@ -38,12 +39,12 @@ Future<void> showImportModal(BuildContext context) async {
                   content: state.errorMessage,
                   showCancelButton: false,
                   onConfirm: () async {
-                    Navigator.of(context, rootNavigator: true).pop();
+                    Navigator.pop(context);
                   },
                 );
               } else {
                 if (state.isCancel == true) {
-                  Navigator.of(context, rootNavigator: true).pop();
+                  Navigator.pop(context);
                 }
                 return Center(
                     child: MyLoading(

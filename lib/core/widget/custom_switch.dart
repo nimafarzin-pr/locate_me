@@ -113,7 +113,7 @@ class SwitchItem extends HookWidget {
                       Icon(
                         icon,
                         color: isActive
-                            ? Theme.of(context).colorScheme.surface
+                            ? Theme.of(context).colorScheme.onSecondary
                             : Theme.of(context)
                                 .colorScheme
                                 .onSurface
@@ -128,7 +128,7 @@ class SwitchItem extends HookWidget {
               label,
               style: TextStyle(
                 color: isActive
-                    ? Theme.of(context).colorScheme.surface
+                    ? Theme.of(context).colorScheme.onSecondary
                     : Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.bold,
               ),

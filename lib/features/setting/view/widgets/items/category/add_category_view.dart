@@ -19,7 +19,12 @@ Future<void> showAddCategoryModal(BuildContext context) async {
   await showDialog(
     context: context,
     builder: (context) {
-      return const SelectCategory();
+      return BackButtonListener(
+          onBackButtonPressed: () async {
+            Navigator.pop(context);
+            return true;
+          },
+          child: const SelectCategory());
     },
   );
 }
@@ -62,7 +67,6 @@ class _SelectCategoryState extends State<SelectCategory> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('${currentColor?.value}');
     return FadeInScaleAnimation(
       child: AlertDialog(
         title: CustomText.headlineSmall(LocaleKeys.add_category.tr()),
@@ -212,7 +216,7 @@ class _SelectCategoryState extends State<SelectCategory> {
                               IconPickerUtils.iconPickerSerializer(_icon!);
                           ref.read(appSettingsRepositoryProvider).addCategory(
                               _nameController.text, icon, currentColor!.value);
-                          Navigator.of(context, rootNavigator: true).pop();
+                          Navigator.pop(context);
                         },
                       ),
                     ),

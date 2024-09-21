@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/extension/screen_size_extension.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -43,8 +44,7 @@ class ShareUtils {
                                   coords: Coords(lat, lng),
                                   title: markerLabel,
                                 );
-
-                                Navigator.pop(dContext);
+                                Navigator.pop(context);
                               },
                               child: Text(maps.mapName.toString()),
                             ),

@@ -19,31 +19,34 @@ class CustomCarouselSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CarouselSlider(
-      options: CarouselOptions(
-        enableInfiniteScroll: false,
-        disableCenter: true,
-        enlargeCenterPage: true,
-        height: context.screenWidth / 2.2,
-        onPageChanged: (index, reason) {
-          if (onPageChanged != null) {
-            onPageChanged!(index);
-          }
-        },
-      ),
-      items: data.map((place) {
-        return Builder(
-          builder: (BuildContext context) {
-            return FadeInScaleAnimation(
-              duration: const Duration(milliseconds: 600),
-              child: LocationItem(
-                item: place,
-                isCarouselItem: true,
-              ),
-            );
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 40.0),
+      child: CarouselSlider(
+        options: CarouselOptions(
+          enableInfiniteScroll: false,
+          disableCenter: true,
+          enlargeCenterPage: true,
+          height: context.screenWidth / 2.2,
+          onPageChanged: (index, reason) {
+            if (onPageChanged != null) {
+              onPageChanged!(index);
+            }
           },
-        );
-      }).toList(),
+        ),
+        items: data.map((place) {
+          return Builder(
+            builder: (BuildContext context) {
+              return FadeInScaleAnimation(
+                duration: const Duration(milliseconds: 600),
+                child: LocationItem(
+                  item: place,
+                  isCarouselItem: true,
+                ),
+              );
+            },
+          );
+        }).toList(),
+      ),
     );
   }
 }

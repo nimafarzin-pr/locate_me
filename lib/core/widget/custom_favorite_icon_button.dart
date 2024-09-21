@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 
 class CustomFavoriteIconButton extends StatelessWidget {
   final bool isFavorite;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final double? iconSize;
 
   const CustomFavoriteIconButton({
     super.key,
     required this.isFavorite,
-    required this.onPressed,
+    this.onPressed,
     this.iconSize = 24,
   });
 
@@ -20,7 +20,9 @@ class CustomFavoriteIconButton extends StatelessWidget {
       child: Icon(
         size: iconSize,
         isFavorite ? Icons.favorite : Icons.favorite_border,
-        color: isFavorite ? Theme.of(context).colorScheme.primary : Colors.grey,
+        color: isFavorite
+            ? Theme.of(context).colorScheme.primary
+            : Theme.of(context).colorScheme.onSurface,
       ),
     );
   }

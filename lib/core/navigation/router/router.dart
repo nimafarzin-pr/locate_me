@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/navigation/routes.dart';
 import 'package:locate_me/core/widget/background_wrapper.dart';
 import 'package:locate_me/core/widget/navigation_scafold.dart';
 import 'package:locate_me/features/home/view/home_tab.dart';
-import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
 import 'package:locate_me/features/setting/view/setting_tab.dart';
 import 'package:locate_me/features/setting/view/widgets/items/category/category_list.dart';
 
-import '../../../features/add_or_edit/view/add_tab.dart';
+import '../../../features/add/view/add_tab.dart';
+import '../../../features/home/model/place_item_model.dart';
 import '../../../features/home/view/widgets/details_view.dart';
+import '../../../features/home/view/widgets/edit/edit_view.dart';
 
 // private navigators
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(debugLabel: 'shellA');
-final _shellNavigatorAddKey = GlobalKey<NavigatorState>(debugLabel: 'shellB');
+final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(debugLabel: 'home');
+final _shellNavigatorAddKey = GlobalKey<NavigatorState>(debugLabel: 'add');
 final _shellNavigatorSettingKey =
-    GlobalKey<NavigatorState>(debugLabel: 'shellC');
+    GlobalKey<NavigatorState>(debugLabel: 'settings');
 
 final router = GoRouter(
   initialLocation: Routes.root,
@@ -50,7 +50,7 @@ final router = GoRouter(
                   pageBuilder: (context, state) {
                     return NoTransitionPage(
                       key: state.pageKey,
-                      child: const BackgroundWrapper(child: AddTab()),
+                      child: const BackgroundWrapper(child: EditView()),
                     );
                   },
                 ),
@@ -60,12 +60,8 @@ final router = GoRouter(
                   pageBuilder: (context, state) {
                     return NoTransitionPage(
                       key: state.pageKey,
-                      child: Consumer(
-                        builder: (context, ref, child) {
-                          return const BackgroundWrapper(
-                              child: ShowDetailsScreen());
-                        },
-                      ),
+                      child:
+                          const BackgroundWrapper(child: ShowDetailsScreen()),
                     );
                   },
                 ),

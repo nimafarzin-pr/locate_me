@@ -16,12 +16,18 @@ void showWarningDialog({
   showDialog(
     context: context,
     builder: (context) => DialogWrapper(
-      child: StatusWidget(
-        iconColor: iconColor,
-        showCancelButton: showCancelButton,
-        title: title,
-        content: content ?? LocaleKeys.do_you_want_to_continue.tr(),
-        onConfirm: onConfirm,
+      child: BackButtonListener(
+        onBackButtonPressed: () async {
+          Navigator.pop(context);
+          return true;
+        },
+        child: StatusWidget(
+          iconColor: iconColor,
+          showCancelButton: showCancelButton,
+          title: title,
+          content: content ?? LocaleKeys.do_you_want_to_continue.tr(),
+          onConfirm: onConfirm,
+        ),
       ),
     ),
   );

@@ -100,7 +100,7 @@ class GlobalThemeData {
 
   static const ColorScheme triadicLightColorScheme = ColorScheme(
     primary: Color(0xFF5C6BC0), // Rich blue
-    onPrimary: Colors.black,
+    onPrimary: Colors.white,
     secondary: Color(0xFFEC407A), // Vibrant pink
     onSecondary: Colors.white,
     tertiary: Color(0xFF66BB6A), // Fresh green
