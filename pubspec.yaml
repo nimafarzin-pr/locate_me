@@ -90,6 +90,7 @@ dependencies:
   skeletonizer: ^1.4.1+1
   flutter_dotenv: ^5.1.0
   adivery: ^4.2.0
+  plugin_platform_interface: ^2.1.8
   # mapbox_maps_flutter: ^2.2.0
   # mapbox_maps_flutter: ^2.2.0
   # flutter_polyline_points: ^2.1.0
@@ -121,6 +122,8 @@ dev_dependencies:
   drift_dev: ^2.18.0
   mockito: ^5.0.16
   riverpod_test: ^0.1.6
+  path_provider_platform_interface: ^2.1.2
+  mocktail: ^1.0.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -160,6 +163,20 @@ flutter:
         - asset: assets/fonts/iran_sans/IRAN-Sans-Mobile-Light.ttf
         - asset: assets/fonts/iran_sans/IRAN-Sans-Mobile-Medium.ttf
         - asset: assets/fonts/iran_sans/IRAN-Sans-Mobile-UltraLight.ttf
+
+
+    - family: Vazir
+      fonts:
+        - asset: assets/fonts/Vazir/Vazir-Bold-FD-WOL.ttf
+        - asset: assets/fonts/Vazir/Vazir-Bold.ttf
+        - asset: assets/fonts/Vazir/Vazir-FD-WOL.ttf
+        - asset: assets/fonts/Vazir/Vazir-Light-FD-WOL.ttf
+        - asset: assets/fonts/Vazir/Vazir-Light.ttf
+        - asset: assets/fonts/Vazir/Vazir-Medium-FD-WOL.ttf
+        - asset: assets/fonts/Vazir/Vazir-Medium.ttf
+        - asset: assets/fonts/Vazir/Vazir-Thin-FD-WOL.ttf
+        - asset: assets/fonts/Vazir/Vazir-Thin.ttf
+        - asset: assets/fonts/Vazir/Vazir.ttf
 
 
   # For details regarding fonts from package dependencies,

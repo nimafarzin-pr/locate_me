@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../sizing/my_text_size.dart';
 
 class CustomText extends StatelessWidget {
-  final String text;
+  final String? text;
   final TextStyle style;
   final int? maxLines;
   final TextAlign? textAlign;
@@ -57,7 +57,7 @@ class CustomText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      text,
+      text ?? "",
       style: style,
       maxLines: maxLines,
       textAlign: textAlign,

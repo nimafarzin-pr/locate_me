@@ -1,5 +1,6 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 
 Future<void> showLocationServiceDialog(BuildContext context) async {
@@ -13,7 +14,7 @@ Future<void> showLocationServiceDialog(BuildContext context) async {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(),
           child: CustomText.bodyLarge('Cancel'),
         ),
         TextButton(
@@ -40,7 +41,7 @@ Future<void> showPermissionSettingsDialog(BuildContext context,
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(),
           child: CustomText.bodyLarge('Cancel'),
         ),
         TextButton(

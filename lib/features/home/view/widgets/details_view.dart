@@ -2,12 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:locate_me/core/common_features/map/views/osm_map_view.dart';
 
 import 'package:locate_me/core/extension/screen_size_extension.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/core/widget/loading.dart';
-import 'package:locate_me/features/home/view_model/edit_item_notifier.dart';
 import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../../../../../core/widget/dialogs/status_widget.dart';
@@ -16,17 +17,19 @@ import '../../../../core/common_features/caching/base64_dto.dart';
 import '../../../../core/common_features/caching/image_byte_provider.dart';
 import '../../../../core/common_features/map/core/enums/map_enum.dart';
 import '../../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
+import '../../../../core/common_features/map/views/google_map_view.dart';
 import '../../../../core/sizing/my_text_size.dart';
 import '../../../../core/utils/date_converter.dart';
 import '../../../../core/utils/share_utils.dart';
 import '../../../../core/widget/custom_back_icon.dart';
 import '../../../../core/widget/custom_favorite_icon_button.dart';
+import '../../../../core/widget/custom_marker_add_info_box.dart';
 import '../../../../core/widget/custom_rich_text.dart';
 import '../../../../core/widget/rate.dart';
-import '../../../setting/provider/language_notifier_provider.dart';
-import '../../provider/favorite_filter_provider.dart';
-import 'list_on_map/google_view/google_view.dart';
-import 'list_on_map/osm_view/osm_view.dart';
+import 'package:flutter_map/flutter_map.dart' as flMap;
+import 'package:latlong2/latlong.dart' as flMapLatLng2;
+
+import '../../provider/home_screen_provider.dart';
 
 class ShowDetailsScreen<T> extends ConsumerStatefulWidget {
   const ShowDetailsScreen({
@@ -44,9 +47,8 @@ class _AddLocationViewState<T> extends ConsumerState<ShowDetailsScreen> {
   Widget build(BuildContext context) {
     double width = context.screenWidth;
     double height = context.screenHeight;
-    final selectedItem = ref.watch(selectedEditStateProviderForEditAndView);
-    if (ref.watch(selectedEditStateProviderForEditAndView) != null &&
-        selectedItem!.picture.isNotEmpty) {
+    final selectedItem = ref.watch(selectedEditStateProviderForEditView);
+    if (selectedItem != null && selectedItem.picture.isNotEmpty) {
       imageByte = ref
           .watch(imageByteProvider(Base64DTO(
               id: selectedItem.id.toString(), source: selectedItem.picture)))
@@ -59,9 +61,7 @@ class _AddLocationViewState<T> extends ConsumerState<ShowDetailsScreen> {
           backgroundColor: Colors.transparent,
           body: BackButtonListener(
             onBackButtonPressed: () async {
-              ref.read(selectedEditStateProviderForEditAndView.notifier).state =
-                  null;
-              Navigator.of(context).pop();
+              context.pop();
               return true;
             },
             child: CustomScrollView(
@@ -80,11 +80,11 @@ class _AddLocationViewState<T> extends ConsumerState<ShowDetailsScreen> {
                           backgroundColor:
                               Theme.of(context).colorScheme.surface,
                           onPressed: () {
-                            ref
-                                .read(selectedEditStateProviderForEditAndView
-                                    .notifier)
-                                .state = null;
-                            Navigator.of(context).pop();
+                            // ref
+                            //     .read(selectedEditStateProviderForEditView
+                            //         .notifier)
+                            //     .clearEditItem();
+                            context.pop();
                           },
                           child: const CustomBackIcon(),
                         ),
@@ -148,17 +148,18 @@ class _AddLocationViewState<T> extends ConsumerState<ShowDetailsScreen> {
                                   onPressed: () {
                                     if (selectedItem.id == null) return;
                                     ref
+                                        .read(
+                                            selectedEditStateProviderForEditView
+                                                .notifier)
+                                        .setEditItem(
+                                          selectedItem.copyWith(
+                                              isFavorite:
+                                                  !selectedItem.isFavorite),
+                                        );
+                                    ref
                                         .read(favoriteFilterProvider.notifier)
                                         .updateFavoriteStatus(
                                             id: selectedItem.id!);
-                                    ref
-                                            .read(
-                                                selectedEditStateProviderForEditAndView
-                                                    .notifier)
-                                            .state =
-                                        selectedItem.copyWith(
-                                            isFavorite:
-                                                !selectedItem.isFavorite);
                                   },
                                 )),
                           ),
@@ -340,11 +341,37 @@ class _AddLocationViewState<T> extends ConsumerState<ShowDetailsScreen> {
                             child:
                                 ref.watch(mapSettingLayerNotifierProvider).when(
                               data: (value) {
+                                final osmPosition = flMapLatLng2.LatLng(
+                                    selectedItem.latlng.latitude,
+                                    selectedItem.latlng.longitude);
                                 return switch (value) {
-                                  MapLayer.google =>
-                                    const GoogleView(withCarouselSlider: false),
-                                  MapLayer.osm => const OsmView(
-                                      withCarouselSlider: false,
+                                  MapLayer.google => GoogleMapView(
+                                      markers: {
+                                        Marker(
+                                          icon: BitmapDescriptor
+                                              .defaultMarkerWithHue(
+                                                  BitmapDescriptor.hueGreen),
+                                          markerId: const MarkerId('newMarker'),
+                                          position: LatLng(
+                                              selectedItem.latlng.latitude,
+                                              selectedItem.latlng.longitude),
+                                        )
+                                      },
+                                      onMapCreated: (googleMapController) {},
+                                    ),
+                                  MapLayer.osm => OsmMapView(
+                                      markers: [
+                                        flMap.Marker(
+                                          width: 200.0,
+                                          height: 200,
+                                          alignment: Alignment.center,
+                                          point: osmPosition,
+                                          child: CustomMarkerAddInfoBox(
+                                              position: osmPosition),
+                                          rotate: true,
+                                        )
+                                      ],
+                                      mapController: flMap.MapController(),
                                     ),
                                 };
                               },

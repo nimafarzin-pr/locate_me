@@ -8,6 +8,10 @@ class Routes {
   static const String editLocation = 'editLocationItem';
   static const String locationDetail = 'locationDetail';
   static const String categoryList = 'categoryList';
+  static const String addLocationRouteForNavigator = '/add';
+  static const String editLocationRouteForNavigator = '/editLocationItem';
+  static const String locationDetailRouteForNavigator = '/locationDetail';
+  static const String categoryListRouteForNavigator = '/categoryList';
 
   static List<String> routes = [
     root,

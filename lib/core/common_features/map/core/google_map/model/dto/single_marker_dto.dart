@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../../../../../../features/add_or_edit/model/dto/google_map_dto.dart';
+import '../../../../../../../features/add/model/dto/google_map_dto.dart';
 
 class SingleMarkerDto {
   final Set<Marker> marker;

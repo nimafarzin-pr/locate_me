@@ -7,7 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:locate_me/core/common_features/map/core/google_map/model/dto/single_marker_dto.dart';
 
-import '../../../../../../features/add_or_edit/model/dto/google_map_dto.dart';
+import '../../../../../../features/add/model/dto/google_map_dto.dart';
 
 final getMarker = FutureProvider.autoDispose
     .family<SingleMarkerDto, GoogleMapDto>((ref, data) async {

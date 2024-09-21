@@ -62,14 +62,20 @@ class SliderNotifier
     return args.position;
   }
 
-  void animateToMyLocationOnGoogleMap({
+  Future<LatLong?> animateToMyLocationOnGoogleMap({
     required Completer mapController,
     required LatLong position,
   }) async {
-    final googleMap.GoogleMapController controller = await mapController.future;
-    final toGoogleCoordinate =
-        googleMap.LatLng(position.latitude, position.longitude);
-    await controller
-        .animateCamera(googleMap.CameraUpdate.newLatLng(toGoogleCoordinate));
+    try {
+      final googleMap.GoogleMapController controller =
+          await mapController.future;
+      final toGoogleCoordinate =
+          googleMap.LatLng(position.latitude, position.longitude);
+      await controller
+          .animateCamera(googleMap.CameraUpdate.newLatLng(toGoogleCoordinate));
+      return position;
+    } catch (e) {
+      return null;
+    }
   }
 }

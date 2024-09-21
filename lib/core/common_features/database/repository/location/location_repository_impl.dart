@@ -107,7 +107,6 @@ class LocationRepositoryImpl implements ILocationRepository {
 
   @override
   Future<void> updateLocation(int id, PlaceItemModel location) async {
-    log('INNN $id');
     try {
       final toDbModel =
           const DbPlaceModelConverter().toSql(location).toCompanion(true);
