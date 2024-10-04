@@ -1,14 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/extension/screen_size_extension.dart';
 import 'package:locate_me/core/common_features/map/view_model/my_location_button_notifier.dart';
 import 'package:locate_me/core/widget/loading.dart';
 
-import '../../../../../../features/home/model/place_item_model.dart';
-import '../../../../../../features/home/provider/home_screen_provider.dart';
 import '../../../../../navigation/router/router.dart';
 import '../../../../../navigation/routes.dart';
 import '../custom_location_button.dart';
@@ -18,34 +16,28 @@ class GeneralMapWrapper extends ConsumerWidget {
   final Widget map;
   final Function()? mapSettingOnTab;
   final bool isEditMode;
-  final Future Function()? myLocationOnTab;
+  final Future Function()? onGoToMyLocation;
   final Function()? onBack;
-  final Function()? onUpdateLocation;
+  final Function()? onAddOrEditLocation;
 
   const GeneralMapWrapper({
     super.key,
     required this.map,
     this.mapSettingOnTab,
     this.isEditMode = false,
-    this.myLocationOnTab,
+    this.onGoToMyLocation,
     this.onBack,
-    this.onUpdateLocation,
+    this.onAddOrEditLocation,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final editItem = ref.watch(selectedEditStateProviderForEditView);
     final isLoading = ref.watch(myLocationButtonNotifierProvider);
-    final isInEditMode = editItem != null &&
-        router.routerDelegate.currentConfiguration.uri.toString() ==
-            Routes.editLocationRouteForNavigator;
-    final isAdd = router.routerDelegate.currentConfiguration.uri.toString() ==
-        Routes.addLocationRouteForNavigator;
 
     return Stack(
       children: [
         map,
-        myLocationOnTab != null
+        onGoToMyLocation != null
             ? Positioned(
                 bottom: 70,
                 right: 20,
@@ -61,14 +53,14 @@ class GeneralMapWrapper extends ConsumerWidget {
                                   size: 16,
                                 ))
                             : CustomLocationButton(onPressed: () async {
-                                if (myLocationOnTab == null) return;
+                                if (onGoToMyLocation == null) return;
                                 if (isLoading) return;
                                 ref
                                     .read(myLocationButtonNotifierProvider
                                         .notifier)
                                     .updateLoadingState(true);
                                 try {
-                                  await myLocationOnTab!();
+                                  await onGoToMyLocation!();
                                   ref
                                       .read(myLocationButtonNotifierProvider
                                           .notifier)
@@ -117,7 +109,7 @@ class GeneralMapWrapper extends ConsumerWidget {
             ),
           ),
         ),
-        isInEditMode || onBack != null
+        onBack != null
             ? Positioned(
                 top: 20,
                 left: 20,
@@ -127,9 +119,6 @@ class GeneralMapWrapper extends ConsumerWidget {
                   child: FloatingActionButton(
                     backgroundColor: Theme.of(context).colorScheme.surface,
                     onPressed: () {
-                      if (editItem != null) {
-                        Navigator.pop(context);
-                      }
                       if (onBack != null) {
                         onBack!();
                       }
@@ -143,7 +132,7 @@ class GeneralMapWrapper extends ConsumerWidget {
                 ),
               )
             : const SizedBox(),
-        onUpdateLocation != null && (isInEditMode || isAdd)
+        onAddOrEditLocation != null
             ? Positioned(
                 bottom: 140,
                 right: 20,
@@ -152,12 +141,17 @@ class GeneralMapWrapper extends ConsumerWidget {
                   height: context.screenWidth / 8,
                   child: FloatingActionButton(
                     backgroundColor: Theme.of(context).colorScheme.surface,
-                    onPressed: onUpdateLocation ?? () {},
+                    onPressed: onAddOrEditLocation ?? () {},
                     child: FaIcon(
                       size: 20,
-                      isInEditMode
-                          ? FontAwesomeIcons.penToSquare
-                          : FontAwesomeIcons.plus,
+                      router.routerDelegate.currentConfiguration.uri
+                                      .toString() ==
+                                  Routes.add ||
+                              router.routerDelegate.currentConfiguration.uri
+                                  .toString()
+                                  .isEmpty
+                          ? FontAwesomeIcons.plus
+                          : FontAwesomeIcons.penToSquare,
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),

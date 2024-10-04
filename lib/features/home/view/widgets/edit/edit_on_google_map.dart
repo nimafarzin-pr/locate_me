@@ -5,8 +5,8 @@ import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:latlong2/latlong.dart' as latLngTwo;
 import 'package:locate_me/core/widget/dialogs/status_widget.dart';
 import 'package:locate_me/generated/locale_keys.g.dart';
 
@@ -40,6 +40,7 @@ class _EditOnGoogleMapState extends ConsumerState<EditOnGoogleMap> {
     final editItem = ref.watch(selectedEditStateProviderForEditView);
 
     return GoogleMapView(
+      onBack: () => context.pop(),
       markers: {
         Marker(
           icon:
@@ -99,10 +100,15 @@ class _EditOnGoogleMapState extends ConsumerState<EditOnGoogleMap> {
                             onConfirm: () async {
                               Navigator.pop(successModal);
                               Navigator.pop(context);
+                              ref
+                                  .read(selectedEditStateProviderForEditView
+                                      .notifier)
+                                  .clearEditItem();
                             },
                             showCancelButton: false,
                             iconColor: Colors.green,
-                            title: LocaleKeys.location_saved_successfully.tr()),
+                            title:
+                                LocaleKeys.location_updated_successfully.tr()),
                       ),
                     );
                   },

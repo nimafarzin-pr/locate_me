@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:locate_me/core/common_features/map/core/enums/map_enum.dart';
 import 'package:locate_me/core/widget/loading.dart';
+import 'package:locate_me/features/add/view/widgets/osm.dart';
 
 import 'package:locate_me/generated/locale_keys.g.dart';
 
@@ -15,7 +16,6 @@ import '../../../core/widget/dialogs/status_widget.dart';
 
 import 'package:app_settings/app_settings.dart';
 
-import '../../home/view/widgets/list_of_locations/list_on_map/osm_view/osm_view.dart';
 import 'widgets/google.dart';
 
 class AddTab extends ConsumerStatefulWidget {

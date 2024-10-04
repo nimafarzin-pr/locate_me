@@ -13,7 +13,7 @@ import '../../../../../core/widget/cancel_button.dart';
 import '../../../../../core/widget/accept_button/custom_accept_button.dart';
 import '../../../../../core/widget/custom_text.dart';
 import '../../../../../core/widget/custom_textfeild.dart';
-import '../../../../../core/widget/dialogs/diolog_wrapper.dart';
+import '../../../../../core/widget/dialogs/dialog_wrapper.dart';
 import '../../../../../core/widget/dialogs/status_widget.dart';
 import '../../../../../core/widget/animation/fade_in_scale_animation.dart';
 

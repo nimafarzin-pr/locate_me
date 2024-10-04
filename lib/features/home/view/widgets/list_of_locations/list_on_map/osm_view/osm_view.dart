@@ -4,21 +4,22 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:locate_me/core/common_features/map/views/osm_map_view.dart';
 
 import 'package:locate_me/core/extension/screen_size_extension.dart';
 import 'package:locate_me/core/widget/animation/fade_in_scale_animation.dart';
 import 'package:locate_me/core/widget/loading.dart';
-import 'package:locate_me/features/home/model/place_item_model.dart';
 
 import '../../../../../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
+import '../../../../../../../core/navigation/router/router.dart';
+import '../../../../../../../core/navigation/routes.dart';
 import '../../../../../../../core/widget/custom_marker_add_info_box.dart';
 import '../../../../../../../core/widget/dialogs/status_widget.dart';
 import '../../../../../../../generated/locale_keys.g.dart';
 import '../../../../../model/dto/slider_notifier_dto.dart';
 
+import '../../../../../model/place_item_model.dart';
 import '../../../../../provider/home_screen_provider.dart';
 import '../../../custom_slider.dart';
 
@@ -55,10 +56,10 @@ class _OsmViewState extends State<OsmView> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, child) {
-        final editItem = ref.watch(selectedEditStateProviderForEditView);
-
-        final data =
-            editItem != null ? [editItem] : ref.watch(filteredItemsProvider);
+        final isHomeListOnMap =
+            router.routerDelegate.currentConfiguration.uri.toString() ==
+                Routes.root;
+        final List<PlaceItemModel> data = ref.watch(filteredItemsProvider);
 
         return Stack(
           children: [

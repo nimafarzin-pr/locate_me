@@ -10,7 +10,7 @@
 
 
     <application
-        android:label="locate_me"
+        android:label="locate me"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:usesCleartextTraffic="true"

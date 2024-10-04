@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/extension/theme_extension.dart';
-import 'package:locate_me/core/widget/dialogs/diolog_wrapper.dart';
+import 'package:locate_me/core/widget/dialogs/dialog_wrapper.dart';
 import 'package:locate_me/core/widget/loading.dart';
 
 import '../../../../../core/widget/dialogs/status_widget.dart';

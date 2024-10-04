@@ -1,13 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_iconpicker/Models/configuration.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:locate_me/core/extension/screen_size_extension.dart';
 import 'package:locate_me/core/utils/icon_picker_utils.dart';
 import 'package:locate_me/core/widget/accept_button/custom_accept_button.dart';
 import 'package:locate_me/core/widget/custom_textfeild.dart';
-import 'package:locate_me/core/widget/dialogs/diolog_wrapper.dart';
+import 'package:locate_me/core/widget/dialogs/dialog_wrapper.dart';
 import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../../../../../../core/widget/custom_text.dart';
@@ -41,7 +42,7 @@ class SelectCategory extends StatefulWidget {
 class _SelectCategoryState extends State<SelectCategory> {
   late TextEditingController _nameController;
   final formKey = GlobalKey<FormState>();
-  IconData? _icon;
+  IconPickerIcon? _icon;
   Color? currentColor;
 
   @override
@@ -51,8 +52,9 @@ class _SelectCategoryState extends State<SelectCategory> {
   }
 
   _pickIcon() async {
-    IconData? icon = await showIconPicker(context,
-        iconPackModes: [IconPack.allMaterial], adaptiveDialog: true);
+    final icon = await showIconPicker(context,
+        configuration: const SinglePickerConfiguration(
+            adaptiveDialog: true, iconPackModes: [IconPack.allMaterial]));
 
     setState(() {
       _icon = icon;
@@ -114,7 +116,7 @@ class _SelectCategoryState extends State<SelectCategory> {
                                               .onSurface,
                                         )
                                       : Icon(
-                                          _icon,
+                                          _icon?.data,
                                           size: 30,
                                           color: currentColor ??
                                               Theme.of(context)

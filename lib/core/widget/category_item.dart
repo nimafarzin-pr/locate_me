@@ -66,7 +66,7 @@ class CategoryBox extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Icon(
-                        icon,
+                        icon?.data,
                         color: Color(item.color),
                       ),
                     ),

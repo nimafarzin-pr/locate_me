@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_iconpicker/Models/icon_picker_icon.dart';
+import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:locate_me/core/utils/icon_picker_utils.dart';
 import 'package:locate_me/features/setting/model/category_model.dart';
@@ -18,9 +20,8 @@ class CategoryNotifier extends AutoDisposeStreamNotifier<List<CategoryModel>> {
         CategoryModel(
           name: 'all',
           iconString: IconPickerUtils.iconPickerSerializer(
-            IconPickerUtils.iconPickerDeserializer(
-              IconPickerUtils.iconPickerSerializer(Icons.place),
-            )!,
+            const IconPickerIcon(
+                name: 'place', data: Icons.place, pack: IconPack.allMaterial),
           ),
           color: Colors.grey.value,
         ),

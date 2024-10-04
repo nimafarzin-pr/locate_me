@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:locate_me/core/common_features/map/core/enums/map_enum.dart';
 import 'package:locate_me/core/widget/loading.dart';
@@ -48,42 +47,38 @@ class _EditViewState extends ConsumerState<EditView> {
             useRootNavigator: false,
             context: context,
             builder: (modalContext) {
-              return BackButtonListener(
-                onBackButtonPressed: () async {
-                  if (mounted) {
-                    Navigator.pop(modalContext);
-                  }
-                  return true;
+              return EditLocationFormView<PlaceItemModel>(
+                onAccept: (PlaceItemModel location) async {
+                  await ref
+                      .read(addLocationNotifierProvider.notifier)
+                      .updateLocationItem(location);
+                  Navigator.pop(modalContext);
+                  showDialog(
+                    context: context,
+                    builder: (successModal) {
+                      return Center(
+                        child: SizedBox(
+                          height: 300,
+                          child: StatusWidget(
+                              status: ActionStatus.success,
+                              onConfirm: () async {
+                                Navigator.pop(successModal);
+                                Navigator.pop(context);
+                                ref
+                                    .read(selectedEditStateProviderForEditView
+                                        .notifier)
+                                    .clearEditItem();
+                              },
+                              showCancelButton: false,
+                              iconColor: Colors.green,
+                              title: LocaleKeys.location_updated_successfully
+                                  .tr()),
+                        ),
+                      );
+                    },
+                  );
                 },
-                child: EditLocationFormView<PlaceItemModel>(
-                  onAccept: (PlaceItemModel location) async {
-                    await ref
-                        .read(addLocationNotifierProvider.notifier)
-                        .updateLocationItem(location);
-                    Navigator.pop(modalContext);
-                    showDialog(
-                      context: context,
-                      builder: (successModal) {
-                        return Center(
-                          child: SizedBox(
-                            height: 300,
-                            child: StatusWidget(
-                                status: ActionStatus.success,
-                                onConfirm: () async {
-                                  Navigator.pop(successModal);
-                                  Navigator.pop(context);
-                                },
-                                showCancelButton: false,
-                                iconColor: Colors.green,
-                                title: LocaleKeys.location_saved_successfully
-                                    .tr()),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  editItem: edit,
-                ),
+                editItem: edit,
               );
             },
           );
@@ -98,6 +93,7 @@ class _EditViewState extends ConsumerState<EditView> {
     final permission = ref.watch(permissionProvider);
     return BackButtonListener(
       onBackButtonPressed: () async {
+        // ref.read(selectedEditStateProviderForEditView.notifier).clearEditItem();
         context.pop();
         return true;
       },

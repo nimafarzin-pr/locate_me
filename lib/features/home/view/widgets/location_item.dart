@@ -46,13 +46,14 @@ class LocationItem extends ConsumerWidget {
 
     return Container(
       margin: EdgeInsets.only(
-          top: index == 0 ? 0 : AppSizes.smallMargin,
+          top: AppSizes.smallMargin,
           left: isCarouselItem ? AppSizes.smallMargin : 0,
           right: isCarouselItem ? AppSizes.smallMargin : 0),
       width: context.screenWidth,
       height: context.screenWidth / 2.4,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.white),
+        borderRadius: const BorderRadius.all(
           Radius.circular(AppSizes.mediumBorderRadius),
         ),
       ),
@@ -207,7 +208,8 @@ class LocationItem extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(
-                  IconPickerUtils.iconPickerDeserializer(item.categoryIcon),
+                  IconPickerUtils.iconPickerDeserializer(item.categoryIcon)
+                      ?.data,
                   color: Colors.grey.withOpacity(0.7),
                   size: 20,
                 ),
@@ -287,10 +289,10 @@ class LocationItem extends ConsumerWidget {
                   iconColor: Theme.of(context).colorScheme.error,
                   title: '${LocaleKeys.delete.tr()} ${item.title}\n\n',
                   onConfirm: () async {
+                    if (item.id == null) return;
                     await ref
                         .read(homeScreenRepositoryProvider)
                         .deleteLocation(item.id!);
-                    Navigator.pop(context);
                   },
                 );
               },
