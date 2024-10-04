@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:locate_me/core/widget/dialogs/status_widget.dart';
 import 'package:locate_me/generated/locale_keys.g.dart';
 
-import 'diolog_wrapper.dart';
+import 'dialog_wrapper.dart';
 
 void showWarningDialog({
   required BuildContext context,
@@ -26,7 +26,10 @@ void showWarningDialog({
           showCancelButton: showCancelButton,
           title: title,
           content: content ?? LocaleKeys.do_you_want_to_continue.tr(),
-          onConfirm: onConfirm,
+          onConfirm: () async {
+            onConfirm();
+            Navigator.pop(context);
+          },
         ),
       ),
     ),

@@ -6,7 +6,7 @@ import 'package:locate_me/core/extension/screen_size_extension.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../widget/dialogs/diolog_wrapper.dart';
+import '../widget/dialogs/dialog_wrapper.dart';
 
 class ShareUtils {
   static Future<void> shareLocation({

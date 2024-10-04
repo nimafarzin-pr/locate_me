@@ -81,9 +81,9 @@ dependencies:
   device_info_plus: ^10.1.0
   permission_handler: ^11.3.1
   flutter_hooks: ^0.20.5
-  flutter_iconpicker: ^3.4.6
+  flutter_iconpicker: ^4.0.1
   flutter_colorpicker: ^1.1.0
-  flutter_launcher_icons: ^0.13.1
+  # flutter_launcher_icons: ^0.14.1
   map_launcher: ^3.3.1
   # camerawesome: ^2.0.1
   image_picker: ^1.1.2
@@ -97,10 +97,13 @@ dependencies:
 
 
 flutter_launcher_icons:
+  image_path: "assets/icon/icon.png"
   android: "launcher_icon"
   ios: true
-  image_path: "assets/logo/appstore.png"
-  min_sdk_android: 21 # android min sdk min:16, default 21
+  remove_alpha_ios: true
+  min_sdk_android: 24 # android min sdk min:16, default 21
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/icon/icon.png"
 
 
 
@@ -117,6 +120,7 @@ dev_dependencies:
   build_runner: ^2.4.9
   json_serializable: ^6.7.1
   riverpod_generator: ^2.4.0
+  flutter_launcher_icons: ^0.14.1
   custom_lint: ^0.6.4
   riverpod_lint: ^2.3.10
   drift_dev: ^2.18.0
@@ -139,9 +143,11 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - .env
+    - assets/
     - assets/category/
     - assets/background/
     - assets/translations/
+    - assets/logo/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

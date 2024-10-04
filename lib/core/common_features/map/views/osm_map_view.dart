@@ -25,6 +25,7 @@ class OsmMapView extends ConsumerStatefulWidget {
   final Function(MapCamera, bool)? onPositionChanged;
   final MapController mapController;
   final List<Marker>? markers;
+  final Function()? onBack;
 
   const OsmMapView(
       {super.key,
@@ -32,6 +33,7 @@ class OsmMapView extends ConsumerStatefulWidget {
       this.onUpdateLocation,
       this.onPositionChanged,
       required this.mapController,
+      this.onBack,
       this.markers});
 
   @override
@@ -94,6 +96,7 @@ class _HomePageState extends ConsumerState<OsmMapView> {
       {LatLng? currentPositions}) {
     return SafeArea(
       child: GeneralMapWrapper(
+        onBack: widget.onBack,
         map: FlutterMap(
           mapController: widget.mapController,
           options: MapOptions(
@@ -125,11 +128,12 @@ class _HomePageState extends ConsumerState<OsmMapView> {
             ),
           ],
         ),
-        myLocationOnTab: widget.myLocationOnTab,
-        onUpdateLocation: () {
-          if (widget.onUpdateLocation == null) return;
-          widget.onUpdateLocation!(currentPositions);
-        },
+        onGoToMyLocation: widget.myLocationOnTab,
+        onAddOrEditLocation: (widget.onUpdateLocation == null)
+            ? null
+            : () {
+                widget.onUpdateLocation!(currentPositions);
+              },
       ),
     );
   }

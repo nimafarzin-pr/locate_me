@@ -9,24 +9,39 @@ import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/navigation/router/router.dart';
 import 'package:locate_me/generated/locale_keys.g.dart';
 
+import '../../features/home/provider/home_screen_provider.dart';
 import '../navigation/routes.dart';
 
-class ScaffoldWithNestedNavigation extends StatelessWidget {
+class ScaffoldWithNestedNavigation extends StatefulWidget {
   const ScaffoldWithNestedNavigation({
     Key? key,
     required this.navigationShell,
   }) : super(key: key ?? const ValueKey('ScaffoldWithNestedNavigation'));
   final StatefulNavigationShell navigationShell;
 
-  void _goBranch(int index) {
-    navigationShell.goBranch(
-      index,
-      // A common pattern when using bottom navigation bars is to support
-      // navigating to the initial location when tapping the item that is
-      // already active. This example demonstrates how to support this behavior,
-      // using the initialLocation parameter of goBranch.
-      initialLocation: index == navigationShell.currentIndex,
-    );
+  @override
+  State<ScaffoldWithNestedNavigation> createState() =>
+      _ScaffoldWithNestedNavigationState();
+}
+
+class _ScaffoldWithNestedNavigationState
+    extends State<ScaffoldWithNestedNavigation> {
+  void _goBranch(int index, ref) {
+    log('$index');
+    if (index == 1) {
+      // Assuming the "Add" tab is at index 2
+      // Force a refresh of the Add screen by navigating explicitly
+      context.pushReplacement(Routes
+          .addLocationRouteForNavigator); // Replace with your Add screen's route
+      ref.read(selectedEditStateProviderForEditView.notifier).clearEditItem();
+    } else {
+      // Standard goBranch behavior for other tabs
+      widget.navigationShell.goBranch(
+        index,
+        initialLocation: index == widget.navigationShell.currentIndex,
+      );
+    }
+
     log('R++++ ${router.routerDelegate.currentConfiguration.uri}');
   }
 
@@ -37,7 +52,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        body: navigationShell,
+        body: widget.navigationShell,
         bottomNavigationBar: router.routerDelegate.currentConfiguration.uri
                         .toString() ==
                     '/${Routes.editLocation}' ||
@@ -58,7 +73,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
                     unselectedIconTheme: IconThemeData(size: 20.w),
                     selectedIconTheme: IconThemeData(size: 22.w),
                     // selectedItemColor: Colors.blueGrey,
-                    currentIndex: navigationShell.currentIndex,
+                    currentIndex: widget.navigationShell.currentIndex,
                     items: [
                       BottomNavigationBarItem(
                         icon: const FaIcon(
@@ -84,7 +99,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
                     ],
                     onTap: (value) {
                       FocusScope.of(context).unfocus();
-                      _goBranch(value);
+                      _goBranch(value, ref);
                     },
                   ),
                 );

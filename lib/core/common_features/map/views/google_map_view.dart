@@ -26,6 +26,7 @@ class GoogleMapView extends ConsumerWidget {
   final Future<dynamic> Function(LatLng? currentPosition)? onUpdateLocation;
   final Function(GoogleMapController googleMapController)? onMapCreated;
   final Set<Marker>? markers;
+  final Function()? onBack;
 
   const GoogleMapView({
     super.key,
@@ -33,6 +34,7 @@ class GoogleMapView extends ConsumerWidget {
     this.myLocationOnTab,
     this.onUpdateLocation,
     required this.onMapCreated,
+    this.onBack,
     this.markers,
   });
 
@@ -67,6 +69,7 @@ class GoogleMapView extends ConsumerWidget {
         ref.watch(mapSettingStyleNotifierProvider).value?.name;
     return SafeArea(
       child: GeneralMapWrapper(
+        onBack: onBack,
         map: GoogleMap(
           zoomControlsEnabled: false,
           myLocationButtonEnabled: false,
@@ -92,11 +95,12 @@ class GoogleMapView extends ConsumerWidget {
             zoom: 20.4746,
           ),
         ),
-        myLocationOnTab: myLocationOnTab,
-        onUpdateLocation: () async {
-          if (onUpdateLocation == null) return;
-          onUpdateLocation!(actualMarkers.first.position);
-        },
+        onGoToMyLocation: myLocationOnTab,
+        onAddOrEditLocation: (onUpdateLocation == null)
+            ? null
+            : () async {
+                onUpdateLocation!(actualMarkers.first.position);
+              },
       ),
     );
   }

@@ -5,7 +5,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/extension/screen_size_extension.dart';
 import 'package:locate_me/core/extension/theme_extension.dart';
 import 'package:locate_me/core/widget/category_item.dart';
@@ -22,7 +21,7 @@ import '../../../core/common_features/map/core/enums/map_enum.dart';
 import '../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
 import '../../../core/widget/ads_widget.dart';
 import '../../../core/widget/custom_switch.dart';
-import '../../../core/widget/dialogs/diolog_wrapper.dart';
+import '../../../core/widget/dialogs/dialog_wrapper.dart';
 import '../../../core/widget/dialogs/status_widget.dart';
 import '../../setting/provider/category_notifier_provider.dart';
 import '../provider/home_screen_provider.dart';
@@ -39,13 +38,29 @@ class HomeTab extends ConsumerStatefulWidget {
 class _HomeTabState extends ConsumerState<HomeTab>
     with AutomaticKeepAliveClientMixin {
   int categoryIndex = 0;
+  late FocusNode _focusNode;
 
   late TextEditingController _searchController;
 
   @override
   void initState() {
+    _focusNode = FocusNode();
     _searchController = TextEditingController();
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _focusNode.unfocus(); // Remove focus when coming back
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose(); // Dispose it when not needed
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -53,13 +68,13 @@ class _HomeTabState extends ConsumerState<HomeTab>
     super.build(context);
     return BackButtonListener(
       onBackButtonPressed: () async {
-        showDialog(
-          useRootNavigator: true,
+        await showDialog(
+          // useRootNavigator: true,
           context: context,
           builder: (context) {
             return BackButtonListener(
               onBackButtonPressed: () async {
-                Navigator.pop(context);
+                await Navigator.maybePop(context);
                 return true;
               },
               child: SizedBox(
@@ -102,8 +117,19 @@ class _HomeTabState extends ConsumerState<HomeTab>
                             Column(
                               children: [
                                 CustomTextField(
-                                  suffixIcon:
-                                      const Icon(Icons.manage_search_sharp),
+                                  focusNode: _focusNode,
+                                  autofocus: false,
+                                  suffixIcon: _searchController.text.isNotEmpty
+                                      ? IconButton(
+                                          onPressed: () {
+                                            _searchController.clear();
+                                            ref
+                                                .read(searchInputProvider
+                                                    .notifier)
+                                                .setSearchQuery('');
+                                          },
+                                          icon: const Icon(Icons.clear_rounded))
+                                      : const Icon(Icons.manage_search_sharp),
                                   onChanged: (value) {
                                     ref
                                         .read(searchInputProvider.notifier)

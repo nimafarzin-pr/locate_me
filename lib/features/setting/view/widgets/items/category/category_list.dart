@@ -92,7 +92,6 @@ class CategoryList extends StatelessWidget {
                                             .read(categoryNotifierProvider
                                                 .notifier)
                                             .deleteCategory(item.id!);
-                                        context.pop();
                                       },
                                     );
                                   },
@@ -121,7 +120,7 @@ class CategoryList extends StatelessWidget {
                                         padding: const EdgeInsets.all(8.0),
                                         child: icon != null
                                             ? Icon(
-                                                icon,
+                                                icon.data,
                                                 color: Color(item.color),
                                               )
                                             //  Text(

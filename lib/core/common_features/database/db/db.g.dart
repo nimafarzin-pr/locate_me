@@ -1403,85 +1403,6 @@ typedef $$LocationTBTableUpdateCompanionBuilder = LocationTBCompanion Function({
   Value<DateTime> timestamp,
 });
 
-class $$LocationTBTableTableManager extends RootTableManager<
-    _$DB,
-    $LocationTBTable,
-    Location,
-    $$LocationTBTableFilterComposer,
-    $$LocationTBTableOrderingComposer,
-    $$LocationTBTableCreateCompanionBuilder,
-    $$LocationTBTableUpdateCompanionBuilder> {
-  $$LocationTBTableTableManager(_$DB db, $LocationTBTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$LocationTBTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$LocationTBTableOrderingComposer(ComposerState(db, table)),
-          updateCompanionCallback: ({
-            Value<int?> id = const Value.absent(),
-            Value<String> title = const Value.absent(),
-            Value<String?> vicinity = const Value.absent(),
-            Value<String> picture = const Value.absent(),
-            Value<double> latitude = const Value.absent(),
-            Value<double> rate = const Value.absent(),
-            Value<double> longitude = const Value.absent(),
-            Value<String?> address = const Value.absent(),
-            Value<String> categoryIcon = const Value.absent(),
-            Value<String> categoryName = const Value.absent(),
-            Value<String?> description = const Value.absent(),
-            Value<bool> isFavorite = const Value.absent(),
-            Value<DateTime> timestamp = const Value.absent(),
-          }) =>
-              LocationTBCompanion(
-            id: id,
-            title: title,
-            vicinity: vicinity,
-            picture: picture,
-            latitude: latitude,
-            rate: rate,
-            longitude: longitude,
-            address: address,
-            categoryIcon: categoryIcon,
-            categoryName: categoryName,
-            description: description,
-            isFavorite: isFavorite,
-            timestamp: timestamp,
-          ),
-          createCompanionCallback: ({
-            Value<int?> id = const Value.absent(),
-            required String title,
-            Value<String?> vicinity = const Value.absent(),
-            required String picture,
-            required double latitude,
-            required double rate,
-            required double longitude,
-            Value<String?> address = const Value.absent(),
-            required String categoryIcon,
-            required String categoryName,
-            Value<String?> description = const Value.absent(),
-            Value<bool> isFavorite = const Value.absent(),
-            Value<DateTime> timestamp = const Value.absent(),
-          }) =>
-              LocationTBCompanion.insert(
-            id: id,
-            title: title,
-            vicinity: vicinity,
-            picture: picture,
-            latitude: latitude,
-            rate: rate,
-            longitude: longitude,
-            address: address,
-            categoryIcon: categoryIcon,
-            categoryName: categoryName,
-            description: description,
-            isFavorite: isFavorite,
-            timestamp: timestamp,
-          ),
-        ));
-}
-
 class $$LocationTBTableFilterComposer
     extends FilterComposer<_$DB, $LocationTBTable> {
   $$LocationTBTableFilterComposer(super.$state);
@@ -1620,6 +1541,103 @@ class $$LocationTBTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
+class $$LocationTBTableTableManager extends RootTableManager<
+    _$DB,
+    $LocationTBTable,
+    Location,
+    $$LocationTBTableFilterComposer,
+    $$LocationTBTableOrderingComposer,
+    $$LocationTBTableCreateCompanionBuilder,
+    $$LocationTBTableUpdateCompanionBuilder,
+    (Location, BaseReferences<_$DB, $LocationTBTable, Location>),
+    Location,
+    PrefetchHooks Function()> {
+  $$LocationTBTableTableManager(_$DB db, $LocationTBTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$LocationTBTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$LocationTBTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int?> id = const Value.absent(),
+            Value<String> title = const Value.absent(),
+            Value<String?> vicinity = const Value.absent(),
+            Value<String> picture = const Value.absent(),
+            Value<double> latitude = const Value.absent(),
+            Value<double> rate = const Value.absent(),
+            Value<double> longitude = const Value.absent(),
+            Value<String?> address = const Value.absent(),
+            Value<String> categoryIcon = const Value.absent(),
+            Value<String> categoryName = const Value.absent(),
+            Value<String?> description = const Value.absent(),
+            Value<bool> isFavorite = const Value.absent(),
+            Value<DateTime> timestamp = const Value.absent(),
+          }) =>
+              LocationTBCompanion(
+            id: id,
+            title: title,
+            vicinity: vicinity,
+            picture: picture,
+            latitude: latitude,
+            rate: rate,
+            longitude: longitude,
+            address: address,
+            categoryIcon: categoryIcon,
+            categoryName: categoryName,
+            description: description,
+            isFavorite: isFavorite,
+            timestamp: timestamp,
+          ),
+          createCompanionCallback: ({
+            Value<int?> id = const Value.absent(),
+            required String title,
+            Value<String?> vicinity = const Value.absent(),
+            required String picture,
+            required double latitude,
+            required double rate,
+            required double longitude,
+            Value<String?> address = const Value.absent(),
+            required String categoryIcon,
+            required String categoryName,
+            Value<String?> description = const Value.absent(),
+            Value<bool> isFavorite = const Value.absent(),
+            Value<DateTime> timestamp = const Value.absent(),
+          }) =>
+              LocationTBCompanion.insert(
+            id: id,
+            title: title,
+            vicinity: vicinity,
+            picture: picture,
+            latitude: latitude,
+            rate: rate,
+            longitude: longitude,
+            address: address,
+            categoryIcon: categoryIcon,
+            categoryName: categoryName,
+            description: description,
+            isFavorite: isFavorite,
+            timestamp: timestamp,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$LocationTBTableProcessedTableManager = ProcessedTableManager<
+    _$DB,
+    $LocationTBTable,
+    Location,
+    $$LocationTBTableFilterComposer,
+    $$LocationTBTableOrderingComposer,
+    $$LocationTBTableCreateCompanionBuilder,
+    $$LocationTBTableUpdateCompanionBuilder,
+    (Location, BaseReferences<_$DB, $LocationTBTable, Location>),
+    Location,
+    PrefetchHooks Function()>;
 typedef $$MapSettingsTBTableCreateCompanionBuilder = MapSettingsTBCompanion
     Function({
   Value<int> id,
@@ -1632,45 +1650,6 @@ typedef $$MapSettingsTBTableUpdateCompanionBuilder = MapSettingsTBCompanion
   Value<MapLayer?> mapLayer,
   Value<MapStyle?> mapStyle,
 });
-
-class $$MapSettingsTBTableTableManager extends RootTableManager<
-    _$DB,
-    $MapSettingsTBTable,
-    MapSettings,
-    $$MapSettingsTBTableFilterComposer,
-    $$MapSettingsTBTableOrderingComposer,
-    $$MapSettingsTBTableCreateCompanionBuilder,
-    $$MapSettingsTBTableUpdateCompanionBuilder> {
-  $$MapSettingsTBTableTableManager(_$DB db, $MapSettingsTBTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$MapSettingsTBTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$MapSettingsTBTableOrderingComposer(ComposerState(db, table)),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<MapLayer?> mapLayer = const Value.absent(),
-            Value<MapStyle?> mapStyle = const Value.absent(),
-          }) =>
-              MapSettingsTBCompanion(
-            id: id,
-            mapLayer: mapLayer,
-            mapStyle: mapStyle,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<MapLayer?> mapLayer = const Value.absent(),
-            Value<MapStyle?> mapStyle = const Value.absent(),
-          }) =>
-              MapSettingsTBCompanion.insert(
-            id: id,
-            mapLayer: mapLayer,
-            mapStyle: mapStyle,
-          ),
-        ));
-}
 
 class $$MapSettingsTBTableFilterComposer
     extends FilterComposer<_$DB, $MapSettingsTBTable> {
@@ -1714,6 +1693,63 @@ class $$MapSettingsTBTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
+class $$MapSettingsTBTableTableManager extends RootTableManager<
+    _$DB,
+    $MapSettingsTBTable,
+    MapSettings,
+    $$MapSettingsTBTableFilterComposer,
+    $$MapSettingsTBTableOrderingComposer,
+    $$MapSettingsTBTableCreateCompanionBuilder,
+    $$MapSettingsTBTableUpdateCompanionBuilder,
+    (MapSettings, BaseReferences<_$DB, $MapSettingsTBTable, MapSettings>),
+    MapSettings,
+    PrefetchHooks Function()> {
+  $$MapSettingsTBTableTableManager(_$DB db, $MapSettingsTBTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$MapSettingsTBTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$MapSettingsTBTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<MapLayer?> mapLayer = const Value.absent(),
+            Value<MapStyle?> mapStyle = const Value.absent(),
+          }) =>
+              MapSettingsTBCompanion(
+            id: id,
+            mapLayer: mapLayer,
+            mapStyle: mapStyle,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<MapLayer?> mapLayer = const Value.absent(),
+            Value<MapStyle?> mapStyle = const Value.absent(),
+          }) =>
+              MapSettingsTBCompanion.insert(
+            id: id,
+            mapLayer: mapLayer,
+            mapStyle: mapStyle,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$MapSettingsTBTableProcessedTableManager = ProcessedTableManager<
+    _$DB,
+    $MapSettingsTBTable,
+    MapSettings,
+    $$MapSettingsTBTableFilterComposer,
+    $$MapSettingsTBTableOrderingComposer,
+    $$MapSettingsTBTableCreateCompanionBuilder,
+    $$MapSettingsTBTableUpdateCompanionBuilder,
+    (MapSettings, BaseReferences<_$DB, $MapSettingsTBTable, MapSettings>),
+    MapSettings,
+    PrefetchHooks Function()>;
 typedef $$AppSettingsTBTableCreateCompanionBuilder = AppSettingsTBCompanion
     Function({
   Value<int> id,
@@ -1726,45 +1762,6 @@ typedef $$AppSettingsTBTableUpdateCompanionBuilder = AppSettingsTBCompanion
   Value<String?> language,
   Value<int?> themeMode,
 });
-
-class $$AppSettingsTBTableTableManager extends RootTableManager<
-    _$DB,
-    $AppSettingsTBTable,
-    AppSettings,
-    $$AppSettingsTBTableFilterComposer,
-    $$AppSettingsTBTableOrderingComposer,
-    $$AppSettingsTBTableCreateCompanionBuilder,
-    $$AppSettingsTBTableUpdateCompanionBuilder> {
-  $$AppSettingsTBTableTableManager(_$DB db, $AppSettingsTBTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$AppSettingsTBTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$AppSettingsTBTableOrderingComposer(ComposerState(db, table)),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String?> language = const Value.absent(),
-            Value<int?> themeMode = const Value.absent(),
-          }) =>
-              AppSettingsTBCompanion(
-            id: id,
-            language: language,
-            themeMode: themeMode,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String?> language = const Value.absent(),
-            Value<int?> themeMode = const Value.absent(),
-          }) =>
-              AppSettingsTBCompanion.insert(
-            id: id,
-            language: language,
-            themeMode: themeMode,
-          ),
-        ));
-}
 
 class $$AppSettingsTBTableFilterComposer
     extends FilterComposer<_$DB, $AppSettingsTBTable> {
@@ -1804,6 +1801,63 @@ class $$AppSettingsTBTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
+class $$AppSettingsTBTableTableManager extends RootTableManager<
+    _$DB,
+    $AppSettingsTBTable,
+    AppSettings,
+    $$AppSettingsTBTableFilterComposer,
+    $$AppSettingsTBTableOrderingComposer,
+    $$AppSettingsTBTableCreateCompanionBuilder,
+    $$AppSettingsTBTableUpdateCompanionBuilder,
+    (AppSettings, BaseReferences<_$DB, $AppSettingsTBTable, AppSettings>),
+    AppSettings,
+    PrefetchHooks Function()> {
+  $$AppSettingsTBTableTableManager(_$DB db, $AppSettingsTBTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$AppSettingsTBTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$AppSettingsTBTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> language = const Value.absent(),
+            Value<int?> themeMode = const Value.absent(),
+          }) =>
+              AppSettingsTBCompanion(
+            id: id,
+            language: language,
+            themeMode: themeMode,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> language = const Value.absent(),
+            Value<int?> themeMode = const Value.absent(),
+          }) =>
+              AppSettingsTBCompanion.insert(
+            id: id,
+            language: language,
+            themeMode: themeMode,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$AppSettingsTBTableProcessedTableManager = ProcessedTableManager<
+    _$DB,
+    $AppSettingsTBTable,
+    AppSettings,
+    $$AppSettingsTBTableFilterComposer,
+    $$AppSettingsTBTableOrderingComposer,
+    $$AppSettingsTBTableCreateCompanionBuilder,
+    $$AppSettingsTBTableUpdateCompanionBuilder,
+    (AppSettings, BaseReferences<_$DB, $AppSettingsTBTable, AppSettings>),
+    AppSettings,
+    PrefetchHooks Function()>;
 typedef $$CategoriesTBTableCreateCompanionBuilder = CategoriesTBCompanion
     Function({
   Value<int> id,
@@ -1818,49 +1872,6 @@ typedef $$CategoriesTBTableUpdateCompanionBuilder = CategoriesTBCompanion
   Value<String> name,
   Value<String> emoji,
 });
-
-class $$CategoriesTBTableTableManager extends RootTableManager<
-    _$DB,
-    $CategoriesTBTable,
-    Categories,
-    $$CategoriesTBTableFilterComposer,
-    $$CategoriesTBTableOrderingComposer,
-    $$CategoriesTBTableCreateCompanionBuilder,
-    $$CategoriesTBTableUpdateCompanionBuilder> {
-  $$CategoriesTBTableTableManager(_$DB db, $CategoriesTBTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          filteringComposer:
-              $$CategoriesTBTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$CategoriesTBTableOrderingComposer(ComposerState(db, table)),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<int> color = const Value.absent(),
-            Value<String> name = const Value.absent(),
-            Value<String> emoji = const Value.absent(),
-          }) =>
-              CategoriesTBCompanion(
-            id: id,
-            color: color,
-            name: name,
-            emoji: emoji,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<int> color = const Value.absent(),
-            Value<String> name = const Value.absent(),
-            Value<String> emoji = const Value.absent(),
-          }) =>
-              CategoriesTBCompanion.insert(
-            id: id,
-            color: color,
-            name: name,
-            emoji: emoji,
-          ),
-        ));
-}
 
 class $$CategoriesTBTableFilterComposer
     extends FilterComposer<_$DB, $CategoriesTBTable> {
@@ -1909,6 +1920,68 @@ class $$CategoriesTBTableOrderingComposer
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
+
+class $$CategoriesTBTableTableManager extends RootTableManager<
+    _$DB,
+    $CategoriesTBTable,
+    Categories,
+    $$CategoriesTBTableFilterComposer,
+    $$CategoriesTBTableOrderingComposer,
+    $$CategoriesTBTableCreateCompanionBuilder,
+    $$CategoriesTBTableUpdateCompanionBuilder,
+    (Categories, BaseReferences<_$DB, $CategoriesTBTable, Categories>),
+    Categories,
+    PrefetchHooks Function()> {
+  $$CategoriesTBTableTableManager(_$DB db, $CategoriesTBTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$CategoriesTBTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$CategoriesTBTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int> color = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String> emoji = const Value.absent(),
+          }) =>
+              CategoriesTBCompanion(
+            id: id,
+            color: color,
+            name: name,
+            emoji: emoji,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int> color = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String> emoji = const Value.absent(),
+          }) =>
+              CategoriesTBCompanion.insert(
+            id: id,
+            color: color,
+            name: name,
+            emoji: emoji,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$CategoriesTBTableProcessedTableManager = ProcessedTableManager<
+    _$DB,
+    $CategoriesTBTable,
+    Categories,
+    $$CategoriesTBTableFilterComposer,
+    $$CategoriesTBTableOrderingComposer,
+    $$CategoriesTBTableCreateCompanionBuilder,
+    $$CategoriesTBTableUpdateCompanionBuilder,
+    (Categories, BaseReferences<_$DB, $CategoriesTBTable, Categories>),
+    Categories,
+    PrefetchHooks Function()>;
 
 class $DBManager {
   final _$DB _db;

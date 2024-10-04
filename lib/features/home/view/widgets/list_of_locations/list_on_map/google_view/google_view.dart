@@ -42,10 +42,7 @@ class _MapListState extends State<GoogleView> with TickerProviderStateMixin {
             Routes.root;
     return Consumer(
       builder: (context, ref, child) {
-        final editItem = ref.watch(selectedEditStateProviderForEditView);
-        final List<PlaceItemModel> data = editItem != null && !isHomeListOnMap
-            ? [editItem]
-            : ref.watch(filteredItemsProvider);
+        final List<PlaceItemModel> data = ref.watch(filteredItemsProvider);
 
         return Stack(
           children: [

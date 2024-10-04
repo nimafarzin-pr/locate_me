@@ -102,7 +102,7 @@ class _AddLocationViewState<T> extends ConsumerState<ShowDetailsScreen> {
 
                   title: CustomText.bodyLarge(selectedItem!.title,
                       customStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.surface)),
+                          color: Theme.of(context).colorScheme.onPrimary)),
                   actions: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -121,10 +121,10 @@ class _AddLocationViewState<T> extends ConsumerState<ShowDetailsScreen> {
                                     lat: selectedItem.latlng.latitude,
                                     lng: selectedItem.latlng.longitude);
                               },
-                              child: const Icon(
+                              child: Icon(
                                 Icons.share_rounded,
                                 size: 20,
-                                color: Colors.grey,
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
                           ),
@@ -198,7 +198,7 @@ class _AddLocationViewState<T> extends ConsumerState<ShowDetailsScreen> {
                                   customStyle: TextStyle(
                                       color: Theme.of(context)
                                           .colorScheme
-                                          .surface),
+                                          .onPrimary),
                                 ),
                               ],
                             ),
@@ -226,7 +226,7 @@ class _AddLocationViewState<T> extends ConsumerState<ShowDetailsScreen> {
                                     customStyle: TextStyle(
                                         color: Theme.of(context)
                                             .colorScheme
-                                            .surface),
+                                            .onPrimary),
                                   ),
                                 ),
                               ],
@@ -248,7 +248,7 @@ class _AddLocationViewState<T> extends ConsumerState<ShowDetailsScreen> {
                                   customStyle: TextStyle(
                                       color: Theme.of(context)
                                           .colorScheme
-                                          .surfaceContainer,
+                                          .onPrimary,
                                       fontSize: AppTextFontsAndSizing
                                           .bodyMediumFontSize),
                                 ),
