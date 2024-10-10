@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:locate_me/core/utils/icon_picker_utils.dart';
 import 'package:locate_me/features/setting/model/category_model.dart';
 
-import '../provider/app_settings_repository_provider.dart';
+import '../../provider/app_settings_repository_provider.dart';
 
 class CategoryNotifier extends AutoDisposeStreamNotifier<List<CategoryModel>> {
   @override

@@ -15,7 +15,7 @@ import 'package:locate_me/core/common_features/category/enums/category.dart'
 import 'package:locate_me/core/common_features/database/repository/location/location_repository_impl.dart'
     as _i11;
 import 'package:locate_me/features/add/repository/add_repository.dart' as _i10;
-import 'package:locate_me/features/add/view_model/add_location_notifier.dart'
+import 'package:locate_me/features/add/view/view_model/add_location_notifier.dart'
     as _i4;
 import 'package:locate_me/features/home/model/place_item_model.dart' as _i9;
 import 'package:mockito/mockito.dart' as _i1;

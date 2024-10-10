@@ -17,16 +17,16 @@ import 'package:locate_me/features/setting/model/category_model.dart';
 
 import 'package:locate_me/generated/locale_keys.g.dart';
 
-import '../../../core/common_features/map/core/enums/map_enum.dart';
-import '../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
-import '../../../core/widget/ads_widget.dart';
-import '../../../core/widget/custom_switch.dart';
-import '../../../core/widget/dialogs/dialog_wrapper.dart';
-import '../../../core/widget/dialogs/status_widget.dart';
-import '../../setting/provider/category_notifier_provider.dart';
-import '../provider/home_screen_provider.dart';
-import 'widgets/list_of_locations/list_on_map/google_view/google_view.dart';
-import 'widgets/list_of_locations/normal_list/default_list.dart';
+import '../../../../core/common_features/map/core/enums/map_enum.dart';
+import '../../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
+import '../../../../core/widget/ads_widget.dart';
+import '../../../../core/widget/custom_switch.dart';
+import '../../../../core/widget/dialogs/dialog_wrapper.dart';
+import '../../../../core/widget/dialogs/status_widget.dart';
+import '../../../setting/provider/category_notifier_provider.dart';
+import '../../provider/home_screen_provider.dart';
+import '../widgets/list_of_locations/list_on_map/google_view/google_view.dart';
+import '../widgets/list_of_locations/normal_list/default_list.dart';
 
 class HomeTab extends ConsumerStatefulWidget {
   const HomeTab({super.key});

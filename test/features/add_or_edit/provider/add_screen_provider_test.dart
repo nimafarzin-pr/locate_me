@@ -8,7 +8,7 @@ import 'package:locate_me/core/common_features/map/core/google_map/model/dto/sin
 import 'package:locate_me/core/common_features/map/core/google_map/provider/location_provider.dart';
 import 'package:locate_me/features/add/provider/add_screen_provider.dart';
 import 'package:locate_me/features/add/repository/add_repository.dart';
-import 'package:locate_me/features/add/view_model/add_location_notifier.dart';
+import 'package:locate_me/features/add/view/view_model/add_location_notifier.dart';
 import 'package:mockito/annotations.dart';
 import 'package:latlong2/latlong.dart' as latLang2;
 

@@ -9,13 +9,13 @@ import 'package:locate_me/features/setting/view/widgets/items/import.dart';
 
 import 'package:locate_me/generated/locale_keys.g.dart';
 
-import '../../../core/widget/ads_widget.dart';
-import '../model/dto/setting_item_dto.dart';
-import '../provider/export_import_notifier.dart';
-import 'widgets/items/export.dart';
-import 'widgets/items/language.dart';
-import 'widgets/items/map.dart';
-import 'widgets/items/theme.dart';
+import '../../../../core/widget/ads_widget.dart';
+import '../../model/dto/setting_item_dto.dart';
+import '../../provider/export_import_notifier.dart';
+import '../widgets/items/export.dart';
+import '../widgets/items/language.dart';
+import '../widgets/items/map.dart';
+import '../widgets/items/theme.dart';
 
 class SettingsTab extends ConsumerStatefulWidget {
   const SettingsTab({super.key});

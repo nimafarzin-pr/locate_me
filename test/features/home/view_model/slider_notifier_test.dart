@@ -9,7 +9,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:locate_me/features/home/model/dto/slider_notifier_dto.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 import 'package:locate_me/features/home/provider/home_screen_provider.dart';
-import 'package:locate_me/features/home/view_model/slider_notifier.dart';
+import 'package:locate_me/features/home/view/view_model/slider_notifier.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../riverpod_test_utils/riverpod_test_utils.dart';

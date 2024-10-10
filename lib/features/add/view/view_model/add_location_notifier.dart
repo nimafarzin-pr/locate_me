@@ -8,7 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:latlong2/latlong.dart' as latLang2;
 import 'package:locate_me/features/home/model/place_item_model.dart';
 
-import '../provider/add_screen_provider.dart';
+import '../../provider/add_screen_provider.dart';
 
 class AddLocationNotifier extends AsyncNotifier<latLang2.LatLng> {
   @override
