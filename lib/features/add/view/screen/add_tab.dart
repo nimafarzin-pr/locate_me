@@ -8,15 +8,15 @@ import 'package:locate_me/features/add/view/widgets/osm.dart';
 
 import 'package:locate_me/generated/locale_keys.g.dart';
 
-import '../../../core/common_features/map/core/google_map/provider/permission_provider.dart';
-import '../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
-import '../../../core/widget/ads_widget.dart';
-import '../../../core/widget/dialogs/permission.dart';
-import '../../../core/widget/dialogs/status_widget.dart';
+import '../../../../core/common_features/map/core/google_map/provider/permission_provider.dart';
+import '../../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
+import '../../../../core/widget/ads_widget.dart';
+import '../../../../core/widget/dialogs/permission.dart';
+import '../../../../core/widget/dialogs/status_widget.dart';
 
 import 'package:app_settings/app_settings.dart';
 
-import 'widgets/google.dart';
+import '../widgets/google.dart';
 
 class AddTab extends ConsumerStatefulWidget {
   const AddTab({super.key});

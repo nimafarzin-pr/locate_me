@@ -3,11 +3,11 @@ import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/navigation/routes.dart';
 import 'package:locate_me/core/widget/background_wrapper.dart';
 import 'package:locate_me/core/widget/navigation_scafold.dart';
-import 'package:locate_me/features/home/view/home_tab.dart';
-import 'package:locate_me/features/setting/view/setting_tab.dart';
+import 'package:locate_me/features/home/view/screen/home_tab.dart';
+import 'package:locate_me/features/setting/view/screen/setting_tab.dart';
 import 'package:locate_me/features/setting/view/widgets/items/category/category_list.dart';
 
-import '../../../features/add/view/add_tab.dart';
+import '../../../features/add/view/screen/add_tab.dart';
 import '../../../features/home/model/place_item_model.dart';
 import '../../../features/home/view/widgets/details_view.dart';
 import '../../../features/home/view/widgets/edit/edit_view.dart';
