@@ -91,7 +91,7 @@ dependencies:
   flutter_dotenv: ^5.1.0
   adivery: ^4.2.0
   plugin_platform_interface: ^2.1.8
-  # supabase_flutter: ^2.8.0
+  supabase_flutter: ^2.8.0
   # supabase_auth_ui: ^0.5.2
   # mapbox_maps_flutter: ^2.2.0
   # mapbox_maps_flutter: ^2.2.0
@@ -150,6 +150,7 @@ flutter:
     - assets/background/
     - assets/translations/
     - assets/logo/
+    - assets/icon/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

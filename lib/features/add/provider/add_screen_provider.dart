@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/common_features/database/provider/db_provider.dart';
+import '../../../core/common_features/database/local/provider/db_provider.dart';
 import '../repository/add_repository.dart';
 import '../view/view_model/add_location_notifier.dart';
 import 'dart:async';

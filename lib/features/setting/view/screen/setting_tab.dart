@@ -3,15 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:locate_me/core/extension/theme_extension.dart';
 import 'package:locate_me/core/navigation/routes.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
+import 'package:locate_me/core/widget/dialogs/status_widget.dart';
+import 'package:locate_me/core/widget/loading.dart';
+import 'package:locate_me/features/login/provider/auth_notifier_provider.dart';
 import 'package:locate_me/features/setting/view/widgets/items/import.dart';
 
 import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../../../../core/widget/ads_widget.dart';
+import '../../../../core/widget/animation/fade_in_scale_animation.dart';
+import '../../../../core/widget/dialogs/dialog_wrapper.dart';
 import '../../model/dto/setting_item_dto.dart';
-import '../../provider/export_import_notifier.dart';
+import '../../provider/settings_provider.dart';
 import '../widgets/items/export.dart';
 import '../widgets/items/language.dart';
 import '../widgets/items/map.dart';
@@ -73,6 +79,57 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
     super.dispose();
   }
 
+  Future<void> signOut() async {
+    final authNotifier = ref.read(authNotifierProvider.notifier);
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return FadeInScaleAnimation(
+          child: DialogWrapper(
+            dismissible: false,
+            child: Consumer(
+              builder: (context, ref, child) {
+                final authStatus = ref.watch(authNotifierProvider);
+                if (authStatus.isLoading) {
+                  return const Center(child: MyLoading());
+                } else if (authStatus.hasValue &&
+                    !(authStatus.value!.isAuthenticated)) {
+                  return StatusWidget(
+                    title: "",
+                    iconColor: Theme.of(context).colorScheme.success,
+                    content: LocaleKeys.success_full_action.tr(),
+                    showCancelButton: false,
+                    onConfirm: () async {
+                      context.go(Routes.signInRouteForNavigator);
+                    },
+                  );
+                } else if (authStatus.hasError) {
+                  return StatusWidget(
+                    title: LocaleKeys.import.tr(),
+                    iconColor: Theme.of(context).colorScheme.error,
+                    content: authStatus.error.toString(),
+                    showCancelButton: false,
+                    onConfirm: () async {
+                      Navigator.pop(context);
+                    },
+                  );
+                } else {
+                  return Center(
+                      child: MyLoading(
+                    color: Theme.of(context).colorScheme.primary,
+                  ));
+                }
+              },
+            ),
+          ),
+        );
+      },
+    );
+
+    await authNotifier.signOut();
+  }
+
   @override
   Widget build(BuildContext rootContext) {
     return Scaffold(
@@ -81,6 +138,33 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
         backgroundColor: Colors.transparent,
         // elevation: 4,
         toolbarHeight: 60,
+        leading: IconButton(
+            onPressed: () async {
+              await showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (mContext) {
+                  return Center(
+                    child: SizedBox(
+                      height: 300,
+                      width: 400,
+                      child: StatusWidget(
+                          iconColor: Theme.of(context).colorScheme.warning,
+                          title: LocaleKeys.warning.tr(),
+                          showCancelButton: true,
+                          content: LocaleKeys.logout.tr(),
+                          onConfirm: () async {
+                            Navigator.pop(mContext);
+                            await signOut();
+                          }),
+                    ),
+                  );
+                },
+              );
+
+              // navigate to login screen after sign-out
+            },
+            icon: const Icon(Icons.logout_rounded)),
         title: Center(
             child: CustomText.headlineSmall(
           LocaleKeys.settings.tr(),

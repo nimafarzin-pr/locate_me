@@ -1,4 +1,4 @@
-import 'package:locate_me/core/common_features/database/repository/location/location_repository_impl.dart';
+import 'package:locate_me/core/common_features/database/local/repository/location/location_repository_impl.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 
 class HomeScreenRepository {

@@ -7,7 +7,7 @@ import 'dart:async' as _i3;
 
 import 'package:locate_me/core/common_features/category/enums/category.dart'
     as _i5;
-import 'package:locate_me/core/common_features/database/repository/location/location_repository_impl.dart'
+import 'package:locate_me/core/common_features/database/local/repository/location/location_repository_impl.dart'
     as _i2;
 import 'package:locate_me/features/home/model/place_item_model.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;

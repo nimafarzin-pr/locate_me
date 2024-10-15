@@ -1,16 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/constant/constant_names.dart';
 import 'package:locate_me/core/widget/loading.dart';
-import 'package:locate_me/features/setting/provider/language_notifier_provider.dart';
 import 'package:locate_me/features/setting/view/widgets/setting_item_tile.dart';
 
 import '../../../../../core/widget/custom_text.dart';
 import '../../../../../core/widget/dialogs/status_widget.dart';
 import '../../../../../core/widget/animation/fade_in_scale_animation.dart';
 import '../../../../../generated/locale_keys.g.dart';
+import '../../../provider/settings_provider.dart';
 
 void showLanguageModal(BuildContext context) {
   showDialog(

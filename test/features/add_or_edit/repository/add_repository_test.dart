@@ -3,7 +3,7 @@ import 'package:locate_me/features/add/repository/add_repository.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
-import 'package:locate_me/core/common_features/database/repository/location/location_repository_impl.dart';
+import 'package:locate_me/core/common_features/database/local/repository/location/location_repository_impl.dart';
 
 import 'add_repository_test.mocks.dart';
 

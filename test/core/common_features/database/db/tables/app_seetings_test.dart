@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:locate_me/core/common_features/database/db/db.dart';
+import 'package:locate_me/core/common_features/database/local/db/db.dart';
 
 void main() {
   late DB db;

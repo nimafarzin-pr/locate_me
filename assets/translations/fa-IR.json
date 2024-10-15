@@ -112,7 +112,17 @@
     "latitude":"عرض جغرافیایی",
     "longitude":"طول جغرافیایی",
     "warning":"اخطار",
-    "exist_dialog_message":"آیا میخواهید از برنامه خارج شوید؟"
+    "exist_dialog_message":"آیا میخواهید از برنامه خارج شوید؟",
+    "success_full_action":"عملیات با موفقیت انجام شد",
+    "successFull_login":"ورود با موفقیت انجام شد!",
+    "successFull_signUp":"ثبت نام با موفقیت انجام شد",
+    "signIn":"ورود",
+    "signUp":"ثبت نام",
+    "not_register_user_txt":"حساب ندارید؟ ثبت نام کنید",
+    "register_user_txt":"حساب دارید؟ وارد شوید",
+    "logout":"آیا میخواهید از حساب خود خارج شوید"
+
+
 
 
 

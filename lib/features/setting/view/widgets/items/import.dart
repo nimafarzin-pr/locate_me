@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/extension/theme_extension.dart';
 import 'package:locate_me/core/widget/dialogs/dialog_wrapper.dart';
 import 'package:locate_me/core/widget/loading.dart';
@@ -9,7 +8,7 @@ import 'package:locate_me/core/widget/loading.dart';
 import '../../../../../core/widget/dialogs/status_widget.dart';
 import '../../../../../core/widget/animation/fade_in_scale_animation.dart';
 import '../../../../../generated/locale_keys.g.dart';
-import '../../../provider/export_import_notifier.dart';
+import '../../../provider/settings_provider.dart';
 
 Future<void> showImportModal(BuildContext context) async {
   await showDialog(

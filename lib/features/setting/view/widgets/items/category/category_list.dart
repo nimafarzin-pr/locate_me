@@ -12,9 +12,9 @@ import 'package:locate_me/core/widget/dialogs/status_widget.dart';
 import 'package:locate_me/core/widget/empty_box.dart';
 import 'package:locate_me/core/widget/animation/fade_in_scale_animation.dart';
 import 'package:locate_me/core/widget/loading.dart';
-import 'package:locate_me/features/setting/provider/category_notifier_provider.dart';
 import 'package:locate_me/features/setting/view/widgets/items/category/add_category_view.dart';
 
+import '../../../../../../core/common_features/category/provider/category_provider.dart';
 import '../../../../../../core/widget/dialogs/warning_dialog.dart';
 import '../../../../../../generated/locale_keys.g.dart';
 

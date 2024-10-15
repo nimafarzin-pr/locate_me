@@ -25,7 +25,7 @@ import '../../../../../../../core/widget/custom_dropdwon_button.dart';
 import '../../../../../../../core/widget/custom_textfeild.dart';
 import '../../../../../../../core/widget/dialogs/status_widget.dart';
 import '../../../../../../../core/widget/animation/fade_in_scale_animation.dart';
-import '../../../../../setting/provider/category_notifier_provider.dart';
+import '../../../../../../core/common_features/category/provider/category_provider.dart';
 import '../../../../provider/home_screen_provider.dart';
 
 class EditLocationFormView<T> extends ConsumerStatefulWidget {

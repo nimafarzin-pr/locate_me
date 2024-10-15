@@ -8,7 +8,7 @@ import 'package:locate_me/generated/locale_keys.g.dart';
 import '../../../../../core/enums/enums.dart';
 import '../../../../../core/widget/custom_text.dart';
 import '../../../../../core/widget/animation/fade_in_scale_animation.dart';
-import '../../../provider/theme_notifier_provider.dart';
+import '../../../provider/settings_provider.dart';
 import '../setting_item_tile.dart';
 
 Future<void> showThemeModal(BuildContext context) async {

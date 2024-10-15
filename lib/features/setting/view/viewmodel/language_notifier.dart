@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:locate_me/features/setting/provider/app_settings_repository_provider.dart';
+
+import '../../provider/settings_provider.dart';
 
 class LanguageNotifier extends AsyncNotifier<String> {
   @override

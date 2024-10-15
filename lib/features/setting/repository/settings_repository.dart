@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:locate_me/core/common_features/database/repository/app_settings/app_settings_repository_impl.dart';
+import 'package:locate_me/core/common_features/database/local/repository/app_settings/app_settings_repository_impl.dart';
 import 'package:locate_me/features/home/model/place_item_model.dart';
 import 'package:locate_me/features/setting/model/category_model.dart';
 

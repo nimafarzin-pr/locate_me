@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../features/setting/provider/language_notifier_provider.dart';
+import '../../features/setting/provider/settings_provider.dart';
 
 class CustomBackIcon extends StatelessWidget {
   const CustomBackIcon({

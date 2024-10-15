@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:locate_me/core/common_features/database/db/db.dart'; // Your DB class location
+import 'package:locate_me/core/common_features/database/local/db/db.dart'; // Your DB class location
 import 'package:drift/native.dart';
 
 void main() {
