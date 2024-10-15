@@ -28,6 +28,7 @@ class CustomTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final bool autofocus;
   final TextAlign textAlign;
+  final bool obscureText;
   // Add any other properties you might need
 
   const CustomTextField({
@@ -52,6 +53,7 @@ class CustomTextField extends StatelessWidget {
     this.focusNode,
     this.autofocus = false,
     this.textAlign = TextAlign.start,
+    this.obscureText = false,
   });
 
   @override
@@ -59,6 +61,7 @@ class CustomTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
+        obscureText: obscureText,
         textAlign: textAlign,
         style: TextStyle(
             fontSize: AppTextFontsAndSizing.bodySmallFontSize,

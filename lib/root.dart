@@ -8,14 +8,18 @@ import 'core/navigation/router/router.dart';
 import 'core/theme/theme.dart';
 import 'core/widget/dialogs/status_widget.dart';
 import 'core/widget/loading.dart';
-import 'features/setting/provider/language_notifier_provider.dart';
-import 'features/setting/provider/theme_notifier_provider.dart';
+import 'features/setting/provider/settings_provider.dart';
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  @override
+  Widget build(BuildContext context) {
     final themeMode = ref.watch(themeNotifierProvider);
     final currentLanguage = ref.watch(languageNotifierProvider);
     ThemeMode getThemeMode(AppThemeMode mode) {

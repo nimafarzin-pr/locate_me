@@ -9,7 +9,7 @@ import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../../../../core/riverpod/riverpod_actions_common_state.dart';
 import '../../../home/model/place_item_model.dart';
-import '../../provider/app_settings_repository_provider.dart';
+import '../../provider/settings_provider.dart';
 
 class ImportNotifier extends Notifier<RiverpodActionsCommonState> {
   Future<void> importData() async {

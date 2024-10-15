@@ -16,6 +16,7 @@ import '../../../../core/widget/dialogs/status_widget.dart';
 
 import 'package:app_settings/app_settings.dart';
 
+import '../../../../core/widget/error_widget_box.dart';
 import '../widgets/google.dart';
 
 class AddTab extends ConsumerStatefulWidget {
@@ -33,7 +34,8 @@ class _AddTabState extends ConsumerState<AddTab> {
       AsyncValue(:final SystemAndPermissionStatus error?) => Builder(
           builder: (_) {
             if (error == SystemAndPermissionStatus.systemLocationDisable) {
-              return errorWidget(
+              return ErrorWidgetBox(
+                content: LocaleKeys.disabled_location_and_permission_error.tr(),
                 buttonTitle: LocaleKeys.enable.tr(),
                 context: context,
                 onConfirm: () async {
@@ -45,7 +47,8 @@ class _AddTabState extends ConsumerState<AddTab> {
               );
             } else if (error == SystemAndPermissionStatus.permissionDenied ||
                 error == SystemAndPermissionStatus.permissionDeniedForEver) {
-              return errorWidget(
+              return ErrorWidgetBox(
+                content: LocaleKeys.disabled_location_and_permission_error.tr(),
                 buttonTitle: LocaleKeys.refresh_accept.tr(),
                 context: context,
                 onConfirm: () async {
@@ -105,25 +108,5 @@ class _AddTabState extends ConsumerState<AddTab> {
         ),
       _ => const MyLoading(),
     };
-  }
-
-  Center errorWidget({
-    required Future<void> Function()? onConfirm,
-    required BuildContext context,
-    required String buttonTitle,
-  }) {
-    return Center(
-      child: IntrinsicHeight(
-        child: Center(
-          child: StatusWidget(
-              onConfirm: onConfirm,
-              acceptButtonTitle: buttonTitle,
-              showCancelButton: false,
-              title: LocaleKeys.error.tr(),
-              content: LocaleKeys.disabled_location_and_permission_error.tr(),
-              iconColor: Theme.of(context).colorScheme.error),
-        ),
-      ),
-    );
   }
 }

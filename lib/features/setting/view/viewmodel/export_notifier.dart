@@ -11,8 +11,7 @@ import '../../../../core/riverpod/riverpod_actions_common_state.dart';
 import '../../../../core/utils/date_converter.dart';
 import '../../../../core/utils/encrypt_utils.dart';
 import '../../../../core/utils/permissions.dart';
-import '../../provider/app_settings_repository_provider.dart';
-import '../../provider/language_notifier_provider.dart';
+import '../../provider/settings_provider.dart';
 
 class ExportNotifier extends AutoDisposeNotifier<RiverpodActionsCommonState> {
   Future<void> exportData(String fileName) async {

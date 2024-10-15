@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:locate_me/features/home/view/view_model/category_notifier.dart';
 import 'package:locate_me/features/setting/model/category_model.dart';
 
-import '../../../core/common_features/database/provider/db_provider.dart';
+import '../../../core/common_features/database/local/provider/db_provider.dart';
 import '../../../core/common_features/map/core/enums/map_enum.dart';
 import '../../../core/common_features/search_debouncing/search_debouncing_notifier.dart';
 import '../model/dto/slider_notifier_dto.dart';

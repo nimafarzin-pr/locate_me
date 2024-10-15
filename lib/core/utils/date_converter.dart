@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 
-import '../../features/setting/provider/language_notifier_provider.dart';
+import '../../features/setting/provider/settings_provider.dart';
 
 class DateConverter {
   // Convert ISO8601 string to Shamsi (Jalali) date string

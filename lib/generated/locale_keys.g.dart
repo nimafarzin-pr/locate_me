@@ -114,5 +114,13 @@ abstract class  LocaleKeys {
   static const longitude = 'longitude';
   static const warning = 'warning';
   static const exist_dialog_message = 'exist_dialog_message';
+  static const success_full_action = 'success_full_action';
+  static const successFull_login = 'successFull_login';
+  static const successFull_signUp = 'successFull_signUp';
+  static const signIn = 'signIn';
+  static const signUp = 'signUp';
+  static const not_register_user_txt = 'not_register_user_txt';
+  static const register_user_txt = 'register_user_txt';
+  static const logout = 'logout';
 
 }

@@ -1,6 +1,6 @@
 import 'package:locate_me/features/home/model/place_item_model.dart';
 
-import '../../../core/common_features/database/repository/location/location_repository_impl.dart';
+import '../../../core/common_features/database/local/repository/location/location_repository_impl.dart';
 
 class AddRepository {
   final LocationRepositoryImpl _locationRepositoryImpl;

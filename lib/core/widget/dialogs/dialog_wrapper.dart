@@ -1,16 +1,17 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:locate_me/core/extension/screen_size_extension.dart';
 
 class DialogWrapper extends StatelessWidget {
   final Widget child;
+  final bool dismissible;
   final double? height;
   const DialogWrapper({
     super.key,
     required this.child,
+    this.dismissible = true,
     this.height,
   });
 
@@ -22,7 +23,9 @@ class DialogWrapper extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                Navigator.pop(context);
+                if (dismissible) {
+                  Navigator.pop(context);
+                }
               },
             ),
             Center(

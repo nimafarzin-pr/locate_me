@@ -13,8 +13,7 @@ import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../../../../../../core/widget/custom_text.dart';
 import '../../../../../../core/widget/animation/fade_in_scale_animation.dart';
-
-import '../../../../provider/app_settings_repository_provider.dart';
+import '../../../../provider/settings_provider.dart';
 
 Future<void> showAddCategoryModal(BuildContext context) async {
   await showDialog(

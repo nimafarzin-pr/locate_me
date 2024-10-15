@@ -15,4 +15,5 @@ class MyIcons {
   static const String metro = 'assets/category/metro.png';
   static const String allCategory = 'assets/category/all.png';
   static const String travel = 'assets/category/travel.png';
+  static const String logo = 'assets/icon/icon.png';
 }

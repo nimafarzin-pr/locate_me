@@ -12,7 +12,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart' as _i8;
 import 'package:latlong2/latlong.dart' as _i2;
 import 'package:locate_me/core/common_features/category/enums/category.dart'
     as _i12;
-import 'package:locate_me/core/common_features/database/repository/location/location_repository_impl.dart'
+import 'package:locate_me/core/common_features/database/local/repository/location/location_repository_impl.dart'
     as _i11;
 import 'package:locate_me/features/add/repository/add_repository.dart' as _i10;
 import 'package:locate_me/features/add/view/view_model/add_location_notifier.dart'

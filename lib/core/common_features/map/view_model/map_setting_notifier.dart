@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:locate_me/core/common_features/map/provider/map_setting_provider.dart';
 
-import '../../database/provider/db_provider.dart';
+import '../../database/local/provider/db_provider.dart';
 import '../model/map_settings_model.dart';
 
 class MapSettingNotifier extends AutoDisposeAsyncNotifier<MapSettingsModel> {

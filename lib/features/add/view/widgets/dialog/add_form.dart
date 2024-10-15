@@ -20,12 +20,12 @@ import 'package:locate_me/features/home/model/place_item_model.dart';
 import 'package:locate_me/features/setting/model/category_model.dart';
 import 'package:locate_me/generated/locale_keys.g.dart';
 
+import '../../../../../core/common_features/category/provider/category_provider.dart';
 import '../../../../../core/widget/accept_button/custom_accept_button.dart';
 import '../../../../../core/widget/custom_dropdwon_button.dart';
 import '../../../../../core/widget/custom_textfeild.dart';
 import '../../../../../core/widget/dialogs/status_widget.dart';
 import '../../../../../core/widget/animation/fade_in_scale_animation.dart';
-import '../../../../setting/provider/category_notifier_provider.dart';
 
 class AddLocationFormView<T> extends ConsumerStatefulWidget {
   final LatLng latLng;

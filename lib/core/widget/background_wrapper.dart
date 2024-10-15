@@ -4,8 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:locate_me/core/enums/enums.dart';
 import 'package:locate_me/core/widget/dialogs/status_widget.dart';
 import 'package:locate_me/core/widget/loading.dart';
-import 'package:locate_me/features/setting/provider/theme_notifier_provider.dart';
 import 'package:locate_me/generated/locale_keys.g.dart';
+
+import '../../features/setting/provider/settings_provider.dart';
 
 class BackgroundWrapper extends ConsumerWidget {
   final Widget child;
