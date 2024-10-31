@@ -79,57 +79,6 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
     super.dispose();
   }
 
-  Future<void> signOut() async {
-    final authNotifier = ref.read(authNotifierProvider.notifier);
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return FadeInScaleAnimation(
-          child: DialogWrapper(
-            dismissible: false,
-            child: Consumer(
-              builder: (context, ref, child) {
-                final authStatus = ref.watch(authNotifierProvider);
-                if (authStatus.isLoading) {
-                  return const Center(child: MyLoading());
-                } else if (authStatus.hasValue &&
-                    !(authStatus.value!.isAuthenticated)) {
-                  return StatusWidget(
-                    title: "",
-                    iconColor: Theme.of(context).colorScheme.success,
-                    content: LocaleKeys.success_full_action.tr(),
-                    showCancelButton: false,
-                    onConfirm: () async {
-                      context.go(Routes.signInRouteForNavigator);
-                    },
-                  );
-                } else if (authStatus.hasError) {
-                  return StatusWidget(
-                    title: LocaleKeys.import.tr(),
-                    iconColor: Theme.of(context).colorScheme.error,
-                    content: authStatus.error.toString(),
-                    showCancelButton: false,
-                    onConfirm: () async {
-                      Navigator.pop(context);
-                    },
-                  );
-                } else {
-                  return Center(
-                      child: MyLoading(
-                    color: Theme.of(context).colorScheme.primary,
-                  ));
-                }
-              },
-            ),
-          ),
-        );
-      },
-    );
-
-    await authNotifier.signOut();
-  }
-
   @override
   Widget build(BuildContext rootContext) {
     return Scaffold(
@@ -138,33 +87,7 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
         backgroundColor: Colors.transparent,
         // elevation: 4,
         toolbarHeight: 60,
-        leading: IconButton(
-            onPressed: () async {
-              await showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (mContext) {
-                  return Center(
-                    child: SizedBox(
-                      height: 300,
-                      width: 400,
-                      child: StatusWidget(
-                          iconColor: Theme.of(context).colorScheme.warning,
-                          title: LocaleKeys.warning.tr(),
-                          showCancelButton: true,
-                          content: LocaleKeys.logout.tr(),
-                          onConfirm: () async {
-                            Navigator.pop(mContext);
-                            await signOut();
-                          }),
-                    ),
-                  );
-                },
-              );
 
-              // navigate to login screen after sign-out
-            },
-            icon: const Icon(Icons.logout_rounded)),
         title: Center(
             child: CustomText.headlineSmall(
           LocaleKeys.settings.tr(),
