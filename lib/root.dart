@@ -52,7 +52,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (_, child) {
+      builder: (context, child) {
         return currentLanguage.when(
           data: (locale) {
             context.setLocale(Locale(locale, locale == 'fa' ? 'IR' : 'US'));
@@ -82,7 +82,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     return MaterialApp.router(
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
-      locale: Locale(language, language == 'fa' ? 'IR' : 'US'),
+      locale: Locale(language ?? 'fa', language == 'fa' ? 'IR' : 'US'),
       routeInformationParser: router.routeInformationParser,
       routeInformationProvider: router.routeInformationProvider,
       routerDelegate: router.routerDelegate,

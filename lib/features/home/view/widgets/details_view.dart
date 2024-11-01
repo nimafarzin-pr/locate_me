@@ -112,6 +112,7 @@ class _AddLocationViewState<T> extends ConsumerState<ShowDetailsScreen> {
                             width: 40,
                             height: 40,
                             child: FloatingActionButton(
+                              elevation: 2,
                               backgroundColor:
                                   Theme.of(context).colorScheme.surface,
                               onPressed: () async {
@@ -136,11 +137,19 @@ class _AddLocationViewState<T> extends ConsumerState<ShowDetailsScreen> {
                                 backgroundColor:
                                     Theme.of(context).colorScheme.surface,
                                 onPressed: () async {
-                                  await ShareUtils.shareLocation(
-                                      markerLabel: selectedItem.title,
-                                      context: context,
-                                      lat: selectedItem.latlng.latitude,
-                                      lng: selectedItem.latlng.longitude);
+                                  if (selectedItem.id == null) return;
+                                  ref
+                                      .read(selectedEditStateProviderForEditView
+                                          .notifier)
+                                      .setEditItem(
+                                        selectedItem.copyWith(
+                                            isFavorite:
+                                                !selectedItem.isFavorite),
+                                      );
+                                  ref
+                                      .read(favoriteFilterProvider.notifier)
+                                      .updateFavoriteStatus(
+                                          id: selectedItem.id!);
                                 },
                                 child: CustomFavoriteIconButton(
                                   iconSize: 20,
