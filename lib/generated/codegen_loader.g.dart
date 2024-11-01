@@ -128,7 +128,15 @@ class CodegenLoader extends AssetLoader{
   "latitude": "عرض جغرافیایی",
   "longitude": "طول جغرافیایی",
   "warning": "اخطار",
-  "exist_dialog_message": "آیا میخواهید از برنامه خارج شوید؟"
+  "exist_dialog_message": "آیا میخواهید از برنامه خارج شوید؟",
+  "success_full_action": "عملیات با موفقیت انجام شد",
+  "successFull_login": "ورود با موفقیت انجام شد!",
+  "successFull_signUp": "ثبت نام با موفقیت انجام شد",
+  "signIn": "ورود",
+  "signUp": "ثبت نام",
+  "not_register_user_txt": "حساب ندارید؟ ثبت نام کنید",
+  "register_user_txt": "حساب دارید؟ وارد شوید",
+  "logout": "آیا میخواهید از حساب خود خارج شوید"
 };
 static const Map<String,dynamic> en_US = {
   "settings": "Settings",
@@ -244,7 +252,15 @@ static const Map<String,dynamic> en_US = {
   "latitude": "Latitude",
   "longitude": "Longitude",
   "warning": "warning",
-  "exist_dialog_message": "do you wanna exist from app?"
+  "exist_dialog_message": "do you wanna exist from app?",
+  "success_full_action": "The operation was successful",
+  "successFull_login": "Sign-in successful!",
+  "successFull_signUp": "Sign-up successful!",
+  "signIn": "Sign In",
+  "signUp": "Sign Up",
+  "not_register_user_txt": "Don\\'t have an account? Sign Up",
+  "register_user_txt": "Have an account? Sign In",
+  "logout": "Do you want to log out of your account?"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"fa_IR": fa_IR, "en_US": en_US};
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:locate_me/core/widget/animation/color_animation.dart';
+import 'package:locate_me/core/widget/custom_text.dart';
 
 class CustomSwitch extends StatelessWidget {
   final String labelOne;
@@ -124,9 +125,9 @@ class SwitchItem extends HookWidget {
                     ],
                   )
                 : const SizedBox(),
-            Text(
+            CustomText.bodySmall(
               label,
-              style: TextStyle(
+              customStyle: TextStyle(
                 color: isActive
                     ? Theme.of(context).colorScheme.onSecondary
                     : Theme.of(context).colorScheme.onSurface,
