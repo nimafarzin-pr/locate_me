@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:locate_me/features/login_register/view/local_screen/screen/login.dart';
+import 'package:locate_me/features/login_register/view/local_screen/screen/set_password.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:locate_me/core/navigation/routes.dart';
 import 'package:locate_me/core/widget/background_wrapper.dart';
@@ -10,6 +12,7 @@ import 'package:locate_me/features/setting/view/widgets/items/category/category_
 import '../../../features/add/view/screen/add_tab.dart';
 import '../../../features/home/view/widgets/details_view.dart';
 import '../../../features/home/view/widgets/edit/edit_view.dart';
+import '../../../features/login_register/view/local_screen/screen/splash.dart';
 
 // Private navigators
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -19,28 +22,48 @@ final _shellNavigatorSettingKey =
     GlobalKey<NavigatorState>(debugLabel: 'settings');
 
 // Helper function to check Supabase session state
-bool isUserLoggedIn() {
-  return Supabase.instance.client.auth.currentSession != null;
-}
 
 final router = GoRouter(
   initialLocation: Routes.root,
   navigatorKey: _rootNavigatorKey,
   debugLogDiagnostics: true,
   routes: [
-    // The rest of your routes with Shell Navigation
+    GoRoute(
+      path: Routes.root,
+      name: Routes.root,
+      pageBuilder: (context, state) => NoTransitionPage(
+        key: state.pageKey,
+        child: const SplashScreen(),
+      ),
+      // redirect: (context, state) => false ? Routes.root : Routes.login,
+    ),
+    GoRoute(
+      path: Routes.loginRouteForNavigator,
+      name: Routes.login,
+      pageBuilder: (context, state) => NoTransitionPage(
+        key: state.pageKey,
+        child: const BackgroundWrapper(child: LocalLoginScreen()),
+      ),
+    ),
+    GoRoute(
+      path: Routes.setPasswordRouteForNavigator,
+      name: Routes.setPassword,
+      pageBuilder: (context, state) => NoTransitionPage(
+        key: state.pageKey,
+        child: const BackgroundWrapper(child: SetPasswordScreen()),
+      ),
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return ScaffoldWithNestedNavigation(navigationShell: navigationShell);
       },
       branches: [
-        // Home Branch (A)
         StatefulShellBranch(
           navigatorKey: _shellNavigatorHomeKey,
           routes: [
             GoRoute(
-              path: Routes.root,
-              name: Routes.root,
+              path: Routes.home,
+              name: Routes.home,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
                 child: const BackgroundWrapper(child: HomeTab()),
@@ -66,7 +89,6 @@ final router = GoRouter(
             ),
           ],
         ),
-        // Add Branch (B)
         StatefulShellBranch(
           navigatorKey: _shellNavigatorAddKey,
           routes: [
@@ -80,7 +102,6 @@ final router = GoRouter(
             ),
           ],
         ),
-        // Settings Branch (C)
         StatefulShellBranch(
           navigatorKey: _shellNavigatorSettingKey,
           routes: [

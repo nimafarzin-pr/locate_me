@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:locate_me/core/common_features/database/remote/provider/remote_provider.dart';
+import 'package:locate_me/core/common_features/database/remote/repository/remote_db_repository.dart';
 import 'package:locate_me/generated/locale_keys.g.dart';
 
-import '../../../../core/common_features/database/remote/repository/remote_db_repository.dart';
 import 'auth_state.dart';
 
 class AuthNotifier extends AsyncNotifier<AuthenticateState> {

@@ -12,6 +12,8 @@ abstract class IAppSettingsService {
   Future<void> setLanguage(String language);
   Future<void> addCategory(String name, String emoji, int color);
   Future<void> deleteCategory(int id);
+  Future<void> toggleAutoLogin();
+  Future<bool> getAutoLoginStatus();
   Future<List<Categories>> getAllCategories();
   Stream<List<Categories>> watchCategories();
 }
