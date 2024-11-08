@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:locate_me/core/widget/dialogs/error_dialog.dart';
-import 'package:locate_me/features/login/view/screen/sign_in.dart';
+import 'package:locate_me/features/login_register//view/remote_screen/screen/sign_in.dart';
 
-import '../../../../core/navigation/routes.dart';
-import '../../../../core/resources/icons.dart';
-import '../../../../core/widget/accept_button/custom_accept_button.dart';
-import '../../../../core/widget/custom_text.dart';
-import '../../../../core/widget/custom_textfeild.dart';
-import '../../../../core/widget/error_widget_box.dart';
-import '../../../../generated/locale_keys.g.dart';
-import '../../provider/auth_notifier_provider.dart';
+import '../../../../../core/navigation/routes.dart';
+import '../../../../../core/resources/icons.dart';
+import '../../../../../core/widget/accept_button/custom_accept_button.dart';
+import '../../../../../core/widget/custom_text.dart';
+import '../../../../../core/widget/custom_textfeild.dart';
+import '../../../../../core/widget/error_widget_box.dart';
+import '../../../../../generated/locale_keys.g.dart';
+import '../../../provider/auth_notifier_provider.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});

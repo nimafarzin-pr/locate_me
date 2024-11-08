@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:locate_me/core/common_features/database/local/db/tables/login_register.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
@@ -18,6 +19,7 @@ part 'db.g.dart';
   MapSettingsTB,
   AppSettingsTB,
   CategoriesTB,
+  LoginRegisterTB,
 ])
 class DB extends _$DB {
   // Make DB a singleton

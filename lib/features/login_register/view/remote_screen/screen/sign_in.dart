@@ -11,10 +11,10 @@ import 'package:locate_me/core/widget/background_wrapper.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/core/widget/custom_textfeild.dart';
 import 'package:locate_me/core/widget/loading.dart';
-import 'package:locate_me/features/login/provider/auth_notifier_provider.dart';
+import 'package:locate_me/features/login_register//provider/auth_notifier_provider.dart';
 
-import '../../../../core/widget/error_widget_box.dart';
-import '../../../../generated/locale_keys.g.dart';
+import '../../../../../core/widget/error_widget_box.dart';
+import '../../../../../generated/locale_keys.g.dart';
 import 'sign_up.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {

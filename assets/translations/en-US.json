@@ -120,7 +120,10 @@
     "signUp":"Sign Up",
     "not_register_user_txt":"Don\\'t have an account? Sign Up",
     "register_user_txt":"Have an account? Sign In" ,
-    "logout":"Do you want to log out of your account?"
+    "logout":"Do you want to log out of your account?",
+    "enter_new_password":"Enter New Password",
+    "enter_password":"Enter Password",
+    "repeat_password":"Repeat Password"
 
  
   }

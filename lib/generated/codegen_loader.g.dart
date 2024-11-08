@@ -136,7 +136,10 @@ class CodegenLoader extends AssetLoader{
   "signUp": "ثبت نام",
   "not_register_user_txt": "حساب ندارید؟ ثبت نام کنید",
   "register_user_txt": "حساب دارید؟ وارد شوید",
-  "logout": "آیا میخواهید از حساب خود خارج شوید"
+  "logout": "آیا میخواهید از حساب خود خارج شوید",
+  "enter_new_password": "پسورد جدید را وارد کنید",
+  "enter_password": "پسورد را وارد کنید",
+  "repeat_password": "پسورد را تکرار کنید"
 };
 static const Map<String,dynamic> en_US = {
   "settings": "Settings",
@@ -260,7 +263,10 @@ static const Map<String,dynamic> en_US = {
   "signUp": "Sign Up",
   "not_register_user_txt": "Don\\'t have an account? Sign Up",
   "register_user_txt": "Have an account? Sign In",
-  "logout": "Do you want to log out of your account?"
+  "logout": "Do you want to log out of your account?",
+  "enter_new_password": "Enter New Password",
+  "enter_password": "Enter Password",
+  "repeat_password": "Repeat Password"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"fa_IR": fa_IR, "en_US": en_US};
 }

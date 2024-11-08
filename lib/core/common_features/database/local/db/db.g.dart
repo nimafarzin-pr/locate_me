@@ -909,8 +909,18 @@ class $AppSettingsTBTable extends AppSettingsTB
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(2));
+  static const VerificationMeta _autoLoginMeta =
+      const VerificationMeta('autoLogin');
   @override
-  List<GeneratedColumn> get $columns => [id, language, themeMode];
+  late final GeneratedColumn<bool> autoLogin = GeneratedColumn<bool>(
+      'auto_login', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("auto_login" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  @override
+  List<GeneratedColumn> get $columns => [id, language, themeMode, autoLogin];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -932,6 +942,10 @@ class $AppSettingsTBTable extends AppSettingsTB
       context.handle(_themeModeMeta,
           themeMode.isAcceptableOrUnknown(data['theme_mode']!, _themeModeMeta));
     }
+    if (data.containsKey('auto_login')) {
+      context.handle(_autoLoginMeta,
+          autoLogin.isAcceptableOrUnknown(data['auto_login']!, _autoLoginMeta));
+    }
     return context;
   }
 
@@ -947,6 +961,8 @@ class $AppSettingsTBTable extends AppSettingsTB
           .read(DriftSqlType.string, data['${effectivePrefix}language']),
       themeMode: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}theme_mode']),
+      autoLogin: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}auto_login'])!,
     );
   }
 
@@ -960,7 +976,12 @@ class AppSettings extends DataClass implements Insertable<AppSettings> {
   final int id;
   final String? language;
   final int? themeMode;
-  const AppSettings({required this.id, this.language, this.themeMode});
+  final bool autoLogin;
+  const AppSettings(
+      {required this.id,
+      this.language,
+      this.themeMode,
+      required this.autoLogin});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -971,6 +992,7 @@ class AppSettings extends DataClass implements Insertable<AppSettings> {
     if (!nullToAbsent || themeMode != null) {
       map['theme_mode'] = Variable<int>(themeMode);
     }
+    map['auto_login'] = Variable<bool>(autoLogin);
     return map;
   }
 
@@ -983,6 +1005,7 @@ class AppSettings extends DataClass implements Insertable<AppSettings> {
       themeMode: themeMode == null && nullToAbsent
           ? const Value.absent()
           : Value(themeMode),
+      autoLogin: Value(autoLogin),
     );
   }
 
@@ -993,6 +1016,7 @@ class AppSettings extends DataClass implements Insertable<AppSettings> {
       id: serializer.fromJson<int>(json['id']),
       language: serializer.fromJson<String?>(json['language']),
       themeMode: serializer.fromJson<int?>(json['themeMode']),
+      autoLogin: serializer.fromJson<bool>(json['autoLogin']),
     );
   }
   @override
@@ -1002,23 +1026,27 @@ class AppSettings extends DataClass implements Insertable<AppSettings> {
       'id': serializer.toJson<int>(id),
       'language': serializer.toJson<String?>(language),
       'themeMode': serializer.toJson<int?>(themeMode),
+      'autoLogin': serializer.toJson<bool>(autoLogin),
     };
   }
 
   AppSettings copyWith(
           {int? id,
           Value<String?> language = const Value.absent(),
-          Value<int?> themeMode = const Value.absent()}) =>
+          Value<int?> themeMode = const Value.absent(),
+          bool? autoLogin}) =>
       AppSettings(
         id: id ?? this.id,
         language: language.present ? language.value : this.language,
         themeMode: themeMode.present ? themeMode.value : this.themeMode,
+        autoLogin: autoLogin ?? this.autoLogin,
       );
   AppSettings copyWithCompanion(AppSettingsTBCompanion data) {
     return AppSettings(
       id: data.id.present ? data.id.value : this.id,
       language: data.language.present ? data.language.value : this.language,
       themeMode: data.themeMode.present ? data.themeMode.value : this.themeMode,
+      autoLogin: data.autoLogin.present ? data.autoLogin.value : this.autoLogin,
     );
   }
 
@@ -1027,54 +1055,65 @@ class AppSettings extends DataClass implements Insertable<AppSettings> {
     return (StringBuffer('AppSettings(')
           ..write('id: $id, ')
           ..write('language: $language, ')
-          ..write('themeMode: $themeMode')
+          ..write('themeMode: $themeMode, ')
+          ..write('autoLogin: $autoLogin')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, language, themeMode);
+  int get hashCode => Object.hash(id, language, themeMode, autoLogin);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is AppSettings &&
           other.id == this.id &&
           other.language == this.language &&
-          other.themeMode == this.themeMode);
+          other.themeMode == this.themeMode &&
+          other.autoLogin == this.autoLogin);
 }
 
 class AppSettingsTBCompanion extends UpdateCompanion<AppSettings> {
   final Value<int> id;
   final Value<String?> language;
   final Value<int?> themeMode;
+  final Value<bool> autoLogin;
   const AppSettingsTBCompanion({
     this.id = const Value.absent(),
     this.language = const Value.absent(),
     this.themeMode = const Value.absent(),
+    this.autoLogin = const Value.absent(),
   });
   AppSettingsTBCompanion.insert({
     this.id = const Value.absent(),
     this.language = const Value.absent(),
     this.themeMode = const Value.absent(),
+    this.autoLogin = const Value.absent(),
   });
   static Insertable<AppSettings> custom({
     Expression<int>? id,
     Expression<String>? language,
     Expression<int>? themeMode,
+    Expression<bool>? autoLogin,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (language != null) 'language': language,
       if (themeMode != null) 'theme_mode': themeMode,
+      if (autoLogin != null) 'auto_login': autoLogin,
     });
   }
 
   AppSettingsTBCompanion copyWith(
-      {Value<int>? id, Value<String?>? language, Value<int?>? themeMode}) {
+      {Value<int>? id,
+      Value<String?>? language,
+      Value<int?>? themeMode,
+      Value<bool>? autoLogin}) {
     return AppSettingsTBCompanion(
       id: id ?? this.id,
       language: language ?? this.language,
       themeMode: themeMode ?? this.themeMode,
+      autoLogin: autoLogin ?? this.autoLogin,
     );
   }
 
@@ -1090,6 +1129,9 @@ class AppSettingsTBCompanion extends UpdateCompanion<AppSettings> {
     if (themeMode.present) {
       map['theme_mode'] = Variable<int>(themeMode.value);
     }
+    if (autoLogin.present) {
+      map['auto_login'] = Variable<bool>(autoLogin.value);
+    }
     return map;
   }
 
@@ -1098,7 +1140,8 @@ class AppSettingsTBCompanion extends UpdateCompanion<AppSettings> {
     return (StringBuffer('AppSettingsTBCompanion(')
           ..write('id: $id, ')
           ..write('language: $language, ')
-          ..write('themeMode: $themeMode')
+          ..write('themeMode: $themeMode, ')
+          ..write('autoLogin: $autoLogin')
           ..write(')'))
         .toString();
   }
@@ -1357,6 +1400,193 @@ class CategoriesTBCompanion extends UpdateCompanion<Categories> {
   }
 }
 
+class $LoginRegisterTBTable extends LoginRegisterTB
+    with TableInfo<$LoginRegisterTBTable, LoginRegisterTBData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LoginRegisterTBTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _passwordMeta =
+      const VerificationMeta('password');
+  @override
+  late final GeneratedColumn<String> password = GeneratedColumn<String>(
+      'password', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [id, password];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'login_register_t_b';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<LoginRegisterTBData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('password')) {
+      context.handle(_passwordMeta,
+          password.isAcceptableOrUnknown(data['password']!, _passwordMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LoginRegisterTBData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LoginRegisterTBData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      password: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}password']),
+    );
+  }
+
+  @override
+  $LoginRegisterTBTable createAlias(String alias) {
+    return $LoginRegisterTBTable(attachedDatabase, alias);
+  }
+}
+
+class LoginRegisterTBData extends DataClass
+    implements Insertable<LoginRegisterTBData> {
+  final int id;
+  final String? password;
+  const LoginRegisterTBData({required this.id, this.password});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || password != null) {
+      map['password'] = Variable<String>(password);
+    }
+    return map;
+  }
+
+  LoginRegisterTBCompanion toCompanion(bool nullToAbsent) {
+    return LoginRegisterTBCompanion(
+      id: Value(id),
+      password: password == null && nullToAbsent
+          ? const Value.absent()
+          : Value(password),
+    );
+  }
+
+  factory LoginRegisterTBData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LoginRegisterTBData(
+      id: serializer.fromJson<int>(json['id']),
+      password: serializer.fromJson<String?>(json['password']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'password': serializer.toJson<String?>(password),
+    };
+  }
+
+  LoginRegisterTBData copyWith(
+          {int? id, Value<String?> password = const Value.absent()}) =>
+      LoginRegisterTBData(
+        id: id ?? this.id,
+        password: password.present ? password.value : this.password,
+      );
+  LoginRegisterTBData copyWithCompanion(LoginRegisterTBCompanion data) {
+    return LoginRegisterTBData(
+      id: data.id.present ? data.id.value : this.id,
+      password: data.password.present ? data.password.value : this.password,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LoginRegisterTBData(')
+          ..write('id: $id, ')
+          ..write('password: $password')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, password);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LoginRegisterTBData &&
+          other.id == this.id &&
+          other.password == this.password);
+}
+
+class LoginRegisterTBCompanion extends UpdateCompanion<LoginRegisterTBData> {
+  final Value<int> id;
+  final Value<String?> password;
+  const LoginRegisterTBCompanion({
+    this.id = const Value.absent(),
+    this.password = const Value.absent(),
+  });
+  LoginRegisterTBCompanion.insert({
+    this.id = const Value.absent(),
+    this.password = const Value.absent(),
+  });
+  static Insertable<LoginRegisterTBData> custom({
+    Expression<int>? id,
+    Expression<String>? password,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (password != null) 'password': password,
+    });
+  }
+
+  LoginRegisterTBCompanion copyWith(
+      {Value<int>? id, Value<String?>? password}) {
+    return LoginRegisterTBCompanion(
+      id: id ?? this.id,
+      password: password ?? this.password,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (password.present) {
+      map['password'] = Variable<String>(password.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LoginRegisterTBCompanion(')
+          ..write('id: $id, ')
+          ..write('password: $password')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$DB extends GeneratedDatabase {
   _$DB(QueryExecutor e) : super(e);
   $DBManager get managers => $DBManager(this);
@@ -1364,12 +1594,14 @@ abstract class _$DB extends GeneratedDatabase {
   late final $MapSettingsTBTable mapSettingsTB = $MapSettingsTBTable(this);
   late final $AppSettingsTBTable appSettingsTB = $AppSettingsTBTable(this);
   late final $CategoriesTBTable categoriesTB = $CategoriesTBTable(this);
+  late final $LoginRegisterTBTable loginRegisterTB =
+      $LoginRegisterTBTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [locationTB, mapSettingsTB, appSettingsTB, categoriesTB];
+      [locationTB, mapSettingsTB, appSettingsTB, categoriesTB, loginRegisterTB];
 }
 
 typedef $$LocationTBTableCreateCompanionBuilder = LocationTBCompanion Function({
@@ -1755,12 +1987,14 @@ typedef $$AppSettingsTBTableCreateCompanionBuilder = AppSettingsTBCompanion
   Value<int> id,
   Value<String?> language,
   Value<int?> themeMode,
+  Value<bool> autoLogin,
 });
 typedef $$AppSettingsTBTableUpdateCompanionBuilder = AppSettingsTBCompanion
     Function({
   Value<int> id,
   Value<String?> language,
   Value<int?> themeMode,
+  Value<bool> autoLogin,
 });
 
 class $$AppSettingsTBTableFilterComposer
@@ -1780,6 +2014,11 @@ class $$AppSettingsTBTableFilterComposer
       column: $state.table.themeMode,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<bool> get autoLogin => $state.composableBuilder(
+      column: $state.table.autoLogin,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
 class $$AppSettingsTBTableOrderingComposer
@@ -1797,6 +2036,11 @@ class $$AppSettingsTBTableOrderingComposer
 
   ColumnOrderings<int> get themeMode => $state.composableBuilder(
       column: $state.table.themeMode,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<bool> get autoLogin => $state.composableBuilder(
+      column: $state.table.autoLogin,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
@@ -1824,21 +2068,25 @@ class $$AppSettingsTBTableTableManager extends RootTableManager<
             Value<int> id = const Value.absent(),
             Value<String?> language = const Value.absent(),
             Value<int?> themeMode = const Value.absent(),
+            Value<bool> autoLogin = const Value.absent(),
           }) =>
               AppSettingsTBCompanion(
             id: id,
             language: language,
             themeMode: themeMode,
+            autoLogin: autoLogin,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
             Value<String?> language = const Value.absent(),
             Value<int?> themeMode = const Value.absent(),
+            Value<bool> autoLogin = const Value.absent(),
           }) =>
               AppSettingsTBCompanion.insert(
             id: id,
             language: language,
             themeMode: themeMode,
+            autoLogin: autoLogin,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
@@ -1982,6 +2230,104 @@ typedef $$CategoriesTBTableProcessedTableManager = ProcessedTableManager<
     (Categories, BaseReferences<_$DB, $CategoriesTBTable, Categories>),
     Categories,
     PrefetchHooks Function()>;
+typedef $$LoginRegisterTBTableCreateCompanionBuilder = LoginRegisterTBCompanion
+    Function({
+  Value<int> id,
+  Value<String?> password,
+});
+typedef $$LoginRegisterTBTableUpdateCompanionBuilder = LoginRegisterTBCompanion
+    Function({
+  Value<int> id,
+  Value<String?> password,
+});
+
+class $$LoginRegisterTBTableFilterComposer
+    extends FilterComposer<_$DB, $LoginRegisterTBTable> {
+  $$LoginRegisterTBTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get password => $state.composableBuilder(
+      column: $state.table.password,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$LoginRegisterTBTableOrderingComposer
+    extends OrderingComposer<_$DB, $LoginRegisterTBTable> {
+  $$LoginRegisterTBTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get password => $state.composableBuilder(
+      column: $state.table.password,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+class $$LoginRegisterTBTableTableManager extends RootTableManager<
+    _$DB,
+    $LoginRegisterTBTable,
+    LoginRegisterTBData,
+    $$LoginRegisterTBTableFilterComposer,
+    $$LoginRegisterTBTableOrderingComposer,
+    $$LoginRegisterTBTableCreateCompanionBuilder,
+    $$LoginRegisterTBTableUpdateCompanionBuilder,
+    (
+      LoginRegisterTBData,
+      BaseReferences<_$DB, $LoginRegisterTBTable, LoginRegisterTBData>
+    ),
+    LoginRegisterTBData,
+    PrefetchHooks Function()> {
+  $$LoginRegisterTBTableTableManager(_$DB db, $LoginRegisterTBTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$LoginRegisterTBTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$LoginRegisterTBTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> password = const Value.absent(),
+          }) =>
+              LoginRegisterTBCompanion(
+            id: id,
+            password: password,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> password = const Value.absent(),
+          }) =>
+              LoginRegisterTBCompanion.insert(
+            id: id,
+            password: password,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$LoginRegisterTBTableProcessedTableManager = ProcessedTableManager<
+    _$DB,
+    $LoginRegisterTBTable,
+    LoginRegisterTBData,
+    $$LoginRegisterTBTableFilterComposer,
+    $$LoginRegisterTBTableOrderingComposer,
+    $$LoginRegisterTBTableCreateCompanionBuilder,
+    $$LoginRegisterTBTableUpdateCompanionBuilder,
+    (
+      LoginRegisterTBData,
+      BaseReferences<_$DB, $LoginRegisterTBTable, LoginRegisterTBData>
+    ),
+    LoginRegisterTBData,
+    PrefetchHooks Function()>;
 
 class $DBManager {
   final _$DB _db;
@@ -1994,4 +2340,6 @@ class $DBManager {
       $$AppSettingsTBTableTableManager(_db, _db.appSettingsTB);
   $$CategoriesTBTableTableManager get categoriesTB =>
       $$CategoriesTBTableTableManager(_db, _db.categoriesTB);
+  $$LoginRegisterTBTableTableManager get loginRegisterTB =>
+      $$LoginRegisterTBTableTableManager(_db, _db.loginRegisterTB);
 }

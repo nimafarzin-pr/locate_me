@@ -8,7 +8,7 @@ import 'package:locate_me/core/navigation/routes.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/core/widget/dialogs/status_widget.dart';
 import 'package:locate_me/core/widget/loading.dart';
-import 'package:locate_me/features/login/provider/auth_notifier_provider.dart';
+import 'package:locate_me/features/login_register//provider/auth_notifier_provider.dart';
 import 'package:locate_me/features/setting/view/widgets/items/import.dart';
 
 import 'package:locate_me/generated/locale_keys.g.dart';
