@@ -3,19 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:locate_me/core/extension/theme_extension.dart';
 import 'package:locate_me/core/navigation/routes.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
-import 'package:locate_me/core/widget/dialogs/status_widget.dart';
-import 'package:locate_me/core/widget/loading.dart';
-import 'package:locate_me/features/login/provider/auth_notifier_provider.dart';
+
 import 'package:locate_me/features/setting/view/widgets/items/import.dart';
 
 import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../../../../core/widget/ads_widget.dart';
-import '../../../../core/widget/animation/fade_in_scale_animation.dart';
-import '../../../../core/widget/dialogs/dialog_wrapper.dart';
+
 import '../../model/dto/setting_item_dto.dart';
 import '../../provider/settings_provider.dart';
 import '../widgets/items/export.dart';
