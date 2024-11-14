@@ -7,6 +7,7 @@ class Routes {
   static const String search = '/search';
   static const String signIn = 'signIn';
   static const String signUp = 'signUp';
+  static const String splash = '/splash';
   static const String editLocation = 'editLocationItem';
   static const String locationDetail = 'locationDetail';
   static const String categoryList = 'categoryList';

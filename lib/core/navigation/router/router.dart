@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:locate_me/features/intro/splash.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:locate_me/core/navigation/routes.dart';
 import 'package:locate_me/core/widget/background_wrapper.dart';
@@ -24,10 +25,19 @@ bool isUserLoggedIn() {
 }
 
 final router = GoRouter(
-  initialLocation: Routes.root,
+  initialLocation: Routes.splash,
   navigatorKey: _rootNavigatorKey,
   debugLogDiagnostics: true,
   routes: [
+    GoRoute(
+      path: Routes.splash,
+      name: Routes.splash,
+      pageBuilder: (context, state) => NoTransitionPage(
+        key: state.pageKey,
+        child: const BackgroundWrapper(child: SplashScreen()),
+      ),
+    ),
+
     // The rest of your routes with Shell Navigation
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
