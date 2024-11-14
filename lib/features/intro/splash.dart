@@ -85,7 +85,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  CustomText.bodyLarge('Version 1.0.0'),
+                  CustomText.bodyLarge('Version 1.0.2'),
                 ],
               ),
             ),
