@@ -123,7 +123,8 @@
     "logout":"Do you want to log out of your account?",
     "enter_new_password":"Enter New Password",
     "enter_password":"Enter Password",
-    "repeat_password":"Repeat Password"
+    "repeat_password":"Repeat Password",
+    "change_Password":"Change Password"
 
  
   }

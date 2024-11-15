@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:locate_me/core/widget/animation/fade_animation.dart';
-import 'package:locate_me/core/widget/animation/scale_animation.dart';
+import 'package:locate_me/core/widget/animation/scale_animation_widget.dart';
 
 class FadeInScaleAnimation extends HookWidget {
   const FadeInScaleAnimation({

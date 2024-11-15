@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -9,7 +7,6 @@ import 'package:locate_me/core/navigation/routes.dart';
 import 'package:locate_me/core/widget/animation/scale_animation_widget.dart';
 import 'package:locate_me/core/widget/animation/transform_animation_widget.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
-import 'package:locate_me/features/login_register/view/local_screen/provider/login_register_provider.dart';
 
 import '../../../../../core/resources/icons.dart';
 
@@ -27,20 +24,14 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     _navigateToLogin();
   }
 
-  void _navigateToLogin() async {
+  void _navigateToLogin() {
     Future.delayed(const Duration(seconds: 3), () async {
-      final isPasswordSet =
-          await ref.read(splashNotifierProvider.notifier).isPasswordSet();
-      if (isPasswordSet) {
-        context.go(
-          Routes.loginRouteForNavigator,
-        );
-      } else {
-        context.go(
-          Routes.setPasswordRouteForNavigator,
-        );
-      }
+      context.go(
+        Routes.root,
+      );
     });
+    // // Wait for 3 seconds and then navigate to the login screen
+    // Timer(const Duration(seconds: 3), () {
   }
 
   @override
@@ -56,7 +47,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               children: [
                 // Logo placeholder
                 ScaleAnimationWidget(
-                  duration: const Duration(seconds: 2),
+                  duration: const Duration(seconds: 3),
                   beginScale: 0.1, // Starts from a very small size
                   endScale: MediaQuery.of(context).size.height /
                       MediaQuery.of(context).size.width /
@@ -79,7 +70,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                 children: [
                   // const SizedBox(height: 120),
                   TransformAnimationWidget(
-                    duration: const Duration(seconds: 2),
+                    duration: const Duration(seconds: 3),
                     startAngle: 0.0,
                     endAngle: 360.0,
                     curve: Curves.easeInOut,
@@ -94,7 +85,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  CustomText.bodyLarge('Version 1.0.0'),
+                  CustomText.bodyLarge('Version 1.0.2'),
                 ],
               ),
             ),

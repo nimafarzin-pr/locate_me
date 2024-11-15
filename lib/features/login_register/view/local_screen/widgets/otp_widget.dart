@@ -31,16 +31,23 @@ class SquareOtpField extends StatelessWidget {
       ),
     );
 
-    return Pinput(
-      errorTextStyle: TextStyle(
-          fontSize: AppTextFontsAndSizing.bodySmallFontSize,
-          color: Theme.of(context).colorScheme.error),
-      validator: validator,
-      controller: controller,
-      length: length,
-      obscureText: obscureText,
-      defaultPinTheme: defaultPinTheme,
-      onCompleted: onCompleted,
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Pinput(
+          onSubmitted: validator,
+          errorTextStyle: TextStyle(
+              fontSize: AppTextFontsAndSizing.bodySmallFontSize,
+              color: Theme.of(context).colorScheme.error),
+          validator: validator,
+          controller: controller,
+          length: length,
+          obscureText: obscureText,
+          defaultPinTheme: defaultPinTheme,
+          onCompleted: onCompleted,
+        ),
+      ),
     );
   }
 }

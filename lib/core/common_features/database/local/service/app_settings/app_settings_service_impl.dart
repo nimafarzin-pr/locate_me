@@ -100,6 +100,6 @@ class AppSettingsServiceImpl implements IAppSettingsService {
   Future<bool> getAutoLoginStatus() async {
     final result =
         await (_database.select(_database.appSettingsTB)..limit(0)).getSingle();
-    return result.autoLogin ?? false;
+    return result.autoLogin;
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:locate_me/features/login_register/view/local_screen/screen/login.dart';
 import 'package:locate_me/features/login_register/view/local_screen/screen/set_password.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:locate_me/core/navigation/routes.dart';
 import 'package:locate_me/core/widget/background_wrapper.dart';
 import 'package:locate_me/core/widget/navigation_scafold.dart';
@@ -24,13 +23,13 @@ final _shellNavigatorSettingKey =
 // Helper function to check Supabase session state
 
 final router = GoRouter(
-  initialLocation: Routes.root,
+  initialLocation: Routes.splashRouteForNavigator,
   navigatorKey: _rootNavigatorKey,
   debugLogDiagnostics: true,
   routes: [
     GoRoute(
-      path: Routes.root,
-      name: Routes.root,
+      path: Routes.splashRouteForNavigator,
+      name: Routes.splashRouteForNavigator,
       pageBuilder: (context, state) => NoTransitionPage(
         key: state.pageKey,
         child: const SplashScreen(),
@@ -39,7 +38,7 @@ final router = GoRouter(
     ),
     GoRoute(
       path: Routes.loginRouteForNavigator,
-      name: Routes.login,
+      name: Routes.loginRouteForNavigator,
       pageBuilder: (context, state) => NoTransitionPage(
         key: state.pageKey,
         child: const BackgroundWrapper(child: LocalLoginScreen()),
@@ -47,7 +46,7 @@ final router = GoRouter(
     ),
     GoRoute(
       path: Routes.setPasswordRouteForNavigator,
-      name: Routes.setPassword,
+      name: Routes.setPasswordRouteForNavigator,
       pageBuilder: (context, state) => NoTransitionPage(
         key: state.pageKey,
         child: const BackgroundWrapper(child: SetPasswordScreen()),
@@ -62,8 +61,8 @@ final router = GoRouter(
           navigatorKey: _shellNavigatorHomeKey,
           routes: [
             GoRoute(
-              path: Routes.home,
-              name: Routes.home,
+              path: Routes.root,
+              name: Routes.root,
               pageBuilder: (context, state) => NoTransitionPage(
                 key: state.pageKey,
                 child: const BackgroundWrapper(child: HomeTab()),

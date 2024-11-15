@@ -123,11 +123,7 @@
     "logout":"آیا میخواهید از حساب خود خارج شوید",
     "enter_new_password":"پسورد جدید را وارد کنید",
     "enter_password":"پسورد را وارد کنید",
-    "repeat_password":"پسورد را تکرار کنید"
-
-
-
-
-
+    "repeat_password":"پسورد را تکرار کنید",
+    "change_Password":"تغییر پسورد"
 
 }

@@ -5,24 +5,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../core/common_features/database/local/provider/db_provider.dart';
 import '../../../../../core/common_features/database/local/repository/login_register/login_register_repository.dart';
 
-class SetPasswordNotifier extends AsyncNotifier<bool?> {
+class SplashNotifier extends AsyncNotifier<bool> {
   late final ILoginRegisterRepository _dbRepository;
 
   @override
-  Future<bool?> build() async {
+  Future<bool> build() async {
     _dbRepository = ref.watch(appDBLoginRegisterRepositoryProvider);
-    return null;
+    // Load the current session state when the provider is first initialized
+    final isSet = await _dbRepository.isPasswordSet();
+    log('isSet: $isSet');
+    state = AsyncData(isSet);
+    return isSet;
   }
 
-  Future<bool> setPassword({required String password}) async {
-    try {
-      state = const AsyncData(true);
-      return await _dbRepository.setPassword(password);
-    } catch (e) {
-      log('ERROR isPasswordSet: $e');
-      state = const AsyncData(false);
-
-      return false;
-    }
+  Future<bool> isPasswordSet() async {
+    return await _dbRepository.isPasswordSet();
   }
 }
