@@ -1414,7 +1414,8 @@ class $LoginRegisterTBTable extends LoginRegisterTB
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'),
+      defaultValue: const Constant(0));
   static const VerificationMeta _passwordMeta =
       const VerificationMeta('password');
   @override

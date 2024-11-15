@@ -3,25 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:locate_me/core/extension/theme_extension.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:locate_me/core/navigation/routes.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
-import 'package:locate_me/core/widget/dialogs/status_widget.dart';
-import 'package:locate_me/core/widget/loading.dart';
-import 'package:locate_me/features/login_register//provider/auth_notifier_provider.dart';
+
 import 'package:locate_me/features/setting/view/widgets/items/import.dart';
 
 import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../../../../core/widget/ads_widget.dart';
-import '../../../../core/widget/animation/fade_in_scale_animation.dart';
-import '../../../../core/widget/dialogs/dialog_wrapper.dart';
+
 import '../../model/dto/setting_item_dto.dart';
 import '../../provider/settings_provider.dart';
 import '../widgets/items/export.dart';
 import '../widgets/items/language.dart';
 import '../widgets/items/map.dart';
 import '../widgets/items/theme.dart';
+import '../widgets/items/update_passworrd.dart';
 
 class SettingsTab extends ConsumerStatefulWidget {
   const SettingsTab({super.key});
@@ -32,6 +30,8 @@ class SettingsTab extends ConsumerStatefulWidget {
 
 class _SettingTabState extends ConsumerState<SettingsTab> {
   late final TextEditingController _fileName = TextEditingController();
+  late final TextEditingController _password = TextEditingController();
+  late final TextEditingController _repeatPassword = TextEditingController();
 
   List<SettingItemDto> get settingsItems => [
         SettingItemDto(
@@ -70,7 +70,17 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
             icon: FontAwesomeIcons.list,
             onTap: (context) async {
               context.pushNamed(Routes.categoryList);
-            })
+            }),
+        SettingItemDto(
+            title: LocaleKeys.change_Password.tr(),
+            icon: FontAwesomeIcons.list,
+            onTap: (context) async {
+              await showChangePasswordModal(context, _password, _repeatPassword)
+                  .then((_) {
+                _password.clear();
+                _repeatPassword.clear();
+              });
+            }),
       ];
 
   @override
@@ -83,6 +93,15 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
   Widget build(BuildContext rootContext) {
     return Scaffold(
       appBar: AppBar(
+        leading: ListTile(
+          minLeadingWidth: 300,
+          leading: Row(
+            children: [
+              const Icon(Icons.password),
+              CustomText.bodySmall('لاگین خودکار')
+            ],
+          ),
+        ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         // elevation: 4,

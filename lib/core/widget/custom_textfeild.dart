@@ -8,7 +8,7 @@ import '../../generated/locale_keys.g.dart';
 import '../utils/validators/input/input_validate.dart';
 import '../utils/validators/input/input_validate_Item/empty_data.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final String hintText;
   final TextEditingController controller;
   final TextStyle? hintStyle;
@@ -29,6 +29,8 @@ class CustomTextField extends StatelessWidget {
   final bool autofocus;
   final TextAlign textAlign;
   final bool obscureText;
+  final TextInputType? keyboardType;
+  final int? maxLength;
   // Add any other properties you might need
 
   const CustomTextField({
@@ -54,86 +56,136 @@ class CustomTextField extends StatelessWidget {
     this.autofocus = false,
     this.textAlign = TextAlign.start,
     this.obscureText = false,
+    this.keyboardType,
+    this.maxLength,
   });
 
+  @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  bool visibility = true;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: TextFormField(
-        obscureText: obscureText,
-        textAlign: textAlign,
-        style: TextStyle(
-            fontSize: AppTextFontsAndSizing.bodySmallFontSize,
-            color: readOnly
-                ? Theme.of(context).colorScheme.onSurface.withOpacity(0.5)
-                : null),
-        readOnly: readOnly,
-        onChanged: onChanged,
-        focusNode: focusNode,
-        controller: controller,
-        autofocus: autofocus,
-        validator: validator ??
-            (value) {
-              return ValidateInput.schema(
-                context: context,
-                value: value.toString(),
-                validations: [
-                  EmptyData(
-                    errorMessage: LocaleKeys.field_required.tr(),
+      child: SizedBox(
+        height: 66,
+        child: TextFormField(
+          textAlignVertical: TextAlignVertical.center,
+          maxLength: widget.maxLength,
+          keyboardType: widget.keyboardType,
+          obscureText: visibility ? widget.obscureText : false,
+          textAlign: widget.textAlign,
+          style: TextStyle(
+              fontSize: AppTextFontsAndSizing.bodySmallFontSize,
+              color: widget.readOnly
+                  ? Theme.of(context).colorScheme.onSurface.withOpacity(0.5)
+                  : null),
+          readOnly: widget.readOnly,
+          onChanged: widget.onChanged,
+          focusNode: widget.focusNode,
+          controller: widget.controller,
+          autofocus: widget.autofocus,
+          validator: widget.validator ??
+              (value) {
+                return ValidateInput.schema(
+                  context: context,
+                  value: value.toString(),
+                  validations: [
+                    EmptyData(
+                      errorMessage: LocaleKeys.field_required.tr(),
+                    ),
+                  ],
+                );
+              },
+          decoration: InputDecoration(
+            // constraints: const BoxConstraints(
+            //     minHeight: 20, maxHeight: 20, maxWidth: 300, minWidth: 30),
+
+            helper: const Text(" "),
+            prefix: const SizedBox(
+              width: 20,
+            ),
+
+            suffix: widget.obscureText
+                ? Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.only(top: 10),
+                    // color: Colors.red,
+                    width: 20,
+                    height: 44,
+                    child: IconButton(
+                        constraints: const BoxConstraints(),
+                        padding: EdgeInsets.zero, // Removes default padding
+                        alignment: Alignment.center,
+                        // Removes size constraints
+
+                        onPressed: () {
+                          setState(() {
+                            visibility = !visibility;
+                          });
+                        },
+                        icon: Icon(
+                          visibility ? Icons.visibility : Icons.visibility_off,
+                          size: 18,
+                        )),
+                  )
+                : null,
+            suffixIcon: widget.suffixIcon,
+            prefixIcon: widget.prefixIcon,
+            hintText: widget.hintText,
+            hintStyle: widget.hintStyle ?? TextStyle(color: Colors.grey[400]),
+            filled: true,
+            fillColor: widget.fillColor ??
+                Theme.of(context).colorScheme.surfaceContainer,
+            contentPadding: widget.contentPadding ??
+                const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+            border: widget.border ??
+                OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    width: 1.0,
                   ),
-                ],
-              );
-            },
-        decoration: InputDecoration(
-          suffixIcon: suffixIcon,
-          prefixIcon: prefixIcon,
-          hintText: hintText,
-          hintStyle: hintStyle ?? TextStyle(color: Colors.grey[400]),
-          filled: true,
-          fillColor:
-              fillColor ?? Theme.of(context).colorScheme.surfaceContainer,
-          contentPadding: contentPadding ??
-              const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
-          border: border ??
-              OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                borderSide: BorderSide.none,
-              ),
-          enabledBorder: enabledBorder ??
-              OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.primary,
-                  width: 1.0,
                 ),
-              ),
-          focusedBorder: focusedBorder ??
-              OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  width: 1.0,
+            enabledBorder: widget.enabledBorder ??
+                OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    width: 1.0,
+                  ),
                 ),
-              ),
-          errorBorder: errorBorder ??
-              OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.error,
-                  width: 1.0,
+            focusedBorder: widget.focusedBorder ??
+                OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.primary,
+                    width: 1.0,
+                  ),
                 ),
-              ),
-          focusedErrorBorder: focusedErrorBorder ??
-              OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.error,
-                  width: 1.0,
+            errorBorder: widget.errorBorder ??
+                OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.error,
+                    width: 1.0,
+                  ),
                 ),
-              ),
+            focusedErrorBorder: widget.focusedErrorBorder ??
+                OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.error,
+                    width: 1.0,
+                  ),
+                ),
+          ),
+          cursorColor:
+              widget.cursorColor ?? Theme.of(context).colorScheme.secondary,
         ),
-        cursorColor: cursorColor ?? Theme.of(context).colorScheme.secondary,
       ),
     );
   }

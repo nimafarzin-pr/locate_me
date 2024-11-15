@@ -12,9 +12,11 @@ import '../../sizing/app_sizing.dart';
 class AcceptButton extends ConsumerWidget {
   final String buttonText;
   final Future Function() onPressed;
+  final double height;
 
   const AcceptButton({
     super.key,
+    this.height = 44,
     required this.buttonText,
     required this.onPressed,
   });
@@ -24,7 +26,7 @@ class AcceptButton extends ConsumerWidget {
     final isLoading = ref.watch(loadingProvider);
     return Center(
       child: Container(
-        height: 44,
+        height: height,
         // width: 100,
         margin: const EdgeInsets.symmetric(vertical: AppSizes.smallMargin),
         decoration: BoxDecoration(

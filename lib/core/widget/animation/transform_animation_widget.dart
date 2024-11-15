@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:locate_me/core/hooks/animations.dart';
 
 class TransformAnimationWidget extends HookWidget {
   final Widget child;
@@ -19,17 +20,11 @@ class TransformAnimationWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Set up the animation controller
-    final animationController = useAnimationController(duration: duration);
-    final animation = Tween<double>(begin: startAngle, end: endAngle).animate(
-      CurvedAnimation(parent: animationController, curve: curve),
-    );
-
-    useEffect(() {
-      animationController.forward();
-      return null;
-    }, []);
-
+    final animation = useTransformAnimation(
+        curve: curve,
+        duration: duration,
+        endAngle: endAngle,
+        startAngle: startAngle);
     return AnimatedBuilder(
       animation: animation,
       builder: (context, child) {

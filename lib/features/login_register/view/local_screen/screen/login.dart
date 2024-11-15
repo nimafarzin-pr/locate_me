@@ -1,22 +1,28 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:locate_me/core/navigation/router/router.dart';
+import 'package:locate_me/core/navigation/routes.dart';
+import 'package:locate_me/features/login_register/view/local_screen/provider/login_register_provider.dart';
 
 import '../../../../../core/resources/icons.dart';
 import '../../../../../core/utils/validators/input/input_validate.dart';
 import '../../../../../core/utils/validators/input/input_validate_Item/empty_data.dart';
 import '../../../../../core/widget/accept_button/custom_accept_button.dart';
 import '../../../../../core/widget/custom_text.dart';
+import '../../../../../core/widget/dialogs/error_dialog.dart';
 import '../../../../../generated/locale_keys.g.dart';
 import '../widgets/otp_widget.dart';
 
-class LocalLoginScreen extends StatefulWidget {
+class LocalLoginScreen extends ConsumerStatefulWidget {
   const LocalLoginScreen({super.key});
 
   @override
-  State<LocalLoginScreen> createState() => _LocalLoginScreenState();
+  ConsumerState<LocalLoginScreen> createState() => _LocalLoginScreenState();
 }
 
-class _LocalLoginScreenState extends State<LocalLoginScreen> {
+class _LocalLoginScreenState extends ConsumerState<LocalLoginScreen> {
   final _passwordController = TextEditingController();
   final _repeatPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -39,8 +45,8 @@ class _LocalLoginScreenState extends State<LocalLoginScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
-                width: 200,
-                height: 200,
+                height: MediaQuery.sizeOf(context).height / 3,
+                width: MediaQuery.sizeOf(context).width / 1.2,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
@@ -80,6 +86,18 @@ class _LocalLoginScreenState extends State<LocalLoginScreen> {
                   onPressed: () async {
                     if (!_formKey.currentState!.validate()) {
                       return;
+                    }
+
+                    final authenticate = await ref
+                        .read(loginNotifierProvider.notifier)
+                        .authenticate(
+                            enteredPassword: _passwordController.text);
+
+                    if (authenticate) {
+                      context.go(Routes.root);
+                    } else {
+                      showErrorDialog(
+                          context: context, showCancelButton: false);
                     }
                   },
                 ),
