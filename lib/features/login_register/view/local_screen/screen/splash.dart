@@ -12,6 +12,7 @@ import 'package:locate_me/core/widget/custom_text.dart';
 import 'package:locate_me/features/login_register/view/local_screen/provider/login_register_provider.dart';
 
 import '../../../../../core/resources/icons.dart';
+import '../../../../setting/provider/settings_provider.dart';
 
 class SplashScreen extends StatefulHookConsumerWidget {
   const SplashScreen({super.key});
@@ -32,9 +33,16 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       final isPasswordSet =
           await ref.read(splashNotifierProvider.notifier).isPasswordSet();
       if (isPasswordSet) {
-        context.go(
-          Routes.loginRouteForNavigator,
-        );
+        final isAutoLoginOn = await ref
+            .read(autoLoginNotifierProvider.notifier)
+            .getAutoLoginState();
+        if (isAutoLoginOn) {
+          context.go(Routes.root);
+        } else {
+          context.go(
+            Routes.loginRouteForNavigator,
+          );
+        }
       } else {
         context.go(
           Routes.setPasswordRouteForNavigator,

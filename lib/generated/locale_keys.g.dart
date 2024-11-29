@@ -126,5 +126,6 @@ abstract class  LocaleKeys {
   static const enter_password = 'enter_password';
   static const repeat_password = 'repeat_password';
   static const change_Password = 'change_Password';
+  static const input_length_error_message = 'input_length_error_message';
 
 }

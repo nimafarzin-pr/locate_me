@@ -1,9 +1,10 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:locate_me/core/navigation/routes.dart';
 import 'package:locate_me/core/widget/custom_text.dart';
 
@@ -13,6 +14,7 @@ import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../../../../core/widget/ads_widget.dart';
 
+import '../../../../core/widget/loading.dart';
 import '../../model/dto/setting_item_dto.dart';
 import '../../provider/settings_provider.dart';
 import '../widgets/items/export.dart';
@@ -73,7 +75,7 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
             }),
         SettingItemDto(
             title: LocaleKeys.change_Password.tr(),
-            icon: FontAwesomeIcons.list,
+            icon: FontAwesomeIcons.key,
             onTap: (context) async {
               await showChangePasswordModal(context, _password, _repeatPassword)
                   .then((_) {
@@ -81,6 +83,9 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
                 _repeatPassword.clear();
               });
             }),
+        SettingItemDto(
+          title: '${LocaleKeys.signIn.tr()} ${LocaleKeys.auto.tr()}',
+        )
       ];
 
   @override
@@ -93,15 +98,6 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
   Widget build(BuildContext rootContext) {
     return Scaffold(
       appBar: AppBar(
-        leading: ListTile(
-          minLeadingWidth: 300,
-          leading: Row(
-            children: [
-              const Icon(Icons.password),
-              CustomText.bodySmall('لاگین خودکار')
-            ],
-          ),
-        ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         // elevation: 4,
@@ -137,25 +133,52 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
                   elevation: 4.0,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(16.0),
-                    onTap: () => item.onTap(context),
+                    onTap: () async {
+                      if (item.onTap != null) {
+                        item.onTap!(context);
+                      } else {
+                        await ref
+                            .read(autoLoginNotifierProvider.notifier)
+                            .updateAutoLoginState();
+                      }
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          FaIcon(
-                            item.icon,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 30.0,
-                          ),
+                          if (item.icon == null)
+                            SizedBox(
+                              height: 30,
+                              child: ref.watch(autoLoginNotifierProvider).when(
+                                  data: (data) {
+                                    log('message: $data');
+                                    return Switch.adaptive(
+                                      value: data,
+                                      onChanged: (value) async {
+                                        await ref
+                                            .read(autoLoginNotifierProvider
+                                                .notifier)
+                                            .updateAutoLoginState();
+                                      },
+                                    );
+                                  },
+                                  error: (error, stackTrace) => const MyLoading(
+                                        size: 10,
+                                      ),
+                                  loading: () => const MyLoading(
+                                        size: 10,
+                                      )),
+                            ),
+                          if (item.icon != null)
+                            FaIcon(
+                              item.icon,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 30.0,
+                            ),
                           const SizedBox(height: 16.0),
                           CustomText.bodySmall(item.title),
                           const SizedBox(height: 8.0),
-                          // Icon(
-                          //   Icons.arrow_forward_ios,
-                          //   color: Theme.of(context).colorScheme.primary,
-                          //   size: 16.0,
-                          // ),
                         ],
                       ),
                     ),

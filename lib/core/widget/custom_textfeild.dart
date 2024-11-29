@@ -108,32 +108,30 @@ class _CustomTextFieldState extends State<CustomTextField> {
             prefix: const SizedBox(
               width: 20,
             ),
+            suffixIcon: widget.suffixIcon ??
+                (widget.obscureText
+                    ? SizedBox(
+                        // color: Colors.red,
+                        width: 20,
+                        child: IconButton(
+                            constraints: const BoxConstraints(),
+                            padding: EdgeInsets.zero, // Removes default padding
+                            alignment: Alignment.center,
+                            // Removes size constraints
 
-            suffix: widget.obscureText
-                ? Container(
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(top: 10),
-                    // color: Colors.red,
-                    width: 20,
-                    height: 44,
-                    child: IconButton(
-                        constraints: const BoxConstraints(),
-                        padding: EdgeInsets.zero, // Removes default padding
-                        alignment: Alignment.center,
-                        // Removes size constraints
-
-                        onPressed: () {
-                          setState(() {
-                            visibility = !visibility;
-                          });
-                        },
-                        icon: Icon(
-                          visibility ? Icons.visibility : Icons.visibility_off,
-                          size: 18,
-                        )),
-                  )
-                : null,
-            suffixIcon: widget.suffixIcon,
+                            onPressed: () {
+                              setState(() {
+                                visibility = !visibility;
+                              });
+                            },
+                            icon: Icon(
+                              visibility
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              size: 18,
+                            )),
+                      )
+                    : null),
             prefixIcon: widget.prefixIcon,
             hintText: widget.hintText,
             hintStyle: widget.hintStyle ?? TextStyle(color: Colors.grey[400]),

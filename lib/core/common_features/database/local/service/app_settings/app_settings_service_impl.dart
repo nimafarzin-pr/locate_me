@@ -82,17 +82,24 @@ class AppSettingsServiceImpl implements IAppSettingsService {
 
   @override
   Future<void> toggleAutoLogin() async {
-    // Fetch the current autoLogin value
-    final currentSetting = await (_database.select(_database.appSettingsTB)
-          ..where((tbl) => tbl.id.equals(0)))
-        .getSingleOrNull();
+    try {
+      log('1');
 
-    // If the setting exists, toggle the autoLogin value and update
-    if (currentSetting != null) {
-      bool updatedAutoLogin = !currentSetting.autoLogin;
+      // Fetch the current autoLogin value
+      final currentSetting = await (_database.select(_database.appSettingsTB)
+            ..where((tbl) => tbl.id.equals(0)))
+          .getSingleOrNull();
+
+      log('1>>> ${currentSetting?.autoLogin}');
+
+      // If the setting exists, toggle the autoLogin value and update
+
+      bool updatedAutoLogin = !currentSetting!.autoLogin;
       await (_database.update(_database.appSettingsTB)
             ..where((tbl) => tbl.id.equals(0)))
           .write(AppSettingsTBCompanion(autoLogin: Value(updatedAutoLogin)));
+    } catch (e) {
+      log("ERR : $e");
     }
   }
 
@@ -101,5 +108,23 @@ class AppSettingsServiceImpl implements IAppSettingsService {
     final result =
         await (_database.select(_database.appSettingsTB)..limit(0)).getSingle();
     return result.autoLogin;
+  }
+
+  @override
+  Stream<bool> watchAutoLoginState() {
+    return _database
+        .select(_database.appSettingsTB)
+        .watchSingle()
+        .map((data) => data.autoLogin);
+  }
+
+  @override
+  Future<bool> getAutoLoginState() async {
+    // Fetch the current autoLogin value
+    final currentSetting = await (_database.select(_database.appSettingsTB)
+          ..where((tbl) => tbl.id.equals(0)))
+        .getSingleOrNull();
+
+    return currentSetting?.autoLogin ?? false;
   }
 }
