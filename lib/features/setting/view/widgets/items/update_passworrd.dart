@@ -92,7 +92,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                   return Form(
                     key: formKey,
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
+                      mainAxisSize: MainAxisSize.max,
                       children: [
                         Icon(
                           Icons.warning_amber_rounded,
@@ -104,59 +104,55 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                           LocaleKeys.change_Password.tr(),
                         ),
                         const SizedBox(height: 20),
-                        Directionality(
-                          textDirection: ui.TextDirection.ltr,
-                          child: CustomTextField(
-                            maxLength: 6,
-                            validator: (value) {
-                              return ValidateInput.schema(
-                                context: context,
-                                value: value ?? widget.password.text,
-                                validations: [
-                                  EmptyData(
-                                    errorMessage:
-                                        LocaleKeys.field_required.tr(),
-                                  ),
-                                  LengthCheck(
-                                      length: 6,
-                                      errorMessage: 'رمز عبور باید ۶ رقم باشد'),
-                                ],
-                              );
-                            },
-                            textAlign: TextAlign.center,
-                            keyboardType: TextInputType.number,
-                            obscureText: true,
-                            hintText: LocaleKeys.enter_password.tr(),
-                            controller: widget.password,
-                          ),
+                        CustomTextField(
+                          maxLength: 6,
+                          validator: (value) {
+                            return ValidateInput.schema(
+                              context: context,
+                              value: value ?? widget.password.text,
+                              validations: [
+                                EmptyData(
+                                  errorMessage: LocaleKeys.field_required.tr(),
+                                ),
+                                LengthCheck(
+                                    length: 6,
+                                    errorMessage: LocaleKeys
+                                        .input_length_error_message
+                                        .tr()),
+                              ],
+                            );
+                          },
+                          textAlign: TextAlign.center,
+                          keyboardType: TextInputType.number,
+                          obscureText: true,
+                          hintText: LocaleKeys.enter_password.tr(),
+                          controller: widget.password,
                         ),
-                        Directionality(
-                          textDirection: ui.TextDirection.ltr,
-                          child: CustomTextField(
-                            maxLength: 6,
-                            validator: (value) {
-                              return ValidateInput.schema(
-                                context: context,
-                                value: value ?? widget.repeatPassword.text,
-                                validations: [
-                                  EmptyData(
-                                    errorMessage:
-                                        LocaleKeys.field_required.tr(),
-                                  ),
-                                  LengthCheck(
-                                      length: 6,
-                                      errorMessage: 'رمز عبور باید ۶ رقم باشد'),
-                                  CheckRepetitions(
-                                      previousPassword: widget.password.text)
-                                ],
-                              );
-                            },
-                            textAlign: TextAlign.center,
-                            keyboardType: TextInputType.number,
-                            obscureText: true,
-                            hintText: LocaleKeys.repeat_password.tr(),
-                            controller: widget.repeatPassword,
-                          ),
+                        CustomTextField(
+                          maxLength: 6,
+                          validator: (value) {
+                            return ValidateInput.schema(
+                              context: context,
+                              value: value ?? widget.repeatPassword.text,
+                              validations: [
+                                EmptyData(
+                                  errorMessage: LocaleKeys.field_required.tr(),
+                                ),
+                                LengthCheck(
+                                    length: 6,
+                                    errorMessage: LocaleKeys
+                                        .input_length_error_message
+                                        .tr()),
+                                CheckRepetitions(
+                                    previousPassword: widget.password.text)
+                              ],
+                            );
+                          },
+                          textAlign: TextAlign.center,
+                          keyboardType: TextInputType.number,
+                          obscureText: true,
+                          hintText: LocaleKeys.repeat_password.tr(),
+                          controller: widget.repeatPassword,
                         ),
                         const SizedBox(height: 20),
                         Row(

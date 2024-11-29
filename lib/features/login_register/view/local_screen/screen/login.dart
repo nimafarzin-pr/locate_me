@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:locate_me/core/navigation/router/router.dart';
 import 'package:locate_me/core/navigation/routes.dart';
 import 'package:locate_me/features/login_register/view/local_screen/provider/login_register_provider.dart';
 
@@ -74,7 +73,7 @@ class _LocalLoginScreenState extends ConsumerState<LocalLoginScreen> {
                     },
                     controller: _passwordController,
                     length: 6, // Adjust length as needed
-                    obscureText: true,
+                    obscureText: false,
                   ),
                   const SizedBox(height: 20),
                 ],

@@ -124,7 +124,8 @@
     "enter_new_password":"Enter New Password",
     "enter_password":"Enter Password",
     "repeat_password":"Repeat Password",
-    "change_Password":"Change Password"
+    "change_Password":"Change Password",
+    "input_length_error_message":"Password must be 6 numbers"
 
  
   }
