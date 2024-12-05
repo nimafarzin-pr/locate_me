@@ -10,6 +10,7 @@ import '../../../../../core/utils/validators/input/input_validate.dart';
 import '../../../../../core/utils/validators/input/input_validate_Item/empty_data.dart';
 import '../../../../../core/widget/accept_button/custom_accept_button.dart';
 import '../../../../../core/widget/custom_text.dart';
+import '../../../../../core/widget/custom_textfeild.dart';
 import '../../../../../core/widget/dialogs/error_dialog.dart';
 import '../../../../../generated/locale_keys.g.dart';
 import '../widgets/otp_widget.dart';
@@ -59,7 +60,8 @@ class _LocalLoginScreenState extends ConsumerState<LocalLoginScreen> {
                   CustomText.bodySmall(LocaleKeys.enter_password.tr(),
                       customStyle: const TextStyle(fontSize: 18)),
                   const SizedBox(height: 20),
-                  SquareOtpField(
+                  CustomTextField(
+                    maxLength: 6,
                     validator: (value) {
                       return ValidateInput.schema(
                         context: context,
@@ -71,9 +73,11 @@ class _LocalLoginScreenState extends ConsumerState<LocalLoginScreen> {
                         ],
                       );
                     },
+                    textAlign: TextAlign.center,
+                    keyboardType: TextInputType.number,
+                    obscureText: true,
+                    hintText: LocaleKeys.repeat_password.tr(),
                     controller: _passwordController,
-                    length: 6, // Adjust length as needed
-                    obscureText: false,
                   ),
                   const SizedBox(height: 20),
                 ],
@@ -96,7 +100,9 @@ class _LocalLoginScreenState extends ConsumerState<LocalLoginScreen> {
                       context.go(Routes.root);
                     } else {
                       showErrorDialog(
-                          context: context, showCancelButton: false);
+                          content: LocaleKeys.wrong_password.tr(),
+                          context: context,
+                          showCancelButton: false);
                     }
                   },
                 ),

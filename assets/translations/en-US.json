@@ -125,7 +125,11 @@
     "enter_password":"Enter Password",
     "repeat_password":"Repeat Password",
     "change_Password":"Change Password",
-    "input_length_error_message":"Password must be 6 numbers"
+    "input_length_error_message":"Password must be 6 numbers",
+    "rate_dialog_title":"Your opinion is important to us",
+    "add_rate_request_message":"Please submit your opinion",
+    "wrong_password":"Wrong password"
+
 
  
   }

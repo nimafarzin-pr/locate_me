@@ -127,5 +127,8 @@ abstract class  LocaleKeys {
   static const repeat_password = 'repeat_password';
   static const change_Password = 'change_Password';
   static const input_length_error_message = 'input_length_error_message';
+  static const rate_dialog_title = 'rate_dialog_title';
+  static const add_rate_request_message = 'add_rate_request_message';
+  static const wrong_password = 'wrong_password';
 
 }

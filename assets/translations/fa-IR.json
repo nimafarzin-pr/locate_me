@@ -125,7 +125,10 @@
     "enter_password":"پسورد را وارد کنید",
     "repeat_password":"پسورد را تکرار کنید",
     "change_Password":"تغییر پسورد",
-    "input_length_error_message":"رمز عبور باید ۶ رقم باشد"
+    "input_length_error_message":"رمز عبور باید ۶ رقم باشد",
+    "rate_dialog_title":"نظرت برامون مهمه",
+    "add_rate_request_message":"لطفا نظر خود را ثبت کنید",
+    "wrong_password":"پسورد اشتباه است"
 
 
 }
