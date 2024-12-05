@@ -10,4 +10,7 @@ class AppSettingsTB extends Table {
   IntColumn get themeMode => integer()
       .nullable()
       .withDefault(const Constant(2))(); // 0: Light, 1: Dark, 2: Auto
+
+  BoolColumn get autoLogin =>
+      boolean().withDefault(const Constant(false))(); // New auto-login column
 }

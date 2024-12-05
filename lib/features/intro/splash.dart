@@ -48,7 +48,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                 // Logo placeholder
                 ScaleAnimationWidget(
                   duration: const Duration(seconds: 3),
-                  startScale: 0.1, // Starts from a very small size
+                  beginScale: 0.1, // Starts from a very small size
                   endScale: MediaQuery.of(context).size.height /
                       MediaQuery.of(context).size.width /
                       0.4, // Scales to full screen width

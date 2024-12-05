@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -12,6 +13,8 @@ void main() async {
   await dotenv.load(fileName: ".env");
   await EasyLocalization.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   // await SupabaseService().init();
 
   runApp(ProviderScope(

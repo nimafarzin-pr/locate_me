@@ -1,15 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:locate_me/features/setting/view/viewmodel/language_notifier.dart';
+import 'package:locate_me/features/setting/view/view_model/language_notifier.dart';
 
 import 'package:locate_me/core/riverpod/riverpod_actions_common_state.dart';
-import 'package:locate_me/features/setting/view/viewmodel/logout.dart';
+import 'package:locate_me/features/setting/view/view_model/logout.dart';
 import 'package:riverpod/riverpod.dart';
 
-import '../view/viewmodel/export_notifier.dart';
-import '../view/viewmodel/import_state.dart';
+import '../view/view_model/auto_login_notifier.dart';
+import '../view/view_model/change_password_notifier.dart';
+import '../view/view_model/export_notifier.dart';
+import '../view/view_model/import_state.dart';
 
 import '../../../core/enums/enums.dart';
-import '../view/viewmodel/theme_notifier.dart';
+import '../view/view_model/theme_notifier.dart';
 
 import 'package:locate_me/core/common_features/database/local/provider/db_provider.dart';
 import 'package:locate_me/features/setting/repository/settings_repository.dart';
@@ -36,3 +38,9 @@ final themeNotifierProvider =
 
 final logoutNotifierProvider =
     AsyncNotifierProvider<LogoutNotifier, bool?>(LogoutNotifier.new);
+
+final changePasswordNotifierProvider =
+    AsyncNotifierProvider<ChangePasswordNotifier, bool?>(
+        ChangePasswordNotifier.new);
+final autoLoginNotifierProvider =
+    AsyncNotifierProvider<AutoLoginNotifier, bool>(AutoLoginNotifier.new);
