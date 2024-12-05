@@ -13,7 +13,6 @@ class Routes {
   static const String setPassword = 'setPassword';
   static const String setPasswordRouteForNavigator = '/setPassword';
   static const String signUp = 'signUp';
-  static const String splash = '/splash';
   static const String editLocation = 'editLocationItem';
   static const String locationDetail = 'locationDetail';
   static const String categoryList = 'categoryList';
