@@ -76,7 +76,7 @@ class _LocalLoginScreenState extends ConsumerState<LocalLoginScreen> {
                     textAlign: TextAlign.center,
                     keyboardType: TextInputType.number,
                     obscureText: true,
-                    hintText: LocaleKeys.repeat_password.tr(),
+                    hintText: LocaleKeys.enter_password.tr(),
                     controller: _passwordController,
                   ),
                   const SizedBox(height: 20),

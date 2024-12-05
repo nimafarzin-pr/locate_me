@@ -139,7 +139,12 @@ class CodegenLoader extends AssetLoader{
   "logout": "آیا میخواهید از حساب خود خارج شوید",
   "enter_new_password": "پسورد جدید را وارد کنید",
   "enter_password": "پسورد را وارد کنید",
-  "repeat_password": "پسورد را تکرار کنید"
+  "repeat_password": "پسورد را تکرار کنید",
+  "change_Password": "تغییر پسورد",
+  "input_length_error_message": "رمز عبور باید ۶ رقم باشد",
+  "rate_dialog_title": "نظرت برامون مهمه",
+  "add_rate_request_message": "لطفا نظر خود را ثبت کنید",
+  "wrong_password": "پسورد اشتباه است"
 };
 static const Map<String,dynamic> en_US = {
   "settings": "Settings",
@@ -266,7 +271,12 @@ static const Map<String,dynamic> en_US = {
   "logout": "Do you want to log out of your account?",
   "enter_new_password": "Enter New Password",
   "enter_password": "Enter Password",
-  "repeat_password": "Repeat Password"
+  "repeat_password": "Repeat Password",
+  "change_Password": "Change Password",
+  "input_length_error_message": "Password must be 6 numbers",
+  "rate_dialog_title": "Your opinion is important to us",
+  "add_rate_request_message": "Please submit your opinion",
+  "wrong_password": "Wrong password"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"fa_IR": fa_IR, "en_US": en_US};
 }
