@@ -122,5 +122,13 @@ abstract class  LocaleKeys {
   static const not_register_user_txt = 'not_register_user_txt';
   static const register_user_txt = 'register_user_txt';
   static const logout = 'logout';
+  static const enter_new_password = 'enter_new_password';
+  static const enter_password = 'enter_password';
+  static const repeat_password = 'repeat_password';
+  static const change_Password = 'change_Password';
+  static const input_length_error_message = 'input_length_error_message';
+  static const rate_dialog_title = 'rate_dialog_title';
+  static const add_rate_request_message = 'add_rate_request_message';
+  static const wrong_password = 'wrong_password';
 
 }

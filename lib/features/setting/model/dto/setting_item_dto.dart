@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 class SettingItemDto {
   final String title;
-  final IconData icon;
-  final Function(BuildContext) onTap;
+  final IconData? icon;
+  final Widget? customWidget;
+  final Function(BuildContext)? onTap;
 
   SettingItemDto({
+    this.customWidget,
     required this.title,
-    required this.icon,
-    required this.onTap,
+    this.icon,
+    this.onTap,
   });
 }

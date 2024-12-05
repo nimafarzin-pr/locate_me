@@ -127,4 +127,23 @@ class AppSettingsRepositoryImpl extends IAppSettingsRepository {
       return Exception("Error in watchLocations stream");
     });
   }
+
+  @override
+  Future<void> toggleAutoLogin() async {
+    await _appSettingsServiceImpl.toggleAutoLogin();
+  }
+
+  @override
+  Stream<bool> watchAutoLoginState() {
+    try {
+      return _appSettingsServiceImpl.watchAutoLoginState();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> getAutoLoginState() async {
+    return await _appSettingsServiceImpl.getAutoLoginState();
+  }
 }

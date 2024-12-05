@@ -120,7 +120,16 @@
     "signUp":"Sign Up",
     "not_register_user_txt":"Don\\'t have an account? Sign Up",
     "register_user_txt":"Have an account? Sign In" ,
-    "logout":"Do you want to log out of your account?"
+    "logout":"Do you want to log out of your account?",
+    "enter_new_password":"Enter New Password",
+    "enter_password":"Enter Password",
+    "repeat_password":"Repeat Password",
+    "change_Password":"Change Password",
+    "input_length_error_message":"Password must be 6 numbers",
+    "rate_dialog_title":"Your opinion is important to us",
+    "add_rate_request_message":"Please submit your opinion",
+    "wrong_password":"Wrong password"
+
 
  
   }

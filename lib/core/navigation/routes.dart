@@ -4,8 +4,14 @@ class Routes {
   static const String map = '/mapView';
   static const String add = '/add';
   static const String settings = '/setting';
+  static const String splash = 'splash';
+  static const String splashRouteForNavigator = '/splash';
   static const String search = '/search';
   static const String signIn = 'signIn';
+  static const String login = 'login';
+  static const String loginRouteForNavigator = '/login';
+  static const String setPassword = 'setPassword';
+  static const String setPasswordRouteForNavigator = '/setPassword';
   static const String signUp = 'signUp';
   static const String splash = '/splash';
   static const String editLocation = 'editLocationItem';

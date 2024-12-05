@@ -120,12 +120,15 @@
     "signUp":"ثبت نام",
     "not_register_user_txt":"حساب ندارید؟ ثبت نام کنید",
     "register_user_txt":"حساب دارید؟ وارد شوید",
-    "logout":"آیا میخواهید از حساب خود خارج شوید"
-
-
-
-
-
+    "logout":"آیا میخواهید از حساب خود خارج شوید",
+    "enter_new_password":"پسورد جدید را وارد کنید",
+    "enter_password":"پسورد را وارد کنید",
+    "repeat_password":"پسورد را تکرار کنید",
+    "change_Password":"تغییر پسورد",
+    "input_length_error_message":"رمز عبور باید ۶ رقم باشد",
+    "rate_dialog_title":"نظرت برامون مهمه",
+    "add_rate_request_message":"لطفا نظر خود را ثبت کنید",
+    "wrong_password":"پسورد اشتباه است"
 
 
 }

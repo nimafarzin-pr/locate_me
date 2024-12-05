@@ -19,4 +19,7 @@ abstract class IAppSettingsRepository {
   Future<void> deleteCategory(int id);
   Future<List<CategoryModel>> getAllCategories();
   Stream<List<CategoryModel>> watchCategories();
+  Future<void> toggleAutoLogin();
+  Stream<bool> watchAutoLoginState();
+  Future<bool> getAutoLoginState();
 }

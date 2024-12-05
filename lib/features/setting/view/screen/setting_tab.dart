@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,12 +14,15 @@ import 'package:locate_me/generated/locale_keys.g.dart';
 
 import '../../../../core/widget/ads_widget.dart';
 
+import '../../../../core/widget/loading.dart';
 import '../../model/dto/setting_item_dto.dart';
 import '../../provider/settings_provider.dart';
+import '../widgets/items/add_rate.dart';
 import '../widgets/items/export.dart';
 import '../widgets/items/language.dart';
 import '../widgets/items/map.dart';
 import '../widgets/items/theme.dart';
+import '../widgets/items/update_passworrd.dart';
 
 class SettingsTab extends ConsumerStatefulWidget {
   const SettingsTab({super.key});
@@ -28,6 +33,8 @@ class SettingsTab extends ConsumerStatefulWidget {
 
 class _SettingTabState extends ConsumerState<SettingsTab> {
   late final TextEditingController _fileName = TextEditingController();
+  late final TextEditingController _password = TextEditingController();
+  late final TextEditingController _repeatPassword = TextEditingController();
 
   List<SettingItemDto> get settingsItems => [
         SettingItemDto(
@@ -66,7 +73,26 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
             icon: FontAwesomeIcons.list,
             onTap: (context) async {
               context.pushNamed(Routes.categoryList);
-            })
+            }),
+        SettingItemDto(
+            title: LocaleKeys.change_Password.tr(),
+            icon: FontAwesomeIcons.key,
+            onTap: (context) async {
+              await showChangePasswordModal(context, _password, _repeatPassword)
+                  .then((_) {
+                _password.clear();
+                _repeatPassword.clear();
+              });
+            }),
+        SettingItemDto(
+          title: '${LocaleKeys.signIn.tr()} ${LocaleKeys.auto.tr()}',
+        ),
+        SettingItemDto(
+            title: LocaleKeys.rate.tr(),
+            icon: FontAwesomeIcons.starHalfStroke,
+            onTap: (context) async {
+              await showRateModal(context);
+            }),
       ];
 
   @override
@@ -114,25 +140,52 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
                   elevation: 4.0,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(16.0),
-                    onTap: () => item.onTap(context),
+                    onTap: () async {
+                      if (item.onTap != null) {
+                        item.onTap!(context);
+                      } else {
+                        await ref
+                            .read(autoLoginNotifierProvider.notifier)
+                            .updateAutoLoginState();
+                      }
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          FaIcon(
-                            item.icon,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 30.0,
-                          ),
+                          if (item.icon == null)
+                            SizedBox(
+                              height: 30,
+                              child: ref.watch(autoLoginNotifierProvider).when(
+                                  data: (data) {
+                                    log('message: $data');
+                                    return Switch.adaptive(
+                                      value: data,
+                                      onChanged: (value) async {
+                                        await ref
+                                            .read(autoLoginNotifierProvider
+                                                .notifier)
+                                            .updateAutoLoginState();
+                                      },
+                                    );
+                                  },
+                                  error: (error, stackTrace) => const MyLoading(
+                                        size: 10,
+                                      ),
+                                  loading: () => const MyLoading(
+                                        size: 10,
+                                      )),
+                            ),
+                          if (item.icon != null)
+                            FaIcon(
+                              item.icon,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 30.0,
+                            ),
                           const SizedBox(height: 16.0),
                           CustomText.bodySmall(item.title),
                           const SizedBox(height: 8.0),
-                          // Icon(
-                          //   Icons.arrow_forward_ios,
-                          //   color: Theme.of(context).colorScheme.primary,
-                          //   size: 16.0,
-                          // ),
                         ],
                       ),
                     ),
