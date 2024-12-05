@@ -17,6 +17,7 @@ import '../../../../core/widget/ads_widget.dart';
 import '../../../../core/widget/loading.dart';
 import '../../model/dto/setting_item_dto.dart';
 import '../../provider/settings_provider.dart';
+import '../widgets/items/add_rate.dart';
 import '../widgets/items/export.dart';
 import '../widgets/items/language.dart';
 import '../widgets/items/map.dart';
@@ -85,7 +86,13 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
             }),
         SettingItemDto(
           title: '${LocaleKeys.signIn.tr()} ${LocaleKeys.auto.tr()}',
-        )
+        ),
+        SettingItemDto(
+            title: LocaleKeys.rate.tr(),
+            icon: FontAwesomeIcons.starHalfStroke,
+            onTap: (context) async {
+              await showRateModal(context);
+            }),
       ];
 
   @override
