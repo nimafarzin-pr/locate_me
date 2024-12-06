@@ -89,10 +89,10 @@ class _EditOnGoogleMapState extends ConsumerState<EditOnGoogleMap> {
                 await showSuccessModal(
                   context,
                   onConfirm: () async {
-                    Navigator.pop(context);
                     ref
                         .read(selectedEditStateProviderForEditView.notifier)
                         .clearEditItem();
+                    Navigator.pop(context);
                   },
                 );
               },
