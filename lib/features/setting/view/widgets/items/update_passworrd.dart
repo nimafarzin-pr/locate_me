@@ -18,9 +18,8 @@ import '../../../../../core/widget/custom_text.dart';
 import '../../../../../core/widget/custom_textfeild.dart';
 import '../../../../../core/widget/dialogs/dialog_wrapper.dart';
 import '../../../../../core/widget/dialogs/status_widget.dart';
-import '../../../../../core/widget/animation/fade_in_scale_animation.dart';
+import '../../../../../core/widget/dialogs/success_modal.dart';
 import '../../../provider/settings_provider.dart';
-import 'dart:ui' as ui;
 
 class UpdatePassword extends StatefulWidget {
   final TextEditingController password;
@@ -59,125 +58,123 @@ class _UpdatePasswordState extends State<UpdatePassword> {
         Navigator.pop(context);
         return true;
       },
-      child: FadeInScaleAnimation(
-        child: DialogWrapper(
-          height: MediaQuery.sizeOf(context).height / 2,
-          child: Consumer(
-            builder: (context, ref, child) {
-              final state = ref.watch(exportNotifierProvider);
-              if (state.isLoading) {
-                return MyLoading(color: Theme.of(context).colorScheme.primary);
-              } else if (state.successMessage != null) {
-                return StatusWidget(
-                  title: LocaleKeys.export.tr(),
-                  iconColor: Theme.of(context).colorScheme.success,
-                  content: state.successMessage,
-                  showCancelButton: false,
-                  onConfirm: () async {
-                    Navigator.pop(context);
-                  },
+      child: DialogWrapper(
+        height: MediaQuery.sizeOf(context).height / 2,
+        child: Consumer(
+          builder: (context, ref, child) {
+            final state = ref.watch(exportNotifierProvider);
+            if (state.isLoading) {
+              return MyLoading(color: Theme.of(context).colorScheme.primary);
+            } else if (state.successMessage != null) {
+              return StatusWidget(
+                title: LocaleKeys.export.tr(),
+                iconColor: Theme.of(context).colorScheme.success,
+                content: state.successMessage,
+                showCancelButton: false,
+                onConfirm: () async {
+                  Navigator.pop(context);
+                },
+              );
+            } else if (state.errorMessage != null) {
+              return StatusWidget(
+                title: LocaleKeys.export.tr(),
+                iconColor: Theme.of(context).colorScheme.error,
+                content: state.errorMessage,
+                showCancelButton: false,
+                onConfirm: () async {
+                  Navigator.pop(context);
+                },
+              );
+            } else {
+              return Builder(builder: (bContext) {
+                return Form(
+                  key: formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Icon(
+                        Icons.warning_amber_rounded,
+                        color: Theme.of(context).colorScheme.warning,
+                        size: 50,
+                      ),
+                      const SizedBox(height: 20),
+                      CustomText.headlineSmall(
+                        LocaleKeys.change_Password.tr(),
+                      ),
+                      const SizedBox(height: 20),
+                      CustomTextField(
+                        maxLength: 6,
+                        validator: (value) {
+                          return ValidateInput.schema(
+                            context: context,
+                            value: value ?? widget.password.text,
+                            validations: [
+                              EmptyData(
+                                errorMessage: LocaleKeys.field_required.tr(),
+                              ),
+                              LengthCheck(
+                                  length: 6,
+                                  errorMessage: LocaleKeys
+                                      .input_length_error_message
+                                      .tr()),
+                            ],
+                          );
+                        },
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.number,
+                        obscureText: true,
+                        hintText: LocaleKeys.enter_password.tr(),
+                        controller: widget.password,
+                      ),
+                      CustomTextField(
+                        maxLength: 6,
+                        validator: (value) {
+                          return ValidateInput.schema(
+                            context: context,
+                            value: value ?? widget.repeatPassword.text,
+                            validations: [
+                              EmptyData(
+                                errorMessage: LocaleKeys.field_required.tr(),
+                              ),
+                              LengthCheck(
+                                  length: 6,
+                                  errorMessage: LocaleKeys
+                                      .input_length_error_message
+                                      .tr()),
+                              CheckRepetitions(
+                                  previousPassword: widget.password.text)
+                            ],
+                          );
+                        },
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.number,
+                        obscureText: true,
+                        hintText: LocaleKeys.repeat_password.tr(),
+                        controller: widget.repeatPassword,
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const CancelButton(),
+                          const SizedBox(width: 12),
+                          AcceptButton(
+                            buttonText: LocaleKeys.ok.tr(),
+                            onPressed: () async {
+                              if (!(formKey.currentState!.validate())) {
+                                return;
+                              }
+                              widget.onPressed(widget.password.text);
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 );
-              } else if (state.errorMessage != null) {
-                return StatusWidget(
-                  title: LocaleKeys.export.tr(),
-                  iconColor: Theme.of(context).colorScheme.error,
-                  content: state.errorMessage,
-                  showCancelButton: false,
-                  onConfirm: () async {
-                    Navigator.pop(context);
-                  },
-                );
-              } else {
-                return Builder(builder: (bContext) {
-                  return Form(
-                    key: formKey,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Icon(
-                          Icons.warning_amber_rounded,
-                          color: Theme.of(context).colorScheme.warning,
-                          size: 50,
-                        ),
-                        const SizedBox(height: 20),
-                        CustomText.headlineSmall(
-                          LocaleKeys.change_Password.tr(),
-                        ),
-                        const SizedBox(height: 20),
-                        CustomTextField(
-                          maxLength: 6,
-                          validator: (value) {
-                            return ValidateInput.schema(
-                              context: context,
-                              value: value ?? widget.password.text,
-                              validations: [
-                                EmptyData(
-                                  errorMessage: LocaleKeys.field_required.tr(),
-                                ),
-                                LengthCheck(
-                                    length: 6,
-                                    errorMessage: LocaleKeys
-                                        .input_length_error_message
-                                        .tr()),
-                              ],
-                            );
-                          },
-                          textAlign: TextAlign.center,
-                          keyboardType: TextInputType.number,
-                          obscureText: true,
-                          hintText: LocaleKeys.enter_password.tr(),
-                          controller: widget.password,
-                        ),
-                        CustomTextField(
-                          maxLength: 6,
-                          validator: (value) {
-                            return ValidateInput.schema(
-                              context: context,
-                              value: value ?? widget.repeatPassword.text,
-                              validations: [
-                                EmptyData(
-                                  errorMessage: LocaleKeys.field_required.tr(),
-                                ),
-                                LengthCheck(
-                                    length: 6,
-                                    errorMessage: LocaleKeys
-                                        .input_length_error_message
-                                        .tr()),
-                                CheckRepetitions(
-                                    previousPassword: widget.password.text)
-                              ],
-                            );
-                          },
-                          textAlign: TextAlign.center,
-                          keyboardType: TextInputType.number,
-                          obscureText: true,
-                          hintText: LocaleKeys.repeat_password.tr(),
-                          controller: widget.repeatPassword,
-                        ),
-                        const SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const CancelButton(),
-                            const SizedBox(width: 12),
-                            AcceptButton(
-                              buttonText: LocaleKeys.ok.tr(),
-                              onPressed: () async {
-                                if (!(formKey.currentState!.validate())) {
-                                  return;
-                                }
-                                widget.onPressed(widget.password.text);
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                });
-              }
-            },
-          ),
+              });
+            }
+          },
         ),
       ),
     );
@@ -189,6 +186,7 @@ Future<void> showChangePasswordModal(
     TextEditingController password,
     TextEditingController repeatPassword) async {
   await showDialog(
+    barrierDismissible: true,
     context: context,
     builder: (ctx) => Consumer(builder: (context, ref, child) {
       return UpdatePassword(
@@ -201,24 +199,7 @@ Future<void> showChangePasswordModal(
 
             if (status) {
               Navigator.pop(ctx);
-              await showDialog(
-                context: context,
-                builder: (successModal) {
-                  return Center(
-                    child: SizedBox(
-                      height: 300,
-                      child: StatusWidget(
-                          status: ActionStatus.success,
-                          onConfirm: () async {
-                            await Navigator.maybePop(successModal);
-                          },
-                          showCancelButton: false,
-                          iconColor: Colors.green,
-                          title: LocaleKeys.success_full_action.tr()),
-                    ),
-                  );
-                },
-              );
+              await showSuccessModal(context);
             } else {
               showErrorDialog(
                   context: context, content: LocaleKeys.error_occurred.tr());

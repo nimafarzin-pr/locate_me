@@ -10,6 +10,7 @@ import 'package:latlong2/latlong.dart' as latLngTwo;
 import '../../../../core/common_features/map/views/google_map_view.dart';
 
 import '../../../../core/widget/dialogs/status_widget.dart';
+import '../../../../core/widget/dialogs/success_modal.dart';
 import '../../../../generated/locale_keys.g.dart';
 import '../../../home/model/place_item_model.dart';
 import '../../provider/add_screen_provider.dart';
@@ -75,25 +76,7 @@ class _AddMapState extends ConsumerState<GoogleView> {
                       .read(addLocationNotifierProvider.notifier)
                       .addLocationItem(location);
                   Navigator.pop(modalContext);
-                  await showDialog(
-                    context: context,
-                    builder: (successModal) {
-                      return Center(
-                        child: SizedBox(
-                          height: 300,
-                          child: StatusWidget(
-                              status: ActionStatus.success,
-                              onConfirm: () async {
-                                await Navigator.maybePop(successModal);
-                              },
-                              showCancelButton: false,
-                              iconColor: Colors.green,
-                              title:
-                                  LocaleKeys.location_saved_successfully.tr()),
-                        ),
-                      );
-                    },
-                  );
+                  await showSuccessModal(context);
                 } catch (e) {
                   log("ERR : $e");
                 }

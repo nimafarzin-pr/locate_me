@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart' as googleMap;
 
 import '../../../../core/common_features/map/views/osm_map_view.dart';
 import '../../../../core/widget/dialogs/status_widget.dart';
+import '../../../../core/widget/dialogs/success_modal.dart';
 import '../../../../generated/locale_keys.g.dart';
 import '../../../home/model/place_item_model.dart';
 import '../../provider/add_screen_provider.dart';
@@ -64,25 +65,7 @@ class _OsmViewState extends ConsumerState<OsmView>
                       .read(addLocationNotifierProvider.notifier)
                       .addLocationItem(location);
                   Navigator.pop(modalContext);
-                  await showDialog(
-                    context: context,
-                    builder: (successModal) {
-                      return Center(
-                        child: SizedBox(
-                          height: 300,
-                          child: StatusWidget(
-                              status: ActionStatus.success,
-                              onConfirm: () async {
-                                await Navigator.maybePop(successModal);
-                              },
-                              showCancelButton: false,
-                              iconColor: Colors.green,
-                              title:
-                                  LocaleKeys.location_saved_successfully.tr()),
-                        ),
-                      );
-                    },
-                  );
+                  await showSuccessModal(context);
                 } catch (e) {
                   log("ERR : $e");
                 }
