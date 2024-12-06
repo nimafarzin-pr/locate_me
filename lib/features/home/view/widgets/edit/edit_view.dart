@@ -20,6 +20,7 @@ import '../../../../../core/navigation/routes.dart';
 import '../../../../../core/widget/ads_widget.dart';
 import '../../../../../core/widget/dialogs/permission.dart';
 import '../../../../../core/widget/dialogs/status_widget.dart';
+import '../../../../../core/widget/dialogs/success_modal.dart';
 import '../../../../add/provider/add_screen_provider.dart';
 import '../../../model/place_item_model.dart';
 import 'dialog/edit_form.dart';
@@ -53,28 +54,13 @@ class _EditViewState extends ConsumerState<EditView> {
                       .read(addLocationNotifierProvider.notifier)
                       .updateLocationItem(location);
                   Navigator.pop(modalContext);
-                  showDialog(
-                    context: context,
-                    builder: (successModal) {
-                      return Center(
-                        child: SizedBox(
-                          height: 300,
-                          child: StatusWidget(
-                              status: ActionStatus.success,
-                              onConfirm: () async {
-                                Navigator.pop(successModal);
-                                Navigator.pop(context);
-                                ref
-                                    .read(selectedEditStateProviderForEditView
-                                        .notifier)
-                                    .clearEditItem();
-                              },
-                              showCancelButton: false,
-                              iconColor: Colors.green,
-                              title: LocaleKeys.location_updated_successfully
-                                  .tr()),
-                        ),
-                      );
+                  await showSuccessModal(
+                    context,
+                    onConfirm: () async {
+                      Navigator.pop(context);
+                      ref
+                          .read(selectedEditStateProviderForEditView.notifier)
+                          .clearEditItem();
                     },
                   );
                 },
@@ -93,8 +79,12 @@ class _EditViewState extends ConsumerState<EditView> {
     final permission = ref.watch(permissionProvider);
     return BackButtonListener(
       onBackButtonPressed: () async {
-        // ref.read(selectedEditStateProviderForEditView.notifier).clearEditItem();
         context.pop();
+        if (!context.mounted) {
+          ref
+              .read(selectedEditStateProviderForEditView.notifier)
+              .clearEditItem();
+        }
         return true;
       },
       child: Builder(builder: (context) {

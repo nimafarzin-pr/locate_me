@@ -1,16 +1,13 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:locate_me/core/navigation/router/router.dart';
 
 import '../../../../../core/common_features/map/views/osm_map_view.dart';
 
 import '../../../../../core/widget/custom_marker_add_info_box.dart';
-import '../../../../../core/widget/dialogs/status_widget.dart';
-import '../../../../../generated/locale_keys.g.dart';
+import '../../../../../core/widget/dialogs/success_modal.dart';
 import '../../../../add/provider/add_screen_provider.dart';
 import '../../../model/place_item_model.dart';
 import '../../../provider/home_screen_provider.dart';
@@ -83,28 +80,14 @@ class _EditOnOsmState extends ConsumerState<EditOnOsm>
                     .read(addLocationNotifierProvider.notifier)
                     .updateLocationItem(location);
                 Navigator.pop(modalContext);
-                showDialog(
-                  context: context,
-                  builder: (successModal) {
-                    return Center(
-                      child: SizedBox(
-                        height: 300,
-                        child: StatusWidget(
-                            status: ActionStatus.success,
-                            onConfirm: () async {
-                              Navigator.pop(successModal);
-                              Navigator.pop(context);
-                              ref
-                                  .read(selectedEditStateProviderForEditView
-                                      .notifier)
-                                  .clearEditItem();
-                            },
-                            showCancelButton: false,
-                            iconColor: Colors.green,
-                            title:
-                                LocaleKeys.location_updated_successfully.tr()),
-                      ),
-                    );
+
+                await showSuccessModal(
+                  context,
+                  onConfirm: () async {
+                    Navigator.pop(context);
+                    ref
+                        .read(selectedEditStateProviderForEditView.notifier)
+                        .clearEditItem();
                   },
                 );
               },

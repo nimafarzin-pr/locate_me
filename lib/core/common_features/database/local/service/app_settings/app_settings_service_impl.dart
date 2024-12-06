@@ -83,21 +83,18 @@ class AppSettingsServiceImpl implements IAppSettingsService {
   @override
   Future<void> toggleAutoLogin() async {
     try {
-      log('1');
-
       // Fetch the current autoLogin value
       final currentSetting = await (_database.select(_database.appSettingsTB)
             ..where((tbl) => tbl.id.equals(0)))
           .getSingleOrNull();
 
-      log('1>>> ${currentSetting?.autoLogin}');
-
       // If the setting exists, toggle the autoLogin value and update
+      bool updatedAutoLogin =
+          currentSetting != null ? !(currentSetting.autoLogin) : true;
 
-      bool updatedAutoLogin = !currentSetting!.autoLogin;
-      await (_database.update(_database.appSettingsTB)
-            ..where((tbl) => tbl.id.equals(0)))
-          .write(AppSettingsTBCompanion(autoLogin: Value(updatedAutoLogin)));
+      await _database.into(_database.appSettingsTB).insertOnConflictUpdate(
+          AppSettingsTBCompanion(
+              autoLogin: Value(updatedAutoLogin), id: const Value(0)));
     } catch (e) {
       log("ERR : $e");
     }

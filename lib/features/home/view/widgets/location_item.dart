@@ -22,6 +22,7 @@ import 'package:locate_me/generated/locale_keys.g.dart';
 import '../../../../core/common_features/caching/image_byte_provider.dart';
 import '../../../../core/utils/date_converter.dart';
 import '../../../../core/common_features/caching/base64_dto.dart';
+import '../../../../core/widget/dialogs/success_modal.dart';
 import '../../provider/home_screen_provider.dart';
 
 class LocationItem extends ConsumerWidget {
@@ -293,6 +294,12 @@ class LocationItem extends ConsumerWidget {
                     await ref
                         .read(homeScreenRepositoryProvider)
                         .deleteLocation(item.id!);
+                    await showSuccessModal(
+                      context,
+                      onConfirm: () async {
+                        Navigator.pop(context);
+                      },
+                    );
                   },
                 );
               },

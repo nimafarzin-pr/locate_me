@@ -62,6 +62,11 @@ class _AddLocationViewState<T> extends ConsumerState<ShowDetailsScreen> {
           body: BackButtonListener(
             onBackButtonPressed: () async {
               context.pop();
+              if (!context.mounted) {
+                ref
+                    .read(selectedEditStateProviderForEditView.notifier)
+                    .clearEditItem();
+              }
               return true;
             },
             child: CustomScrollView(
