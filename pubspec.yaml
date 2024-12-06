@@ -20,7 +20,7 @@ version: 1.0.2+3
 
 scripts:
   generate_files: flutter pub run build_runner build --delete-conflicting-outputs
-  load_language_resource: flutterdart run easy_localization:generate -f keys -o locale_keys.g.dart --source-dir ./assets/translations pub run easy_localization:generate --source-dir ./assets/translations
+  load_language_resource: dart run easy_localization:generate -f keys -o locale_keys.g.dart --source-dir ./assets/translations pub run easy_localization:generate --source-dir ./assets/translations
   generate_language_key: 
   generate_app_icon: dart run flutter_launcher_icons:main
   generate_icon_pack: dart run flutter_iconpicker:generate_packs --packs allMaterial
