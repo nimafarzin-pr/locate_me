@@ -84,10 +84,10 @@ class _EditOnOsmState extends ConsumerState<EditOnOsm>
                 await showSuccessModal(
                   context,
                   onConfirm: () async {
-                    Navigator.pop(context);
                     ref
                         .read(selectedEditStateProviderForEditView.notifier)
                         .clearEditItem();
+                    Navigator.pop(context);
                   },
                 );
               },

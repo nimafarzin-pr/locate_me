@@ -7,6 +7,7 @@ import 'package:locate_me/core/extension/screen_size_extension.dart';
 import 'package:locate_me/core/common_features/map/view_model/my_location_button_notifier.dart';
 import 'package:locate_me/core/widget/loading.dart';
 
+import '../../../../../../features/home/provider/home_screen_provider.dart';
 import '../../../../../navigation/router/router.dart';
 import '../../../../../navigation/routes.dart';
 import '../custom_location_button.dart';
@@ -144,12 +145,7 @@ class GeneralMapWrapper extends ConsumerWidget {
                     onPressed: onAddOrEditLocation ?? () {},
                     child: FaIcon(
                       size: 20,
-                      router.routerDelegate.currentConfiguration.uri
-                                      .toString() ==
-                                  Routes.add ||
-                              router.routerDelegate.currentConfiguration.uri
-                                  .toString()
-                                  .isEmpty
+                      ref.read(selectedEditStateProviderForEditView) == null
                           ? FontAwesomeIcons.plus
                           : FontAwesomeIcons.penToSquare,
                       color: Theme.of(context).colorScheme.onSurface,
