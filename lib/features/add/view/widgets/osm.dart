@@ -1,15 +1,13 @@
 import 'dart:developer';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as googleMap;
 
+import '../../../../core/common_features/map/provider/map_setting_notifier_provider.dart';
 import '../../../../core/common_features/map/views/osm_map_view.dart';
-import '../../../../core/widget/dialogs/status_widget.dart';
 import '../../../../core/widget/dialogs/success_modal.dart';
-import '../../../../generated/locale_keys.g.dart';
 import '../../../home/model/place_item_model.dart';
 import '../../provider/add_screen_provider.dart';
 import 'dialog/add_form.dart';

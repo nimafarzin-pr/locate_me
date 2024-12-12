@@ -113,9 +113,10 @@ class _AddLocationViewState<T> extends ConsumerState<EditLocationFormView> {
 
     return BackButtonListener(
       onBackButtonPressed: () async {
-        if (mounted) {
+        if (context.mounted) {
           Navigator.pop(context);
         }
+
         return true;
       },
       child: FadeInScaleAnimation(
