@@ -12,7 +12,7 @@ import 'package:locate_me/generated/locale_keys.g.dart';
 import '../../features/home/provider/home_screen_provider.dart';
 import '../navigation/routes.dart';
 
-class ScaffoldWithNestedNavigation extends StatefulWidget {
+class ScaffoldWithNestedNavigation extends ConsumerStatefulWidget {
   const ScaffoldWithNestedNavigation({
     Key? key,
     required this.navigationShell,
@@ -20,13 +20,13 @@ class ScaffoldWithNestedNavigation extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
 
   @override
-  State<ScaffoldWithNestedNavigation> createState() =>
+  ConsumerState<ScaffoldWithNestedNavigation> createState() =>
       _ScaffoldWithNestedNavigationState();
 }
 
 class _ScaffoldWithNestedNavigationState
-    extends State<ScaffoldWithNestedNavigation> {
-  void _goBranch(int index, ref) {
+    extends ConsumerState<ScaffoldWithNestedNavigation> {
+  void _goBranch(int index) {
     log('$index');
     if (index == 1) {
       // Assuming the "Add" tab is at index 2
@@ -99,7 +99,7 @@ class _ScaffoldWithNestedNavigationState
                     ],
                     onTap: (value) {
                       FocusScope.of(context).unfocus();
-                      _goBranch(value, ref);
+                      _goBranch(value);
                     },
                   ),
                 );

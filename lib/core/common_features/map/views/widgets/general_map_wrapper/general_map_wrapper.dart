@@ -145,7 +145,10 @@ class GeneralMapWrapper extends ConsumerWidget {
                     onPressed: onAddOrEditLocation ?? () {},
                     child: FaIcon(
                       size: 20,
-                      ref.read(selectedEditStateProviderForEditView) == null
+                      ref.watch(selectedEditStateProviderForEditView) == null ||
+                              router.routerDelegate.currentConfiguration.uri
+                                      .toString() ==
+                                  '/${Routes.addLocationRouteForNavigator}'
                           ? FontAwesomeIcons.plus
                           : FontAwesomeIcons.penToSquare,
                       color: Theme.of(context).colorScheme.onSurface,

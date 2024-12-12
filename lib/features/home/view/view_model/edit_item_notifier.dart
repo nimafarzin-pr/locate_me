@@ -8,5 +8,7 @@ class SelectedItemNotifier extends Notifier<PlaceItemModel?> {
 
   void setEditItem(PlaceItemModel? editItem) => state = editItem;
 
-  void clearEditItem() => state = null;
+  void clearEditItem() {
+    state = null;
+  }
 }
