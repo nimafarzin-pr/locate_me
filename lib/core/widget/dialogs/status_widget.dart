@@ -61,13 +61,15 @@ class _StatusWidgetState extends State<StatusWidget> {
     return FadeInScaleAnimation(
       beginScale: 0.2,
       duration: const Duration(milliseconds: 300),
-      child: Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: SizedBox(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Dialog(
+          insetPadding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(12.0),
             child: Column(
               children: [
                 isSuccess
@@ -77,6 +79,7 @@ class _StatusWidgetState extends State<StatusWidget> {
                         : warningIcon,
                 const SizedBox(height: 20),
                 CustomText.bodyLarge(
+                  maxLines: 1,
                   widget.title,
                   customStyle: TextStyle(
                     fontSize: 22,

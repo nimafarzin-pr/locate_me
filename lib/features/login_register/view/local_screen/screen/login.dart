@@ -13,7 +13,6 @@ import '../../../../../core/widget/custom_text.dart';
 import '../../../../../core/widget/custom_textfeild.dart';
 import '../../../../../core/widget/dialogs/error_dialog.dart';
 import '../../../../../generated/locale_keys.g.dart';
-import '../widgets/otp_widget.dart';
 
 class LocalLoginScreen extends ConsumerStatefulWidget {
   const LocalLoginScreen({super.key});
@@ -44,13 +43,16 @@ class _LocalLoginScreenState extends ConsumerState<LocalLoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Container(
-                height: MediaQuery.sizeOf(context).height / 3,
-                width: MediaQuery.sizeOf(context).width / 1.2,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: AssetImage(MyIcons.logo), fit: BoxFit.cover),
+              Flexible(
+                flex: 1,
+                child: Container(
+                  height: MediaQuery.sizeOf(context).height / 3,
+                  width: MediaQuery.sizeOf(context).width / 1.2,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: AssetImage(MyIcons.logo), fit: BoxFit.contain),
+                  ),
                 ),
               ),
               Column(

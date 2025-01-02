@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -87,12 +88,13 @@ class _SettingTabState extends ConsumerState<SettingsTab> {
         SettingItemDto(
           title: '${LocaleKeys.signIn.tr()} ${LocaleKeys.auto.tr()}',
         ),
-        SettingItemDto(
-            title: LocaleKeys.rate.tr(),
-            icon: FontAwesomeIcons.starHalfStroke,
-            onTap: (context) async {
-              await showRateModal(context);
-            }),
+        if (Platform.isAndroid)
+          SettingItemDto(
+              title: LocaleKeys.rate.tr(),
+              icon: FontAwesomeIcons.starHalfStroke,
+              onTap: (context) async {
+                await showRateModal(context);
+              }),
       ];
 
   @override

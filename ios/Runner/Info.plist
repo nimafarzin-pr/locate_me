@@ -96,5 +96,15 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
         <string>This app uses your location to provide personalized content and services based on your current location.</string>
 
+<key>NSPhotoLibraryUsageDescription</key>
+<string>We need access to your photo library to pick images.</string>
+
+<key>NSCameraUsageDescription</key>
+<string>We need access to your camera to capture photos.</string>
+
+<key>NSMicrophoneUsageDescription</key>
+<string>We need access to your microphone for video recording.</string>
+
+
 </dict>
 </plist>
