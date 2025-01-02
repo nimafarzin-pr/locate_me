@@ -69,17 +69,16 @@ class _SelectCategoryState extends State<SelectCategory> {
   @override
   Widget build(BuildContext context) {
     return FadeInScaleAnimation(
-      child: AlertDialog(
-        title: CustomText.headlineSmall(LocaleKeys.add_category.tr()),
-        content: SizedBox(
+      child: DialogWrapper(
+        child: SizedBox(
           width: context.screenWidth / 1.2,
-          height: context.screenWidth / 1.4,
+          height: context.screenWidth / 1.2,
           child: Consumer(
             builder: (context, ref, child) {
               return Form(
                 key: formKey,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -208,17 +207,22 @@ class _SelectCategoryState extends State<SelectCategory> {
                     const SizedBox(height: 8),
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0, right: 8),
-                      child: AcceptButton(
-                        buttonText: LocaleKeys.accept.tr(),
-                        onPressed: () async {
-                          if (!(formKey.currentState!.validate())) return;
-                          if (_icon == null || currentColor == null) return;
-                          final icon =
-                              IconPickerUtils.iconPickerSerializer(_icon!);
-                          ref.read(appSettingsRepositoryProvider).addCategory(
-                              _nameController.text, icon, currentColor!.value);
-                          Navigator.pop(context);
-                        },
+                      child: SizedBox(
+                        width: 200,
+                        child: AcceptButton(
+                          buttonText: LocaleKeys.accept.tr(),
+                          onPressed: () async {
+                            if (!(formKey.currentState!.validate())) return;
+                            if (_icon == null || currentColor == null) return;
+                            final icon =
+                                IconPickerUtils.iconPickerSerializer(_icon!);
+                            ref.read(appSettingsRepositoryProvider).addCategory(
+                                _nameController.text,
+                                icon,
+                                currentColor!.value);
+                            Navigator.pop(context);
+                          },
+                        ),
                       ),
                     ),
                   ],
