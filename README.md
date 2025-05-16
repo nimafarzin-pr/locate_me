@@ -4,6 +4,9 @@
 
 **Locate Me** is a location tracking Flutter app designed for a seamless and personalized experience. It integrates modern tools and architecture to provide real-time location handling, powerful state management, and user-friendly features for organizing and sharing your places.
 
+![App Overview](./locateme_overview1.png)
+![App Overview](./locateme_overview2.png)
+
 ### ✨ Key Features
 
 * 🗺️ **Real-Time Location Tracking**
