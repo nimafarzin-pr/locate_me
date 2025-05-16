@@ -7,6 +7,8 @@
 ![App Overview](./locateme_overview1.png)
 ![App Overview](./locateme_overview2.png)
 
+👉 [Get Locate Me on Myket](https://myket.ir/app/com.example.locate_me)
+
 ### ✨ Key Features
 
 * 🗺️ **Real-Time Location Tracking**
